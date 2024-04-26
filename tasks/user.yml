@@ -2,6 +2,7 @@
   ansible.builtin.user: 
     name: ansible
     uid: 900
+  register: user_created
 - name: Copy sudoesr_ansible
   ansible.builtin.copy:
     src: files/sudoers_ansible
@@ -9,3 +10,4 @@
     owner: root
     group: root
     mode: '0440'
+  when: user_created.changed
