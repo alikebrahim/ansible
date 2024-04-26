@@ -5,7 +5,10 @@
 # Neovim
 - name: Build Neovim
   ansible.builtin.shell:
-    cmd: make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr/local/bin -DCMAKE_BUILD_TYPE=RelWithDebInfo"
+    cmd: |
+      make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr/local/bin -DCMAKE_BUILD_TYPE=RelWithDebInfo"
+      make install
     chdir: /home/alikebrahim/src_repos/neovim
+  become_user: alikebrahim
 # Btop
 # fzf
