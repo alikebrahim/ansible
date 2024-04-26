@@ -1,0 +1,10 @@
+# use git module to fetch repos 
+# config: https://github.com/alikebrahim/dotfiles
+# Neovim : https://github.com/neovim/neovim
+# btop: https://github.com/aristocratos/btop.git
+# fzf: https://github.com/junegunn/fzf.git ~/.fzf (requires: git_args: --depth=1)
+# fd https://github.com/sharkdp/fd (requires: rust/cargo)
+# eza: https://github.com/eza-community/eza.git (requires: rust/cargo)
+# ripgrep: https://github.com/BurntSushi/ripgrep (requires: rust/cargo)
+# bat: https://github.com/sharkdp/bat.git (requires: rust/cargo) --figure out how to install the manual pages and set-up shell completion
+# wezterm:  https://github.com/wez/wezterm.git (requires: rust/cargo, git_args: --depth=1 --branch=main --recursive)

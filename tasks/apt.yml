@@ -1,0 +1,21 @@
+  tasks:
+    # add PPAs
+    - name: Add git ppa
+      ansible.builtin.apt_repository: 
+        repo: ppa:git-core/ppa
+    # install packages
+    - name: Install packapges 
+      ansible.builtin.apt: 
+        update_cache: true
+        apt: name={{item}}
+        with_items:
+        # include: qemu, virt-manager, docker, postgres, pyenv
+        - git # latest git version
+        - build-essential # basic build utils
+        - ninja-build  # Neovim build specific
+        - gettext # Neovim build specific
+        - lowdown # btop build specific
+        - cmake 
+        - unzip 
+        - curl
+        - xclip
