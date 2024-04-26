@@ -9,6 +9,7 @@
   ansible.builtin.shell: sh /tmp/rustup.sh -y
   args:
     creates: /home/alikebrahim/.cargo/bin/rustc
+  become_user: alikebrahim
 
 # node
 # java
