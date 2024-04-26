@@ -4,10 +4,9 @@
     repo: ppa:git-core/ppa
 # install packages
 - name: Install packapges 
-  ansible.builtin.apt: 
-    update_cache: true
-    apt: name={{item}}
-    with_items:
+  apt: name={{item}}
+  update_cache: true
+  with_items:
     # include: qemu, virt-manager, docker, postgres, pyenv
     - git # latest git version
     - build-essential # basic build utils
