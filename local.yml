@@ -2,5 +2,6 @@
 - hosts: localhost
   become: true
   tasks:
+    - include_tasks: tasks/user.yml
     - include_tasks: tasks/apt.yml
 
