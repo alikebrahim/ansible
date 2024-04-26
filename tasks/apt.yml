@@ -1,8 +1,8 @@
   tasks:
     # add PPAs
-    - name: Add git ppa
-      ansible.builtin.apt_repository: 
-        repo: ppa:git-core/ppa
+    # - name: Add git ppa
+    #   ansible.builtin.apt_repository: 
+    #     repo: ppa:git-core/ppa
     # install packages
     - name: Install packapges 
       ansible.builtin.apt: 
