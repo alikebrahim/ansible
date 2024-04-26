@@ -1,5 +1,10 @@
 # use git module to fetch repos 
 # config: https://github.com/alikebrahim/dotfiles
+- name: Get config files
+  ansible.builtin.git:
+    repo: https://github.com/alikebrahim/dotfiles
+    clone: true
+    dest: /home/alikebrahim/.dotfiles
 # Neovim : https://github.com/neovim/neovim
 # btop: https://github.com/aristocratos/btop.git
 # fzf: https://github.com/junegunn/fzf.git ~/.fzf (requires: git_args: --depth=1)
