@@ -2,5 +2,5 @@
 - hosts: localhost
   become: true
   tasks:
-    - include: tasks/tasks.yml
+    - include_tasks: tasks/tasks.yml
 
