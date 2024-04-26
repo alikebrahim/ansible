@@ -3,11 +3,14 @@
 # and have a cron job that will pull the repo and rebuild every here and then?
 # ensure running clearning commands where available
 # Neovim
-- name: Build Neovim
+- name: Compile Neovim
   ansible.builtin.shell:
-    cmd: |
-      make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr/local/bin -DCMAKE_BUILD_TYPE=RelWithDebInfo"
-      make install
+    cmd: make CMAKE_BUILD_TYPE=RelWithDebInfo 
+    chdir: /home/alikebrahim/src_repos/neovim
+  become_user: alikebrahim
+- name: Install Neovim
+  ansible.builtin.shell:
+    cmd: make install
     chdir: /home/alikebrahim/src_repos/neovim
   become_user: alikebrahim
 # Btop
