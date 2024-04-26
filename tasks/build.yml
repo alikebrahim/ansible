@@ -12,6 +12,6 @@
   ansible.builtin.shell:
     cmd: make install
     chdir: /home/alikebrahim/src_repos/neovim
-  sudo: true
+  become: true
 # Btop
 # fzf
