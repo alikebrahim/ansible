@@ -3,7 +3,7 @@
     name: ansible
     uid: 900
   register: user_created
-- name: Copy sudoesr_ansible
+- name: Copy sudoers_ansible
   ansible.builtin.copy:
     src: files/sudoers_ansible
     dest: /etc/sudoers.d/ansible
