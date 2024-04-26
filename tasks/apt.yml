@@ -3,10 +3,10 @@
   ansible.builtin.apt_repository: 
     repo: ppa:git-core/ppa
 - name: Update cache
-  update_cache: true
-  with_items:
+  ansible.builtin.apt:
+    update_cache: true
 - name: Install packapges 
-  apt: name={{item}}
+  ansible.builtin.apt: name={{item}}
   with_items:
     # include: qemu, virt-manager, docker, postgres, pyenv
     - git # latest git version
