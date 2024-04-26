@@ -2,7 +2,9 @@
 - name: Add git ppa
   ansible.builtin.apt_repository: 
     repo: ppa:git-core/ppa
-# install packages
+- name: Update cache
+  update_cache: true
+  with_items:
 - name: Install packapges 
   apt: name={{item}}
   with_items:
