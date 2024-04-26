@@ -3,11 +3,9 @@
 # and have a cron job that will pull the repo and rebuild every here and then?
 # ensure running clearning commands where available
 # Neovim
+- name: Build Neovim
+  ansible.builtin.shell:
+    cmd: make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=/usr/local/bin -DCMAKE_BUILD_TYPE=RelWithDebInfo"
+    chdir: /home/alikebrahim/src_repos/Neovim
 # Btop
-# eza
 # fzf
-# fd
-# ripgrep
-# bat
-# lazygit (can be installed with go: go install github.com/jesseduffield/lazygit@latest)
-# wezterm

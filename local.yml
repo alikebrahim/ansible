@@ -5,4 +5,6 @@
     - include_tasks: tasks/user.yml
     - include_tasks: tasks/repos.yml
     - include_tasks: tasks/apt.yml
+    - include_tasks: tasks/languages.yml
+    - include_tasks: tasks/build.yml
 

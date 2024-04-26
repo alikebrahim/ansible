@@ -6,6 +6,11 @@
     clone: true
     dest: /home/alikebrahim/.dotfiles
 # Neovim : https://github.com/neovim/neovim
+- name: Get config files
+  ansible.builtin.git:
+    repo: https://github.com/neovim/neovim 
+    clone: true
+    dest: /home/alikebrahim/src_repos
 # btop: https://github.com/aristocratos/btop.git
 # fzf: https://github.com/junegunn/fzf.git ~/.fzf (requires: git_args: --depth=1)
 # fd https://github.com/sharkdp/fd (requires: rust/cargo)

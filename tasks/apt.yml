@@ -5,7 +5,7 @@
 - name: Update cache
   ansible.builtin.apt:
     update_cache: true
-- name: Install packapges 
+- name: Install packages 
   ansible.builtin.apt: name={{item}}
   with_items:
     # include: qemu, virt-manager, docker, postgres, pyenv
