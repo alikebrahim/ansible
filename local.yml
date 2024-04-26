@@ -1,4 +1,6 @@
+---
 - hosts: localhost
   become: true
-  include: tasks/tasks.yml
+  tasks:
+    - include: tasks/tasks.yml
 
