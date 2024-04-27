@@ -24,7 +24,6 @@
   ansible.builtin.get_url:
     url: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
     dest: /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
-    become: true
 
 - debug:
     msg: "Tarball downloaded to /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz"
