@@ -8,6 +8,7 @@
     dest: /tmp/go{ { go_version.stdout }}.tar.gz
 - name: Install Go
   ansible.builtin.command: rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/go{ { go_version.stdout }}.linux-amd64.tar.gz
+  become: true
 # rust
 - name: Download Rust Installer
   ansible.builtin.get_url:
