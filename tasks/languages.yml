@@ -6,8 +6,9 @@
 - name: Download Go Tarball
   ansible.builtin.get_url:
     url: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
-    dest: /tmp/{{ go_version.stdout }}.tar.gz
+    dest: /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
     owner: alikebrahim
+    group: alikebrahim
 - name: Install Go
   ansible.builtin.shell: 
     cmd: rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
