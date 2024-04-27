@@ -1,19 +1,41 @@
 # go
+# - name: Get Go Latest Version
+#   ansible.builtin.shell: 
+#     cmd: curl -Ls "https://golang.org/dl/?mode=json" | jq -r '.[0].version'
+#   register: go_version
+# - name: Download Go Tarball
+#   ansible.builtin.get_url:
+#     url: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
+#     dest: /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
+#     become: true
+# - name: Install Go
+#   ansible.builtin.shell: 
+#     cmd: rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
+#   become: true
 - name: Get Go Latest Version
   ansible.builtin.shell: 
     cmd: curl -Ls "https://golang.org/dl/?mode=json" | jq -r '.[0].version'
   register: go_version
+
+- debug:
+    var: go_version
+
 - name: Download Go Tarball
   ansible.builtin.get_url:
     url: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
     dest: /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
-    owner: alikebrahim
-    group: alikebrahim
+    become: true
+
+- debug:
+    msg: "Tarball downloaded to /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz"
+
 - name: Install Go
   ansible.builtin.shell: 
     cmd: rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
   become: true
-  become_user: alikebrahim
+
+- debug:
+    msg: "Go installed successfully"
 # rust
 - name: Download Rust Installer
   ansible.builtin.get_url:
