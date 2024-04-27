@@ -7,10 +7,12 @@
   ansible.builtin.get_url:
     url: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
     dest: /tmp/{{ go_version.stdout }}.tar.gz
+    become_user: alikebrahim
 - name: Install Go
   ansible.builtin.shell: 
     cmd: rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
   become: true
+  become_user: alikebrahim
 # rust
 - name: Download Rust Installer
   ansible.builtin.get_url:
