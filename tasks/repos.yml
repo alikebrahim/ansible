@@ -11,8 +11,9 @@
 - name: Get neovim
   ansible.builtin.git:
     repo: https://github.com/neovim/neovim 
-    clone: true
     dest: /home/alikebrahim/src_repos/neovim
+    update: true
+    force: true
   become_user: alikebrahim
 # btop: https://github.com/aristocratos/btop.git
 # fzf: https://github.com/junegunn/fzf.git ~/.fzf (requires: git_args: --depth=1)
