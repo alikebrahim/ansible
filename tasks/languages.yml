@@ -10,6 +10,10 @@
   args:
     creates: /home/alikebrahim/.cargo/bin/rustc
   become_user: alikebrahim
+  register: rust_output
+- name: Rutst Install Output
+  ansible.builtin.debug:
+    var: rust_output
 
 # node
 # java

@@ -1,4 +1,5 @@
 # use git module to fetch repos 
+# nvim config: https://github.com/alikebrahim/nvim2
 # config: https://github.com/alikebrahim/dotfiles
 - name: Get config files
   ansible.builtin.git:
