@@ -1,4 +1,13 @@
 # go
+- name: Get Go Latest Version
+  ansible.builtin.command: curl -Ls "https://golang.org/dl/?mode=json" | jq -r '.[0].version'
+  register: go_version
+- name: Download Go Tarball
+  ansible.builtin.get_url:
+    url: https://go.dev/dl/{{ go_version.stdout  }}.linux-amd64.tar.gz
+    dest: /tmp/go{ { go_version.stdout }}.tar.gz
+- name: Install Go
+  ansible.builtin.command: rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/go{ { go_version.stdout }}.linux-amd64.tar.gz
 # rust
 - name: Download Rust Installer
   ansible.builtin.get_url:
@@ -10,9 +19,6 @@
   args:
     creates: /home/alikebrahim/.cargo/bin/rustc
   become_user: alikebrahim
-  register: rust_output
-  ansible.builtin.debug:
-    var: rust_output.stdout
 
 # node
 # java
