@@ -17,8 +17,7 @@
 - name: Create Go Dir
   ansible.builtin.shell: 
     cmd: mkdir -p /home/alikebrahim/go/bin /home/alikebrahim/go/pkg /home/alikebrahim/go/src
-    owner: alikebrahim
-    group: alikebrahim 
+  become_user: alikebrahim 
 # rust
 - name: Download Rust Installer
   ansible.builtin.get_url:
