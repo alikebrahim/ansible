@@ -14,10 +14,19 @@
     cmd: rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
   become: true
 
-- name: Create Go Dir
-  ansible.builtin.shell: 
-    cmd: mkdir -p /home/alikebrahim/go/{src,pkg,bin}
-  become_user: alikebrahim 
+- name: Create Go directories
+  ansible.builtin.file:
+    path: /home/alikebrahim/go/{{ item }}
+    state: directory
+    owner: alikebrahim
+    group: alikebrahim
+    mode: '0755'
+  loop:
+    - src
+    - pkg
+    - bin
+  become: true
+
 # rust
 - name: Download Rust Installer
   ansible.builtin.get_url:
