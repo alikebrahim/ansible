@@ -4,6 +4,7 @@
     state: present
   loop:
     - build-essential 
+    - protobuf-compiler 
     - ca-certificates 
     - ninja-build
     - gettext
