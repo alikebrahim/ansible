@@ -30,18 +30,6 @@
   args:
     creates: /home/alikebrahim/.cargo/bin/rustc
   become_user: alikebrahim
-  #
-# Update Shell Profile
-- name: Update shell profile with Go and Rust paths
-  ansible.builtin.lineinfile:
-    path: /home/alikebrahim/.profile
-    line: |
-      export PATH=$PATH:/usr/local/go/bin:/home/alikebrahim/.cargo/bin
-    state: present
-
-- name: Source the updated profile
-  ansible.builtin.shell: |
-    source /home/alikebrahim/.profile
-  become_user: alikebrahim
+ 
 # node
 # java

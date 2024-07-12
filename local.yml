@@ -1,5 +1,7 @@
 - hosts: localhost
   become: true
+  environment:
+      PATH: /usr/local/go/bin:/home/alikebrahim/.cargo/bin:{{ ansible_env.PATH }}
   tasks:
     - name: Configure ansible user
       include_tasks: system/popOS/user.yml
