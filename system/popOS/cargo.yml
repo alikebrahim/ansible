@@ -1,13 +1,48 @@
-- name: Installing Cargo packages
-  command: cargo install {{ item }}
-  loop:
-    - git-delta
-    - fd-find
-    - eza
-    - zoxide
-    - atuin
-    - tokei
-- name: Installing ripgrep
-  command: cargo binstall ripgrep
 - name: Installing bat
-  command: cargo install --locked bat
+  community.general.cargo:
+    executable: $HOME/.cargo/bin/cargo
+    path: $HOME/.cargo/
+    name: bat
+    locked: true
+
+- name: Installing git-delta
+  community.general.cargo:
+    executable: $HOME/.cargo/bin/cargo
+    path: $HOME/.cargo/
+    name: git-delta 
+
+- name: Installing ripgrep
+  community.general.cargo:
+    executable: $HOME/.cargo/bin/cargo
+    path: $HOME/.cargo/
+    name: ripgrep 
+
+- name: Installing fd-find 
+  community.general.cargo:
+    executable: $HOME/.cargo/bin/cargo
+    path: $HOME/.cargo/
+    name: fd-find 
+
+- name: Installing eza 
+  community.general.cargo:
+    executable: $HOME/.cargo/bin/cargo
+    path: $HOME/.cargo/
+    name: eza 
+
+- name: Installing zoxide
+  community.general.cargo:
+    executable: $HOME/.cargo/bin/cargo
+    path: $HOME/.cargo/
+    name: zoxide 
+
+- name: Installing tokei
+  community.general.cargo:
+    executable: $HOME/.cargo/bin/cargo
+    path: $HOME/.cargo/
+    name: tokei
+
+- name: Installing atuin
+  community.general.cargo:
+    executable: $HOME/.cargo/bin/cargo
+    path: $HOME/.cargo/
+    name: atuin
