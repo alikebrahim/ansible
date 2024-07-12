@@ -1,48 +1,48 @@
 - name: Installing bat
   community.general.cargo:
-    executable: $HOME/.cargo/bin/cargo
-    path: $HOME/.cargo/
+    executable: /home/alikebrahim/.cargo/bin/cargo
+    path: /home/alikebrahim/.cargo
     name: bat
     locked: true
 
 - name: Installing git-delta
   community.general.cargo:
-    executable: $HOME/.cargo/bin/cargo
-    path: $HOME/.cargo/
+    executable: /home/alikebrahim/.cargo/bin/cargo
+    path: /home/alikebrahim/.cargo
     name: git-delta 
 
 - name: Installing ripgrep
   community.general.cargo:
-    executable: $HOME/.cargo/bin/cargo
-    path: $HOME/.cargo/
+    executable: /home/alikebrahim/.cargo/bin/cargo
+    path: /home/alikebrahim/.cargo
     name: ripgrep 
 
 - name: Installing fd-find 
   community.general.cargo:
-    executable: $HOME/.cargo/bin/cargo
-    path: $HOME/.cargo/
+    executable: /home/alikebrahim/.cargo/bin/cargo
+    path: /home/alikebrahim/.cargo
     name: fd-find 
 
 - name: Installing eza 
   community.general.cargo:
-    executable: $HOME/.cargo/bin/cargo
-    path: $HOME/.cargo/
+    executable: /home/alikebrahim/.cargo/bin/cargo
+    path: /home/alikebrahim/.cargo
     name: eza 
 
 - name: Installing zoxide
   community.general.cargo:
-    executable: $HOME/.cargo/bin/cargo
-    path: $HOME/.cargo/
+    executable: /home/alikebrahim/.cargo/bin/cargo
+    path: /home/alikebrahim/.cargo
     name: zoxide 
 
 - name: Installing tokei
   community.general.cargo:
-    executable: $HOME/.cargo/bin/cargo
-    path: $HOME/.cargo/
+    executable: /home/alikebrahim/.cargo/bin/cargo
+    path: /home/alikebrahim/.cargo
     name: tokei
 
 - name: Installing atuin
   community.general.cargo:
-    executable: $HOME/.cargo/bin/cargo
-    path: $HOME/.cargo/
+    executable: /home/alikebrahim/.cargo/bin/cargo
+    path: /home/alikebrahim/.cargo
     name: atuin
