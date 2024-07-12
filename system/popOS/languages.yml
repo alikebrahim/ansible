@@ -34,5 +34,10 @@
 - name: Activate cargo env
   ansible.builtin.shell: . $HOME/.cargo/env
   become_user: alikebrahim
+
+# Set default Rust toolchain
+- name: Set default Rust toolchain to stable
+  ansible.builtin.shell: /home/alikebrahim/.cargo/bin/rustup default stable
+  become_user: alikebrahim
 # node
 # java
