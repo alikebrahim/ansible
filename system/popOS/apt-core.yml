@@ -1,0 +1,14 @@
+- name: Install packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - build-essential 
+    - ca-certificates 
+    - ninja-build
+    - gettext
+    - lowdown
+    - cmake 
+    - unzip 
+    - curl
+    - jq

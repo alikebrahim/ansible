@@ -1,0 +1,7 @@
+# air https://github.com/cosmtrek/air.git
+# lazygit (can be installed with go: go install github.com/jesseduffield/lazygit@latest)
+- name: Installing go packages
+  command: go install {{ item }}
+  loop:
+    - github.com/air-verse/air@latest
+    - github.com/jesseduffield/lazygit@latest 

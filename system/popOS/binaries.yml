@@ -1,0 +1,5 @@
+- name: Download btop binary
+  ansible.builtin.get_url:
+    url: https://github.com/aristocratos/btop/releases/download/v1.3.2/btop-x86_64-linux-musl.tbz 
+    dest: /home/alikebrahim/.btop
+    state: directory

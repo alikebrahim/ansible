@@ -1,10 +1,35 @@
----
 - hosts: localhost
   become: true
   tasks:
-    - include_tasks: tasks/user.yml
-    - include_tasks: tasks/repos.yml
-    - include_tasks: tasks/apt.yml
-    - include_tasks: tasks/languages.yml
-    - include_tasks: tasks/build.yml
+    - name: Configure ansible user
+      include_tasks: system/popOS/user.yml
+      when: ansible_facts['distribution'] == "Pop!_OS"
 
+    - name: Configure APT repositories
+      include_tasks: system/popOS/apt-repositories.yml
+      when: ansible_facts['distribution'] == "Pop!_OS"
+
+    - name: Install APT application packages
+      include_tasks: system/popOS/apt-apps.yml
+      when: ansible_facts['distribution'] == "Pop!_OS"
+
+    - name: Install programming languages
+      include_tasks: system/popOS/languages.yml
+      when: ansible_facts['distribution'] == "Pop!_OS"
+   
+    - name: Install cargo packages
+      include_tasks: system/popOS/cargo.yml
+      when: ansible_facts['distribution'] == "Pop!_OS"
+   
+    - name: Install go packages
+      include_tasks: system/popOS/go.yml
+      when: ansible_facts['distribution'] == "Pop!_OS"
+    #
+    # - name: Clone repositories
+    #   include_tasks: system/popOS/repositories.yml
+    #   when: ansible_facts['distribution'] == "Pop!_OS"
+
+    #
+    # - name: Build applications
+    #   include_tasks: system/popOS/build.yml
+    #   when: ansible_facts['distribution'] == "Pop!_OS"

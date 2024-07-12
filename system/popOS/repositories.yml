@@ -1,0 +1,36 @@
+# use git module to fetch repos 
+# config: https://github.com/alikebrahim/dotfiles
+# Neovim : https://github.com/neovim/neovim
+- name: Clone neovim repo
+  ansible.builtin.git:
+    repo: https://github.com/neovim/neovim 
+    dest: /home/alikebrahim/.neovim
+    update: true
+    force: true
+  become_user: alikebrahim
+# fzf: 
+  # installation : ./install --bin
+- name: Clone fzf repo
+  ansible.builtin.git:
+    repo: https://github.com/junegunn/fzf.git 
+    dest: /home/alikebrahim/.fzf
+    depth: 1
+    update: true
+    force: true
+  become_user: alikebrahim
+# btop: 
+  # installation : make && sudo make install
+- name: Clone btop repo
+  ansible.builtin.git:
+    repo: https://github.com/aristocratos/btop.git 
+    dest: /home/alikebrahim/.btop
+    update: true
+    force: true
+  become_user: alikebrahim
+# wezterm:  https://github.com/wez/wezterm.git (requires: rust/cargo, git_args: --depth=1 --branch=main --recursive)
+- name: Get config files
+  ansible.builtin.git:
+    repo: https://github.com/alikebrahim/dotfiles
+    dest: /home/alikebrahim/.dotfiles
+    clone: true
+  become_user: alikebrahim

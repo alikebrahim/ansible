@@ -1,0 +1,13 @@
+- name: Installing Cargo packages
+  command: cargo install {{ item }}
+  loop:
+    - git-delta
+    - fd-find
+    - eza
+    - zoxide
+    - atuin
+    - tokei
+- name: Installing ripgrep
+  command: cargo binstall ripgrep
+- name: Installing bat
+  command: cargo install --locked bat
