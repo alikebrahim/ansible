@@ -31,5 +31,8 @@
     creates: /home/alikebrahim/.cargo/bin/rustc
   become_user: alikebrahim
  
+- name: Activate cargo env
+  ansible.builtin.shell: . $HOME/.cargo/env
+  become_user: alikebrahim
 # node
 # java
