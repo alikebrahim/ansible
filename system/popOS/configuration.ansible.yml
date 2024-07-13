@@ -5,39 +5,34 @@
 - name: Install JuliaMono font
   ansible.builtin.uri:
   url: 'https://github.com/cormullion/juliamono/releases/download/v0.056/JuliaMono-ttf.tar.gz'
-  dest: "{{ ansible_env.HOME }}/.local/share/fonts/JuliaMono"
+  dest: "/home/alikebrahim/.local/share/fonts/JuliaMono"
 
 - name: Extract JuliaMono
   ansible.builtin.shell:
   cmd: tar xvf JuliaMono-ttf.tar.gz
-  chdir: "{{ ansible_env.HOME }}/.local/share/fonts/JuliaMono"
+  chdir: "/home/alikebrahim/.local/share/fonts/JuliaMono"
 
 - name: Install JetBrains font
   ansible.builtin.uri:
   url: 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
-  dest: "{{ ansible_env.HOME }}/.local/share/fonts/JuliaMono"
+  dest: "/home/alikebrahim/.local/share/fonts/JetBrains"
 
 - name: Extract JetBrains
   ansible.builtin.shell:
   cmd: unzip JetBrainsMono-2.304.zip .
-  chdir: "{{ ansible_env.HOME }}/.local/share/fonts/JetBrains"
+  chdir: "/home/alikebrahim/.local/share/fonts/JetBrains"
 
 - name: Config Stow
   ansible.builtin.command:
     cmd: stow zsh nvm fzf tmux wezterm obsidian atuin
-    chdir: "{{ ansible_env.HOME }}/.dotfiles"
-
-- name: Config Stow
-  ansible.builtin.command:
-    cmd: stow zsh nvm fzf tmux wezterm obsidian atuin
-    chdir: "{{ ansible_env.HOME }}/.dotfiles"
+    chdir: "/home/alikebrahim/.dotfiles"
 
 - name: Set zsh shell
   ansible.builtin.command:
     cmd: chsh -a $(which zsh)
 - name: Checking if oh-my-zsh exists
   stat:
-    path: /home/alikebrahim/.oh-my-zsh
+    path: "/home/alikebrahim/.oh-my-zsh"
   register: oh_my_stats
 
 - name: Oh-My-Zsh
