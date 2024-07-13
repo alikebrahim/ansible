@@ -7,6 +7,10 @@
       include_tasks: system/popOS/user.yml
       when: ansible_facts['distribution'] == "Pop!_OS"
 
+    - name: Install APT core packages
+      include_tasks: system/popOS/apt-core.yml
+      when: ansible_facts['distribution'] == "Pop!_OS"
+
     - name: Configure APT repositories
       include_tasks: system/popOS/apt-repositories.yml
       when: ansible_facts['distribution'] == "Pop!_OS"
