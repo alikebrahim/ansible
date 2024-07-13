@@ -9,7 +9,7 @@
 - name: Download Obsidian
   ansible.builtin.uri:
     url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.6.5/Obsidian-1.6.5.AppImage"
-    dest: "/home/alikebrahim/.local/bin"
+    dest: "/home/alikebrahim/.local/bin/obsidian"
     mode: '0o755'
   tags: ["obsidian", "productivity"]
 
