@@ -1,23 +1,23 @@
 # Obsidian
 - name: Create ~/.local/bin directory
   ansible.builtin.shell:
-    cmd: mkdir -p "{{ ansible_env.HOME }}/.local/bin"
+    cmd: mkdir -p /home/alikebrahim/.local/bin"
   become_user: alikebrahim
   # become: true
-  tags: ["obsidian","productivity"]
+  tags: ["obsidian", "productivity"]
 
 - name: Download Obsidian
   ansible.builtin.uri:
     url: https://github.com/obsidianmd/obsidian-releases/releases/download/v1.6.5/Obsidian-1.6.5.AppImage
-    dest: "{{ ansible_env.HOME }}/.local/bin"
+    dest: /home/alikebrahim/.local/bin"
     mode: '0755'
-  tags: ["obsidian","productivity"]
+  tags: ["obsidian", "productivity"]
 
 - name: Set obsidian AppImage permissions
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.local/bin"
+    path: /home/alikebrahim/.local/bin/obsidian"
     state: file
     mode: '0o755'
   become_user: alikebrahim
   become: true
-  tags: ["obsidian","productivity"]
+  tags: ["obsidian", "productivity"]
