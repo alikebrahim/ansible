@@ -9,13 +9,13 @@
 - name: Download Obsidian
   ansible.builtin.uri:
     url: https://github.com/obsidianmd/obsidian-releases/releases/download/v1.6.5/Obsidian-1.6.5.AppImage
-    dest: /home/alikebrahim/.local/bin"
-    mode: '0755'
+    dest: "/home/alikebrahim/.local/bin"
+    mode: '0o755'
   tags: ["obsidian", "productivity"]
 
 - name: Set obsidian AppImage permissions
   ansible.builtin.file:
-    path: /home/alikebrahim/.local/bin/obsidian"
+    path: "/home/alikebrahim/.local/bin/obsidian"
     state: file
     mode: '0o755'
   become_user: alikebrahim
