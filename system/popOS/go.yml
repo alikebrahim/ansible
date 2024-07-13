@@ -1,7 +1,10 @@
-# air https://github.com/cosmtrek/air.git
-# lazygit (can be installed with go: go install github.com/jesseduffield/lazygit@latest)
 - name: Installing go packages
-  command: go install {{ item }}
+  environment:
+      PATH: /usr/local/go/bin:{{ ansible_env.PATH }}
+      GOPATH: /home/alikebrahim/go
+      # GOROOT: /usr/local/go
+  ansible.builtin.command:
+    cmd: go install {{ item }}
   loop:
     - github.com/air-verse/air@latest
-    - github.com/jesseduffield/lazygit@latest 
+    - github.com/jesseduffield/lazygit@latest
