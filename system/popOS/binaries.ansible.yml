@@ -1,14 +1,14 @@
 # Obsidian
 - name: Create ~/.local/bin directory
   ansible.builtin.shell:
-    cmd: mkdir -p /home/alikebrahim/.local/bin"
+    cmd: mkdir -p "/home/alikebrahim/.local/bin"
   become_user: alikebrahim
   # become: true
   tags: ["obsidian", "productivity"]
 
 - name: Download Obsidian
   ansible.builtin.uri:
-    url: https://github.com/obsidianmd/obsidian-releases/releases/download/v1.6.5/Obsidian-1.6.5.AppImage
+    url: "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.6.5/Obsidian-1.6.5.AppImage"
     dest: "/home/alikebrahim/.local/bin"
     mode: '0o755'
   tags: ["obsidian", "productivity"]
