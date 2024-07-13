@@ -1,5 +1,5 @@
 - name: Ensure .ssh directory exists.
-  ansible.bultin.file:
+  ansible.builtin.file:
     dest: "{{ dest_key | dirname }}"
     mode: '0o700'
     state: directory
@@ -11,7 +11,7 @@
     mode: '0o600'
 
 - name: Install ssh key public
-  ansible.builtin.copy::
+  ansible.builtin.file:
     src: "{{ source_key }}.pub"
     dest: "{{ dest_key }}.pub"
     mode: '0o644'

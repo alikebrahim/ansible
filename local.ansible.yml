@@ -1,5 +1,5 @@
 - name: System Up
-- hosts: localhost
+  hosts: localhost
   vars:
       source_key: "./.ssh/id_ed25519"
       dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
