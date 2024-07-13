@@ -4,7 +4,8 @@
       GOPATH: /home/alikebrahim/go
       # GOROOT: /usr/local/go
   ansible.builtin.command:
-    cmd: go install {{ item }}
+      cmd: go install {{ item }}
   loop:
-    - github.com/air-verse/air@latest
-    - github.com/jesseduffield/lazygit@latest
+      - github.com/air-verse/air@latest
+      - github.com/jesseduffield/lazygit@latest
+      - github.com/go-delve/delve/cmd/dlv@latest

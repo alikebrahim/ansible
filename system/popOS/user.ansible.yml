@@ -1,8 +1,9 @@
 - name: Create ansible user
-  ansible.builtin.user: 
+  ansible.builtin.user:
     name: ansible
-    uid: 900
+    uid: "900"
   register: user_created
+
 - name: Copy sudoers_ansible
   ansible.builtin.copy:
     src: files/sudoers_ansible

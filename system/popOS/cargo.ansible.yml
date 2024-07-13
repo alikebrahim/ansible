@@ -4,53 +4,53 @@
     # path: /home/alikebrahim/.cargo
     name: bat
     locked: true
-  become_user: alikebrahim 
+  become_user: alikebrahim
 
 - name: Installing git-delta
   community.general.cargo:
     executable: /home/alikebrahim/.cargo/bin/cargo
     # path: /home/alikebrahim/.cargo
-    name: git-delta 
-  become_user: alikebrahim 
+    name: git-delta
+  become_user: alikebrahim
 
 - name: Installing ripgrep
   community.general.cargo:
     executable: /home/alikebrahim/.cargo/bin/cargo
     # path: /home/alikebrahim/.cargo
-    name: ripgrep 
-  become_user: alikebrahim 
+    name: ripgrep
+  become_user: alikebrahim
 
-- name: Installing fd-find 
+- name: Installing fd-find
   community.general.cargo:
     executable: /home/alikebrahim/.cargo/bin/cargo
     # path: /home/alikebrahim/.cargo
-    name: fd-find 
-  become_user: alikebrahim 
+    name: fd-find
+  become_user: alikebrahim
 
-- name: Installing eza 
+- name: Installing eza
   community.general.cargo:
     executable: /home/alikebrahim/.cargo/bin/cargo
     # path: /home/alikebrahim/.cargo
-    name: eza 
-  become_user: alikebrahim 
+    name: eza
+  become_user: alikebrahim
 
 - name: Installing zoxide
   community.general.cargo:
     executable: /home/alikebrahim/.cargo/bin/cargo
     # path: /home/alikebrahim/.cargo
-    name: zoxide 
-  become_user: alikebrahim 
+    name: zoxide
+  become_user: alikebrahim
 
 - name: Installing tokei
   community.general.cargo:
     executable: /home/alikebrahim/.cargo/bin/cargo
     # path: /home/alikebrahim/.cargo
     name: tokei
-  become_user: alikebrahim 
+  become_user: alikebrahim
 
 - name: Installing atuin
   community.general.cargo:
     executable: /home/alikebrahim/.cargo/bin/cargo
     # path: /home/alikebrahim/.cargo
     name: atuin
-  become_user: alikebrahim 
+  become_user: alikebrahim

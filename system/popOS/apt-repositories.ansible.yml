@@ -1,10 +1,10 @@
 - name: Add git ppa
-  ansible.builtin.apt_repository: 
+  ansible.builtin.apt_repository:
     repo: ppa:git-core/ppa
 
 - name: Update the apt package index
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
 
 - name: Create directory for Docker keyrings
   ansible.builtin.file:
@@ -31,6 +31,7 @@
     content: "deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *\n"
     dest: /etc/apt/sources.list.d/wezterm.list
 
-- name: Update the apt package index
+- name: Update APT package index and update system
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
+    upgrade: safe

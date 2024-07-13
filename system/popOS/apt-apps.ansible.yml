@@ -3,26 +3,31 @@
     name: "{{ item }}"
     state: present
   loop:
-    - git 
-    - zsh 
-    - wezterm 
-    - stow 
+    - git
+    - zsh
+    - wezterm
+    - stow
     - openssh-server
     - openssh-client
     - xclip
     - python3
     - python3-pip
-    - qemu-kvm  
+    - qemu-kvm
     - qemu-system
     - qemu-utils
     - libvirt-clients
-    - libvirt-daemon-system 
-    - bridge-utils 
-    - virtinst 
+    - libvirt-daemon-system
+    - bridge-utils
+    - virtinst
     - libvirt-daemon
-    - virt-manager 
+    - virt-manager
     - docker-ce
-    - docker-ce-cli 
-    - containerd.io 
+    - docker-ce-cli
+    - containerd.io
     - docker-buildx-plugin
     - docker-compose-plugin
+    - google-chrome-stable
+    - tldr
+    - mpv
+    - sqlite3
+    - imagemagick

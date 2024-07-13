@@ -1,0 +1,41 @@
+# Neovim
+- name: Ensure Neovim source directory exists
+  ansible.builtin.stat:
+    path: /home/alikebrahim/.neovim
+  register: neovim_src_dir
+
+- name: Compile & Install Neovim
+  ansible.builtin.shell:
+    cmd: make CMAKE_BUILD_TYPE=RelWithDebInfo && make install
+    chdir: /home/alikebrahim/src_repos/neovim
+  become: true
+  when: neovim_src_dir.stat.exists
+  # become_user: alikebrahim
+
+# Tmux
+- name: Ensure Tmux source directory exists
+  ansible.builtin.stat:
+    path: /home/alikebrahim/.tmux
+  register: tmux_src_dir
+
+- name: Compile & Install Tmux
+  ansible.builtin.shell:
+    cmd: sh autogen.sh && ./configure && make && make install
+    chdir: /home/alikebrahim/.tmux
+  become: true
+  when: tmux_src_dir.stat.exists
+  # become_user: alikebrahim
+
+# Btop
+- name: Ensure Btop source directory exists
+  ansible.builtin.stat:
+    path: /home/alikebrahim/.btop
+  register: btop_src_dir
+
+- name: Compile & Install Btop
+  ansible.builtin.shell:
+    cmd: make ADDFLAGS=-march=native && make install
+    chdir: /home/alikebrahim/.btop
+  become: true
+  when: btop_src_dir.stat.exists
+  # become_user: alikebrahim
