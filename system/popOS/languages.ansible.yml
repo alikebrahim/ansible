@@ -74,7 +74,7 @@
     PROFILE: "/dev/null"
   args:
     executable: /bin/bash
-  become: yes
+  become: true
   become_user: alikebrahim
   tags: ["nvm", "node", "languages"]
 
