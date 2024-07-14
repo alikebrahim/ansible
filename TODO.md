@@ -1,0 +1,2 @@
+- Fix fzf not found
+- check nvim issues
