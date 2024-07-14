@@ -11,9 +11,13 @@
     src: "{{ source_key }}"
     dest: "{{ dest_key }}"
     mode: preserve
+    owner: alikebrahim
+    group: alikebrahim
 
 - name: Install ssh key public
   ansible.builtin.copy:
     src: "{{ source_key }}.pub"
     dest: "{{ dest_key }}.pub"
     mode: preserve
+    owner: alikebrahim
+    group: alikebrahim
