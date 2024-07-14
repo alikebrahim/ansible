@@ -37,7 +37,7 @@
     force: true
   become_user: alikebrahim
 
-- name: Clone Obsidian Repository
+- name: Clone books Repository
   ansible.builtin.git:
     repo: git@github.com:alikebrahim/books.git
     dest: /home/alikebrahim/Documents/obsidian

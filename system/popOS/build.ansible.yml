@@ -7,7 +7,7 @@
 - name: Compile & Install Neovim
   ansible.builtin.shell:
     cmd: make CMAKE_BUILD_TYPE=RelWithDebInfo && make install
-    chdir: /home/alikebrahim/src_repos/neovim
+    chdir: /home/alikebrahim/.neovim
   become: true
   when: neovim_src_dir.stat.exists
   # become_user: alikebrahim
