@@ -3,7 +3,7 @@
   cmd: mkdir -p /home/alikebrahim/.local/share/fonts/{JuliaMono,JetBrains}
 
 - name: Install JuliaMono font
-  ansible.builtin.uri:
+  ansible.builtin.get_url:
   url: 'https://github.com/cormullion/juliamono/releases/download/v0.056/JuliaMono-ttf.tar.gz'
   dest: "/home/alikebrahim/.local/share/fonts/JuliaMono"
 
@@ -13,7 +13,7 @@
   chdir: "/home/alikebrahim/.local/share/fonts/JuliaMono"
 
 - name: Install JetBrains font
-  ansible.builtin.uri:
+  ansible.builtin.get_url:
   url: 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
   dest: "/home/alikebrahim/.local/share/fonts/JetBrains"
 

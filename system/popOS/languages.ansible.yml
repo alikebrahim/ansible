@@ -48,21 +48,11 @@
 
 - name: Source cargo env to activate it
   ansible.builtin.shell:
-    cmd: . "/home/alikebrahim/.cargo/env
+    cmd: ". /home/alikebrahim/.cargo/env"
   args:
     executable: "/bin/bash"
   become_user: alikebrahim
-  # become: yes
-  when: ansible_env.HOME is defined
   tags: ["rust", "languages"]
-
-# - name: Activate cargo env
-#   ansible.builtin.shell: . $HOME/.cargo/env
-#   become_user: alikebrahim
-
-# - name: Set default rust toolchain to stable
-#   ansible.builtin.shell: /home/alikebrahim/.cargo/bin/rustup default stable
-#   become_user: alikebrahim
 
 # nvm & node
 - name: Install Node Version Manager (NVM)
@@ -74,27 +64,28 @@
     PROFILE: "/dev/null"
   become_user: alikebrahim
   tags: ["nvm", "node", "languages"]
-  # become: yes
 
-- name: Source NVM script to activate it
+- name: Source NVM and Install node
   ansible.builtin.shell:
-    cmd: . "/home/alikebrahim/.nvm/nvm.sh"
+    cmd: |
+      ". /home/alikebrahim/.nvm/nvm.sh"
+      nvm install node
+  environment:
+    PROFILE: "/dev/null"
   args:
     executable: "/bin/bash"
   become_user: alikebrahim
-  # become: yes
-  when: ansible_env.HOME is defined
   tags: ["nvm", "node", "languages"]
 
-- name: Install node
-  ansible.builtin.shell:
-    cmd: "nvm install node"
-  args:
-    executable: "/bin/bash"
-  become_user: alikebrahim
-  # become: yes
-  when: ansible_env.HOME is defined
-  tags: ["nvm", "node", "languages"]
+# - name: Install node
+#   ansible.builtin.shell:
+#     cmd: "nvm install node"
+#   args:
+#     executable: "/bin/bash"
+#   become_user: alikebrahim
+#   # become: yes
+#   when: ansible_env.HOME is defined
+#   tags: ["nvm", "node", "languages"]
 
 # pyenv
 - name: Install pyenv

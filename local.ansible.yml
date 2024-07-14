@@ -35,6 +35,7 @@
 
       - name: Install Programming Languages
         ansible.builtin.include_tasks: system/popOS/languages.ansible.yml
+        tags: ["go", "rust", "node", "nvim", "languages"]
         when: ansible_facts['distribution'] == "Pop!_OS"
 
       - name: Install Cargo Packages
