@@ -5,19 +5,19 @@
   register: go_version
   tags: ["go", "languages"]
 
+- name: Install go
+  ansible.builtin.unarchive:
+    src: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
+    dest: "/usr/local"
+    creates: "/usr/local/go"
+    remote_src: true
+  become: true
+  #
 # - name: Download go tarball
 #   ansible.builtin.get_url:
 #     url: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
 #     dest: /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
 #   tags: ["go", "languages"]
-
-- name: Install go
-  ansible.builtin.unarchive:
-  src: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
-  dest: "/usr/local"
-  creates: "/usr/local/go"
-  remote_src: true
-  become: true
 
 # - name: Install go
 #   ansible.builtin.shell:
