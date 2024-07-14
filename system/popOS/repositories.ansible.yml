@@ -27,6 +27,8 @@
 
 - name: Clone Dotfiles Repository
   ansible.builtin.git:
+    repo: git@github.com:alikebrahim/dotfiles.git
+    dest: /home/alikebrahim/.dotfiles
     clone: true
     update: true
     force: true
