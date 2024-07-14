@@ -3,6 +3,7 @@
     dest: "{{ dest_key | dirname }}"
     mode: '0o777'
     state: directory
+    owner: alikebrahim
 
 - name: Install ssh key
   ansible.builtin.copy:
