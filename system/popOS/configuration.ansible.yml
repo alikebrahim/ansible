@@ -1,6 +1,14 @@
-- name: Create font dirs
-  ansible.builtin.shell:
-    cmd: mkdir -p /home/alikebrahim/.local/share/fonts/{JuliaMono,JetBrains}
+- name: Create JuliaMono font directory
+  ansible.builtin.file:
+    path: /home/alikebrahim/.local/share/fonts/JuliaMono
+    state: directory
+    mode: '0755'
+
+- name: Create JetBrains font directory
+  ansible.builtin.file:
+    path: /home/alikebrahim/.local/share/fonts/JetBrains
+    state: directory
+    mode: '0755'
 
 # - name: Install JuliaMono font
 #   ansible.builtin.get_url:
