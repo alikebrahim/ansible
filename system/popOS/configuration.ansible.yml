@@ -1,6 +1,6 @@
 - name: Create font dirs
   ansible.builtin.shell:
-  cmd: mkdir -p /home/alikebrahim/.local/share/fonts/{JuliaMono,JetBrains}
+    cmd: mkdir -p /home/alikebrahim/.local/share/fonts/{JuliaMono,JetBrains}
 
 # - name: Install JuliaMono font
 #   ansible.builtin.get_url:
@@ -14,9 +14,9 @@
 
 - name: Install JuliaMono
   ansible.builtin.unarchive:
-  src: 'https://github.com/cormullion/juliamono/releases/download/v0.056/JuliaMono-ttf.tar.gz'
-  dest: "/home/alikebrahim/.local/share/fonts/JuliaMono"
-  remote_src: true
+    src: 'https://github.com/cormullion/juliamono/releases/download/v0.056/JuliaMono-ttf.tar.gz'
+    dest: "/home/alikebrahim/.local/share/fonts/JuliaMono"
+    remote_src: true
 
 # - name: Install JetBrains font
 #   ansible.builtin.get_url:
@@ -30,9 +30,9 @@
 
 - name: Install JetBrains
   ansible.builtin.unarchive:
-  src: 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
-  dest: "/home/alikebrahim/.local/share/fonts/JuliaMono"
-  remote_src: true
+    src: 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
+    dest: "/home/alikebrahim/.local/share/fonts/JuliaMono"
+    remote_src: true
 
 - name: Config Stow
   ansible.builtin.command:
@@ -48,7 +48,8 @@
   register: oh_my_stats
 
 - name: Oh-My-Zsh
-  ansible.bultin.shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+  ansible.builtin.shell:
+    cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
   when: oh_my_stats.stat.exists == False
   become_user: alikebrahim
 
