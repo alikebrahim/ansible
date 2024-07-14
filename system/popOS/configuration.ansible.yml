@@ -48,8 +48,9 @@
     chdir: "/home/alikebrahim/.dotfiles"
 
 - name: Set zsh shell
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: chsh -s $(which zsh)
+
 - name: Checking if oh-my-zsh exists
   stat:
     path: "/home/alikebrahim/.oh-my-zsh"
