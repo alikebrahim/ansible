@@ -21,3 +21,16 @@
     mode: preserve
     owner: alikebrahim
     group: alikebrahim
+
+- name: Add github to nown_hosts file
+  known_hosts:
+    name: github.com
+    key: "{{ lookup('pipe', 'ssh-keyscan -H github.com') }}"
+    path: /home/alikebrahim/.ssh/known_hosts
+    state: present
+
+- name: Start ssh-agent and add ED25519 key
+  ansible.builtin.command:
+    cmd: ssh-agent bash -c 'ssh-add /home/alikebrahim/.ssh/id_ed25519'
+  environment:
+    SSH_AUTH_SOCK: /run/user/1000/ssh-agent.socket
