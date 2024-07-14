@@ -4,8 +4,7 @@
     GOPATH: /home/alikebrahim/go
   ansible.builtin.command:
     cmd: go install {{ item }}
-    args:
-      creates: /home/alikebrahim/go/bin/{{ item.split('/')[-1].split('@')[0] }}
+    creates: /home/alikebrahim/go/bin/{{ item.split('/')[-1].split('@')[0] }}
   loop:
     - github.com/air-verse/air@latest
     - github.com/jesseduffield/lazygit@latest
