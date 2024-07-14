@@ -10,36 +10,16 @@
     state: directory
     mode: '0755'
 
-# - name: Install JuliaMono font
-#   ansible.builtin.get_url:
-#   url: 'https://github.com/cormullion/juliamono/releases/download/v0.056/JuliaMono-ttf.tar.gz'
-#   dest: "/home/alikebrahim/.local/share/fonts/JuliaMono"
-
-# - name: Extract JuliaMono
-#   ansible.builtin.shell:
-#   cmd: tar xvf JuliaMono-ttf.tar.gz
-#   chdir: "/home/alikebrahim/.local/share/fonts/JuliaMono"
-
 - name: Install JuliaMono
   ansible.builtin.unarchive:
     src: 'https://github.com/cormullion/juliamono/releases/download/v0.056/JuliaMono-ttf.tar.gz'
     dest: "/home/alikebrahim/.local/share/fonts/JuliaMono"
     remote_src: true
 
-# - name: Install JetBrains font
-#   ansible.builtin.get_url:
-#   url: 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
-#   dest: "/home/alikebrahim/.local/share/fonts/JetBrains"
-#
-# - name: Extract JetBrains
-#   ansible.builtin.shell:
-#   cmd: unzip JetBrainsMono-2.304.zip .
-#   chdir: "/home/alikebrahim/.local/share/fonts/JetBrains"
-
 - name: Install JetBrains
   ansible.builtin.unarchive:
     src: 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
-    dest: "/home/alikebrahim/.local/share/fonts/JuliaMono"
+    dest: "/home/alikebrahim/.local/share/fonts/JetBrains"
     remote_src: true
 
 - name: Config Stow
@@ -66,20 +46,31 @@
   ansible.builtin.git:
     repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
     dest: "/home/alikebrahim/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    clone: true
+    update: true
+    force: true
+  become_user: alikebrahim
 
 - name: Install zsh-autosuggestions
   ansible.builtin.git:
     repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
     dest: "/home/alikebrahim/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    clone: true
+    update: true
+    force: true
+  become_user: alikebrahim
 
 - name: Set wezterm as default terminal
-  ansible.builtin.command:
+  ansible.builtin.shell:
     cmd: update-alternatives --set x-terminal-emulator /usr/bin/open-wezterm-here
+  become_user: alikebrahim
 
 - name: Update tldr database
   ansible.builtin.command:
     cmd: tldr -u
+  become_user: alikebrahim
 
 - name: Update font cache
   ansible.builtin.command:
     cmd: fc-cache -r
+  become_user: alikebrahim
