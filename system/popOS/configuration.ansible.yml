@@ -49,7 +49,7 @@
 
 - name: Set zsh shell
   ansible.builtin.command:
-    cmd: chsh -a $(which zsh)
+    cmd: chsh -s $(which zsh)
 - name: Checking if oh-my-zsh exists
   stat:
     path: "/home/alikebrahim/.oh-my-zsh"
