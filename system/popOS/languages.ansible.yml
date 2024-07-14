@@ -68,12 +68,13 @@
 - name: Source NVM and Install node
   ansible.builtin.shell:
     cmd: |
-      ". /home/alikebrahim/.nvm/nvm.sh"
+      source /home/alikebrahim/.nvm/nvm.sh
       nvm install node
   environment:
     PROFILE: "/dev/null"
   args:
-    executable: "/bin/bash"
+    executable: /bin/bash
+  become: yes
   become_user: alikebrahim
   tags: ["nvm", "node", "languages"]
 
