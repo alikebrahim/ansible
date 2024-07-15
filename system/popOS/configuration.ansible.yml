@@ -64,7 +64,8 @@
   ansible.builtin.command:
     cmd: update-alternatives --set x-terminal-emulator /usr/bin/open-wezterm-here
   become: true
-  become_user: alikebrahim
+  become_method: sudo
+  # become_user: alikebrahim
 
 - name: Update tldr database
   ansible.builtin.command:
