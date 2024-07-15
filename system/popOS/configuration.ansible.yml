@@ -61,7 +61,7 @@
   become_user: alikebrahim
 
 - name: Set wezterm as default terminal
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: update-alternatives --set x-terminal-emulator /usr/bin/open-wezterm-here
   become: true
   become_user: alikebrahim
