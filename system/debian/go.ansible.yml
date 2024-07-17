@@ -1,0 +1,11 @@
+- name: Installing go packages
+  environment:
+    PATH: /usr/local/go/bin:{{ ansible_env.PATH }}
+    GOPATH: /home/alikebrahim/go
+  ansible.builtin.command:
+    cmd: go install {{ item }}
+    creates: /home/alikebrahim/go/bin/{{ item.split('/')[-1].split('@')[0] }}
+  loop:
+    - github.com/air-verse/air@latest
+    - github.com/jesseduffield/lazygit@latest
+    - github.com/go-delve/delve/cmd/dlv@latest

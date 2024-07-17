@@ -1,0 +1,53 @@
+- name: Clone neovim Repository
+  ansible.builtin.git:
+    repo: https://github.com/neovim/neovim
+    dest: /home/alikebrahim/.neovim
+    clone: true
+    update: true
+    force: true
+  become_user: alikebrahim
+
+- name: Clone Tmux Repository
+  ansible.builtin.git:
+    repo: https://github.com/tmux/tmux.git
+    dest: /home/alikebrahim/.tmux
+    clone: true
+    update: true
+    force: true
+  become_user: alikebrahim
+
+- name: Clone Btop Repository
+  ansible.builtin.git:
+    repo: https://github.com/aristocratos/btop.git
+    dest: /home/alikebrahim/.btop
+    clone: true
+    update: true
+    force: true
+  become_user: alikebrahim
+
+- name: Clone Dotfiles Repository
+  ansible.builtin.git:
+    repo: git@github.com:alikebrahim/dotfiles.git
+    dest: /home/alikebrahim/.dotfiles
+    clone: true
+    update: true
+    force: true
+  become_user: alikebrahim
+
+- name: Clone Obsidian Repository
+  ansible.builtin.git:
+    repo: git@github.com:alikebrahim/obsidian-silo.git
+    dest: /home/alikebrahim/Documents/obsidian
+    clone: true
+    update: true
+    force: true
+  become_user: alikebrahim
+
+- name: Clone books Repository
+  ansible.builtin.git:
+    repo: git@github.com:alikebrahim/books.git
+    dest: /home/alikebrahim/Documents/obsidian
+    clone: true
+    update: true
+    force: true
+  become_user: alikebrahim
