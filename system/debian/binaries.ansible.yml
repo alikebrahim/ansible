@@ -22,3 +22,16 @@
   become_user: alikebrahim
   become: true
   tags: ["obsidian", "productivity"]
+
+
+# - name: Download chrome
+#   ansible.builtin.uri:
+#     url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+#     dest: "/home/alikebrahim/chrome"
+#     mode: '0o755'
+#     creates: "/home/alikebrahim/chrome"
+#   tags: ["obsidian", "productivity"]
+
+- name: Install chrome
+  ansible.builtin.apt:
+    deb: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
