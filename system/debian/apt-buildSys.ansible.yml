@@ -16,3 +16,5 @@
     - libncurses-dev
     - ffmpeg
     - libfuse2
+    - automake
+    - pkg-config
