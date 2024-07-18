@@ -40,12 +40,6 @@
   become_user: alikebrahim
 
 - name: Install chrome
-  ansible.builtin.debug:
-    var: chrome_download
-  become_user: true
-
-
-# - name: Install chrome
-#   ansible.builtin.shell:
-#     cmd: apt install /tmp/chrome.deb
-#   become: true
+  ansible.builtin.shell:
+    cmd: apt install -y "{{ chrome_download.dest }}"
+  become: true
