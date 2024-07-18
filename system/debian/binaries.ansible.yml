@@ -35,10 +35,10 @@
 - name: Download chrome
   ansible.builtin.get_url:
     url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-    dest: "/tmp/chrome"
+    dest: "/tmp/chrome.deb"
   become: true
 
 - name: Install chrome
   ansible.builtin.command:
-    cmd: apt install /tmp/chrome
+    cmd: apt install /tmp/chrome.deb
   become: true
