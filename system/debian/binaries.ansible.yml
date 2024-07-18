@@ -32,6 +32,13 @@
 #     creates: "/home/alikebrahim/chrome"
 #   tags: ["obsidian", "productivity"]
 
+- name: Download chrome
+  ansible.builtin.get_url:
+    url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+    dest: "/tmp/chrome"
+  become: true
+
 - name: Install chrome
-  ansible.builtin.apt:
-    deb: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+  ansible.builtin.command:
+    cmd: apt install /tmp/chrome
+  become: true
