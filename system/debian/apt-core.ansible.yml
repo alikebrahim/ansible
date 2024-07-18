@@ -8,3 +8,4 @@
     - jq
     - gpg
     - wget
+    - libglib2.0-0
