@@ -36,6 +36,11 @@
     path: "/home/alikebrahim/.oh-my-zsh"
   register: oh_my_stats
 
+- name: fzf install
+  ansible.builtin.shell:
+    cmd: /home/alikebrahim/.fzf/install --bin
+  become_user: alikebrahim
+
 - name: Oh-My-Zsh
   ansible.builtin.shell:
     cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
