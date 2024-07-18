@@ -3,8 +3,6 @@
   vars:
       source_key: "./.ssh/id_ed25519"
       dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
-  vars_files:
-      - vault.yml
   become: true
   tasks:
       - name: Configure Ansible User

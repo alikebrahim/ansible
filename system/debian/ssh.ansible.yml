@@ -33,10 +33,3 @@
   ansible.builtin.shell:
     cmd: eval "$(ssh-agent -s)"
   register: ssh_agent
-
-- name: Add SSH key to agent
-  ansible.builtin.shell:
-    cmd: ssh-add /path/to/your/ssh_key <<< "{{ vault_ssh_key_passphrase }}"
-  environment:
-    SSH_AUTH_SOCK: "{{ ssh_agent.stdout_lines[-1] | regex_search('(?<=SSH_AUTH_SOCK=)([^;]+)', '\\1') }}"
-  no_log: true
