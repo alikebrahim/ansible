@@ -37,7 +37,7 @@
     url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
     dest: "/home/alikebrahim/"
   register: chrome_download
-  become_user: true
+  become_user: alikebrahim
 
 - name: Install chrome
   ansible.builtin.debug:
