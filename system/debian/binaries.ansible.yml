@@ -41,7 +41,7 @@
 
 - name: Install chrome
   ansible.builtin.debug:
-    msg: chrome_download
+    var: chrome_download
   become_user: true
 
 
