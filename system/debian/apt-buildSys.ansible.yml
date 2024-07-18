@@ -14,7 +14,7 @@
     - yacc
     - libevent-dev
     - libncurses-dev
-    - ffmpeg
+    # - ffmpeg
     - libfuse2
     - automake
     - pkg-config
