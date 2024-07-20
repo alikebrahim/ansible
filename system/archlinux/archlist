@@ -16,6 +16,9 @@ wireplumber
 openssh
 man
 sudo
+curl
+jq
+wget
 reflector
 timeshift
 git
