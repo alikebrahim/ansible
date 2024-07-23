@@ -29,36 +29,37 @@
 
 - name: Set zsh shell
   ansible.builtin.shell:
-    cmd: chsh -s $(which zsh)
+    cmd: chsh -s $(which zsh) alikebrahim
+  become: true
 
-- name: Checking if oh-my-zsh exists
-  stat:
-    path: "/home/alikebrahim/.oh-my-zsh"
-  register: oh_my_stats
+# - name: Checking if oh-my-zsh exists
+#   stat:
+#     path: "/home/alikebrahim/.oh-my-zsh"
+#   register: oh_my_stats
 
-- name: Oh-My-Zsh
-  ansible.builtin.shell:
-    cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
-  when: oh_my_stats.stat.exists == False
-  become_user: alikebrahim
+# - name: Oh-My-Zsh
+#   ansible.builtin.shell:
+#     cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+#   when: oh_my_stats.stat.exists == False
+#   become_user: alikebrahim
 
-- name: Install zsh-syntax-highlightinh
-  ansible.builtin.git:
-    repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
-    dest: "/home/alikebrahim/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-    clone: true
-    update: true
-    force: true
-  become_user: alikebrahim
+# - name: Install zsh-syntax-highlightinh
+#   ansible.builtin.git:
+#     repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+#     dest: "/home/alikebrahim/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+#     clone: true
+#     update: true
+#     force: true
+#   become_user: alikebrahim
 
-- name: Install zsh-autosuggestions
-  ansible.builtin.git:
-    repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
-    dest: "/home/alikebrahim/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-    clone: true
-    update: true
-    force: true
-  become_user: alikebrahim
+# - name: Install zsh-autosuggestions
+#   ansible.builtin.git:
+#     repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
+#     dest: "/home/alikebrahim/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+#     clone: true
+#     update: true
+#     force: true
+#   become_user: alikebrahim
 
 - name: Set wezterm as default terminal
   ansible.builtin.command:
