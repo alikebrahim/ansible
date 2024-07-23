@@ -39,3 +39,9 @@
   become: true
   when: btop_src_dir.stat.exists
   # become_user: alikebrahim
+
+# fzf
+- name: fzf install
+  ansible.builtin.shell:
+    cmd: /home/alikebrahim/.fzf/install --bin
+  become_user: alikebrahim

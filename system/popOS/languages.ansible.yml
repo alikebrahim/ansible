@@ -12,18 +12,7 @@
     creates: "/usr/local/go/"
     remote_src: true
   become: true
-  #
-# - name: Download go tarball
-#   ansible.builtin.get_url:
-#     url: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
-#     dest: /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
-#   tags: ["go", "languages"]
-
-# - name: Install go
-#   ansible.builtin.shell:
-#     cmd: rm -rf /usr/local/go && tar -C /usr/local -xzf /tmp/{{ go_version.stdout }}.linux-amd64.tar.gz
-#   become: true
-#   tags: ["go", "languages"]
+  tags: ["go", "languages"]
 
 - name: Create go directories
   ansible.builtin.file:
@@ -85,16 +74,6 @@
   become: true
   become_user: alikebrahim
   tags: ["nvm", "node", "languages"]
-
-# - name: Install node
-#   ansible.builtin.shell:
-#     cmd: "nvm install node"
-#   args:
-#     executable: "/bin/bash"
-#   become_user: alikebrahim
-#   # become: yes
-#   when: ansible_env.HOME is defined
-#   tags: ["nvm", "node", "languages"]
 
 # pyenv
 - name: Install pyenv
