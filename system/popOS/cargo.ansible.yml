@@ -2,7 +2,7 @@
   community.general.cargo:
     executable: /home/alikebrahim/.cargo/bin/cargo
     # path: /home/alikebrahim/.cargo
-    name: {{ item }}
+    name: "{{ item }}"
   loop:
   - git-delta
   - ripgrep
