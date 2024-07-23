@@ -44,4 +44,4 @@
 - name: fzf install
   ansible.builtin.shell:
     cmd: /home/alikebrahim/.fzf/install --bin
-  become_user: alikebrahim
+  become: true
