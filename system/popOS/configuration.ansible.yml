@@ -24,7 +24,7 @@
 
 - name: Config Stow
   ansible.builtin.command:
-    cmd: stow zsh nvim fzf tmux wezterm obsidian atuin
+    cmd: stow -t ~ -d 'Pop!_OS' *
     chdir: "/home/alikebrahim/.dotfiles"
 
 - name: Set zsh shell
