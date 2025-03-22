@@ -1,0 +1,14 @@
+---
+# Shell configuration tasks - common across all distributions
+
+- name: Set zsh as default shell
+  ansible.builtin.shell:
+    cmd: chsh -s $(which zsh) {{ ansible_user_id }}
+  become: true
+  tags: [shell, zsh]
+
+- name: Update tldr database
+  ansible.builtin.command:
+    cmd: tldr -u
+  become_user: "{{ ansible_user_id }}"
+  tags: [shell, documentation]

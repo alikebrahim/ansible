@@ -1,0 +1,6 @@
+---
+# Debian specific variables
+
+# Dotfiles configuration
+dotfiles_path: '/home/alikebrahim/.dotfiles'
+dotfiles_packages: '*'  # All packages in the dotfiles directory

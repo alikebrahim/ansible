@@ -1,0 +1,32 @@
+---
+# Font installation tasks - common across all distributions
+
+- name: Create JuliaMono font directory
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.local/share/fonts/JuliaMono"
+    state: directory
+    mode: '0755'
+
+- name: Create JetBrains font directory
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.local/share/fonts/JetBrains"
+    state: directory
+    mode: '0755'
+
+- name: Install JuliaMono
+  ansible.builtin.unarchive:
+    src: 'https://github.com/cormullion/juliamono/releases/download/v0.056/JuliaMono-ttf.tar.gz'
+    dest: "{{ lookup('env', 'HOME') }}/.local/share/fonts/JuliaMono"
+    remote_src: true
+
+- name: Install JetBrains
+  ansible.builtin.unarchive:
+    src: 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
+    dest: "{{ lookup('env', 'HOME') }}/.local/share/fonts/JetBrains"
+    remote_src: true
+
+- name: Update font cache
+  ansible.builtin.command:
+    cmd: fc-cache -r
+  become_user: "{{ ansible_user_id }}"
+  tags: [fonts, ui]

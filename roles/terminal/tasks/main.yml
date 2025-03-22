@@ -1,0 +1,9 @@
+---
+# Terminal configuration tasks - common across all distributions
+
+- name: Set wezterm as default terminal
+  ansible.builtin.command:
+    cmd: update-alternatives --set x-terminal-emulator /usr/bin/open-wezterm-here
+  become: true
+  become_method: sudo
+  tags: [terminal, ui]

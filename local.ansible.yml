@@ -4,56 +4,96 @@
       source_key: "./.ssh/id_ed25519"
       dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
   become: true
+  pre_tasks:
+    - name: Set OS-specific variables
+      ansible.builtin.include_vars: "{{ item }}"
+      with_first_found:
+        - "vars/{{ ansible_distribution | lower }}.yml"
+        - "vars/popos.yml"  # Default to PopOS if no specific match
+      tags: [always]
+      
   tasks:
 #     - name: Configure Ansible User
-#       ansible.builtin.include_tasks: system/popOS/user.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/user.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
 #
 #     - name: Configure ssh keys
-#       ansible.builtin.include_tasks: system/popOS/ssh.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/ssh.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
 #
 #     - name: "APT: Core Packages"
-#       ansible.builtin.include_tasks: system/popOS/apt-core.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-core.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [packages, core]
 #
 #     - name: "APT: Repositories"
-#       ansible.builtin.include_tasks: system/popOS/apt-repositories.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-repositories.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [packages, repositories]
 #
 #     - name: "APT: Build System Packages"
-#       ansible.builtin.include_tasks: system/popOS/apt-buildSys.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-buildSys.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [packages, build]
 #
 #     - name: "APT: Application Packages"
-#       ansible.builtin.include_tasks: system/popOS/apt-apps.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-apps.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [packages, apps]
 #
 #     - name: Install Binaries and AppImages
-#       ansible.builtin.include_tasks: system/popOS/binaries.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/binaries.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [binaries]
 #
 #     - name: Install Programming Languages
-#       ansible.builtin.include_tasks: system/popOS/languages.ansible.yml
-#       tags: ["go", "rust", "node", "nvim", "languages"]
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/languages.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [languages, go, rust, node, nvim]
 #
 #     - name: Install Cargo Packages
-#       ansible.builtin.include_tasks: system/popOS/cargo.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/cargo.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [packages, cargo, rust]
 #
 #     - name: Install Go Packages
-#       ansible.builtin.include_tasks: system/popOS/go.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/go.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [packages, go]
 #
 #     - name: Clone Repositories
-#       ansible.builtin.include_tasks: system/popOS/repositories.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/repositories.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [repositories]
 #
 #     - name: Build Applications
-#       ansible.builtin.include_tasks: system/popOS/build.ansible.yml
-#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/build.ansible.yml
+#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+#       tags: [build]
 #
-      - name: System Configration
-        ansible.builtin.include_tasks: system/popOS/configuration.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
+      # Role-based common configuration
+      - name: Install and configure fonts
+        ansible.builtin.include_role:
+          name: fonts
+        tags: [fonts, ui]
+
+      - name: Configure shell
+        ansible.builtin.include_role:
+          name: shell
+        tags: [shell]
+
+      - name: Configure terminal
+        ansible.builtin.include_role:
+          name: terminal
+        tags: [terminal, ui]
+
+      - name: Configure dotfiles
+        ansible.builtin.include_role:
+          name: dotfiles
+        tags: [dotfiles, config]
+
+      # Distribution-specific configuration
+      - name: System Configuration
+        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/configuration.ansible.yml
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        tags: [config]

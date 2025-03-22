@@ -1,0 +1,7 @@
+---
+# Stow configuration for dotfiles - uses variables for distro-specific settings
+
+- name: Config Stow
+  ansible.builtin.command:
+    cmd: stow -t ~ -d '{{ dotfiles_path }}' {{ dotfiles_packages | join(' ') }}
+  tags: [dotfiles, config]
