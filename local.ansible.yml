@@ -5,6 +5,13 @@
       dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
   become: true
   pre_tasks:
+    - name: Install required Ansible collections
+      ansible.builtin.command: ansible-galaxy collection install community.general
+      register: collection_install
+      changed_when: "'Installing' in collection_install.stdout"
+      failed_when: collection_install.rc != 0
+      tags: [always]
+      
     - name: Set OS-specific variables
       ansible.builtin.include_vars: "{{ item }}"
       with_first_found:
@@ -15,60 +22,68 @@
   tasks:
       - name: Configure Ansible User
         ansible.builtin.include_tasks: system/Pop_OS/user.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
 
       - name: Configure ssh keys
         ansible.builtin.include_tasks: system/Pop_OS/ssh.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
 #
       - name: "APT: Core Packages"
         ansible.builtin.include_tasks: system/Pop_OS/apt-core.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [packages, core]
 
       - name: "APT: Repositories"
         ansible.builtin.include_tasks: system/Pop_OS/apt-repositories.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [packages, repositories]
 
       - name: "APT: Build System Packages"
         ansible.builtin.include_tasks: system/Pop_OS/apt-buildSys.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [packages, build]
 
       - name: "APT: Application Packages"
         ansible.builtin.include_tasks: system/Pop_OS/apt-apps.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [packages, apps]
 #
       - name: Install Binaries and AppImages
         ansible.builtin.include_tasks: system/Pop_OS/binaries.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [binaries]
 
       - name: Install Programming Languages
         ansible.builtin.include_tasks: system/Pop_OS/languages.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [languages, go, rust, node, nvim]
+        
+      - name: Install uv Python Manager
+        ansible.builtin.shell: curl -LsSf https://astral.sh/uv/install.sh | sh
+        args:
+          creates: "/home/{{ ansible_user_id }}/.cargo/bin/uv"
+        become: false
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
+        tags: [languages, python]
 
       - name: Install Cargo Packages
         ansible.builtin.include_tasks: system/Pop_OS/cargo.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [packages, cargo, rust]
 
       - name: Install Go Packages
         ansible.builtin.include_tasks: system/Pop_OS/go.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [packages, go]
 #
       - name: Clone Repositories
         ansible.builtin.include_tasks: system/Pop_OS/repositories.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [repositories]
 #
       - name: Build Applications
         ansible.builtin.include_tasks: system/Pop_OS/build.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [build]
 #
       # Role-based common configuration
@@ -95,5 +110,5 @@
       # Distribution-specific configuration
       - name: System Configuration
         ansible.builtin.include_tasks: system/Pop_OS/configuration.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
+        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [config]
