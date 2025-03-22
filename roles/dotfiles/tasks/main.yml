@@ -1,7 +1,57 @@
 ---
 # Stow configuration for dotfiles - uses variables for distro-specific settings
 
+- name: Check if stow is installed
+  ansible.builtin.command:
+    cmd: which stow
+  register: stow_check
+  changed_when: false
+  failed_when: false
+  tags: [dotfiles, config]
+
+- name: Display stow availability
+  ansible.builtin.debug:
+    msg: "Stow availability: {{ 'installed' if stow_check.rc == 0 else 'not found' }}"
+  tags: [dotfiles, config]
+
+- name: Install stow if missing
+  ansible.builtin.apt:
+    name: stow
+    state: present
+  when: stow_check.rc != 0
+  register: stow_install
+  tags: [dotfiles, config]
+
+- name: Check if dotfiles directory exists
+  ansible.builtin.stat:
+    path: "{{ dotfiles_path }}"
+  register: dotfiles_dir_check
+  tags: [dotfiles, config]
+
+- name: Display dotfiles directory status
+  ansible.builtin.debug:
+    msg: "Dotfiles directory: {{ 'found at ' + dotfiles_path if dotfiles_dir_check.stat.exists else 'not found at ' + dotfiles_path }}"
+  tags: [dotfiles, config]
+
+- name: List packages to be stowed
+  ansible.builtin.debug:
+    msg: "Configuring dotfiles packages: {{ dotfiles_packages | join(', ') }}"
+  tags: [dotfiles, config]
+
 - name: Config Stow
   ansible.builtin.command:
     cmd: stow -t ~ -d '{{ dotfiles_path }}' {{ dotfiles_packages | join(' ') }}
+  register: stow_result
+  when: dotfiles_dir_check.stat.exists and (stow_check.rc == 0 or stow_install is defined)
+  failed_when: false
+  changed_when: stow_result.rc == 0
+  tags: [dotfiles, config]
+
+- name: Display stow configuration status
+  ansible.builtin.debug:
+    msg: >-
+      Stow configuration: {{ 
+      'successful' if dotfiles_dir_check.stat.exists and stow_result.rc == 0 
+      else 'failed (missing directory or error)' 
+      }}
   tags: [dotfiles, config]
