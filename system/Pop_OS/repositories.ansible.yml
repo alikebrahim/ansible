@@ -35,21 +35,6 @@
     depth: 1
   become_user: alikebrahim
 
-- name: Clone Dotfiles Repository
-  ansible.builtin.git:
-    repo: git@github.com:alikebrahim/dotfiles.git
-    dest: /home/alikebrahim/.dotfiles
-    clone: true
-    update: true
-    force: true
-  become_user: alikebrahim
-
-- name: Configure dotfiles with stow
-  ansible.builtin.command:
-    cmd: stow nvim wezterm zsh fzf
-    chdir: /home/alikebrahim/.dotfiles
-  become_user: alikebrahim
-  tags: [dotfiles, config]
 
 - name: Clone Obsidian Repository
   ansible.builtin.git:
@@ -63,7 +48,7 @@
 - name: Clone books Repository
   ansible.builtin.git:
     repo: git@github.com:alikebrahim/books.git
-    dest: /home/alikebrahim/Documents/obsidian
+    dest: /home/alikebrahim/Documents/books
     clone: true
     update: true
     force: true
