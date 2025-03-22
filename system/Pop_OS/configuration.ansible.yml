@@ -22,10 +22,10 @@
     dest: "/home/alikebrahim/.local/share/fonts/JetBrains"
     remote_src: true
 
-- name: Config Stow
-  ansible.builtin.command:
-    cmd: stow -t ~ -d '/home/alikebrahim/.dotfiles/' zsh nvim fzf tmux wezterm obsidian atuin
-    # chdir: "/home/alikebrahim/.dotfiles"
+# - name: Config Stow
+#   ansible.builtin.command:
+#     cmd: stow -t ~ -d '/home/alikebrahim/.dotfiles/' zsh nvim fzf tmux wezterm obsidian atuin
+#     # chdir: "/home/alikebrahim/.dotfiles"
 
 - name: Set zsh shell
   ansible.builtin.shell:

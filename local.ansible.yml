@@ -80,6 +80,11 @@
         ansible.builtin.include_tasks: system/Pop_OS/repositories.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Ubuntu" or ansible_facts['distribution'] == "Debian"
         tags: [repositories]
+
+      - name: Configure dotfiles
+        ansible.builtin.include_role:
+          name: dotfiles
+        tags: [dotfiles, config]
 #
       - name: Build Applications
         ansible.builtin.include_tasks: system/Pop_OS/build.ansible.yml
@@ -101,11 +106,6 @@
         ansible.builtin.include_role:
           name: terminal
         tags: [terminal, ui]
-
-      - name: Configure dotfiles
-        ansible.builtin.include_role:
-          name: dotfiles
-        tags: [dotfiles, config]
 
       # Distribution-specific configuration
       - name: System Configuration
