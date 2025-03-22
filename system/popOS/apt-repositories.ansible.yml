@@ -1,7 +1,3 @@
-- name: Add git ppa
-  ansible.builtin.apt_repository:
-    repo: ppa:git-core/ppa
-
 - name: Create directory for Docker keyrings
   ansible.builtin.file:
     path: /etc/apt/keyrings

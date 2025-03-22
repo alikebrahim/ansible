@@ -5,55 +5,55 @@
       dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
   become: true
   tasks:
-      - name: Configure Ansible User
-        ansible.builtin.include_tasks: system/popOS/user.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: Configure ssh keys
-        ansible.builtin.include_tasks: system/popOS/ssh.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: "APT: Core Packages"
-        ansible.builtin.include_tasks: system/popOS/apt-core.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: "APT: Repositories"
-        ansible.builtin.include_tasks: system/popOS/apt-repositories.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: "APT: Build System Packages"
-        ansible.builtin.include_tasks: system/popOS/apt-buildSys.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: "APT: Application Packages"
-        ansible.builtin.include_tasks: system/popOS/apt-apps.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: Install Binaries and AppImages
-        ansible.builtin.include_tasks: system/popOS/binaries.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: Install Programming Languages
-        ansible.builtin.include_tasks: system/popOS/languages.ansible.yml
-        tags: ["go", "rust", "node", "nvim", "languages"]
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: Install Cargo Packages
-        ansible.builtin.include_tasks: system/popOS/cargo.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: Install Go Packages
-        ansible.builtin.include_tasks: system/popOS/go.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: Clone Repositories
-        ansible.builtin.include_tasks: system/popOS/repositories.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
-      - name: Build Applications
-        ansible.builtin.include_tasks: system/popOS/build.ansible.yml
-        # when: ansible_facts['distribution'] == "Pop!_OS"
-
+#     - name: Configure Ansible User
+#       ansible.builtin.include_tasks: system/popOS/user.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: Configure ssh keys
+#       ansible.builtin.include_tasks: system/popOS/ssh.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: "APT: Core Packages"
+#       ansible.builtin.include_tasks: system/popOS/apt-core.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: "APT: Repositories"
+#       ansible.builtin.include_tasks: system/popOS/apt-repositories.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: "APT: Build System Packages"
+#       ansible.builtin.include_tasks: system/popOS/apt-buildSys.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: "APT: Application Packages"
+#       ansible.builtin.include_tasks: system/popOS/apt-apps.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: Install Binaries and AppImages
+#       ansible.builtin.include_tasks: system/popOS/binaries.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: Install Programming Languages
+#       ansible.builtin.include_tasks: system/popOS/languages.ansible.yml
+#       tags: ["go", "rust", "node", "nvim", "languages"]
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: Install Cargo Packages
+#       ansible.builtin.include_tasks: system/popOS/cargo.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: Install Go Packages
+#       ansible.builtin.include_tasks: system/popOS/go.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: Clone Repositories
+#       ansible.builtin.include_tasks: system/popOS/repositories.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
+#     - name: Build Applications
+#       ansible.builtin.include_tasks: system/popOS/build.ansible.yml
+#       # when: ansible_facts['distribution'] == "Pop!_OS"
+#
       - name: System Configration
         ansible.builtin.include_tasks: system/popOS/configuration.ansible.yml
         # when: ansible_facts['distribution'] == "Pop!_OS"
