@@ -94,6 +94,6 @@
 
       # Distribution-specific configuration
       - name: System Configuration
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/configuration.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/configuration.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [config]
