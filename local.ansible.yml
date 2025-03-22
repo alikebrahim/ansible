@@ -14,60 +14,60 @@
       
   tasks:
       - name: Configure Ansible User
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/user.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/user.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
 
       - name: Configure ssh keys
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/ssh.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/ssh.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
 #
       - name: "APT: Core Packages"
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-core.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/apt-core.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [packages, core]
 
       - name: "APT: Repositories"
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-repositories.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/apt-repositories.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [packages, repositories]
 
       - name: "APT: Build System Packages"
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-buildSys.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/apt-buildSys.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [packages, build]
 
       - name: "APT: Application Packages"
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-apps.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/apt-apps.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [packages, apps]
 #
       - name: Install Binaries and AppImages
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/binaries.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/binaries.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [binaries]
 
       - name: Install Programming Languages
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/languages.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/languages.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [languages, go, rust, node, nvim]
 
       - name: Install Cargo Packages
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/cargo.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/cargo.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [packages, cargo, rust]
 
       - name: Install Go Packages
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/go.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/go.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [packages, go]
 #
       - name: Clone Repositories
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/repositories.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/repositories.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [repositories]
 #
       - name: Build Applications
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/build.ansible.yml
+        ansible.builtin.include_tasks: system/Pop_OS/build.ansible.yml
         when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
         tags: [build]
 #
