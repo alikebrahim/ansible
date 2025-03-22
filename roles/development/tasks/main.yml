@@ -1,0 +1,62 @@
+---
+# Development tools setup
+
+- name: Download GitHub CLI GPG key
+  ansible.builtin.get_url:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    dest: /etc/apt/keyrings/githubcli-archive-keyring.gpg
+    mode: '0644'
+  tags: [repositories]
+
+- name: Add GitHub CLI repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+    filename: github-cli
+    state: present
+    update_cache: yes
+  become: yes
+  tags: [repositories]
+
+- name: Install GitHub CLI
+  ansible.builtin.apt:
+    name: gh
+    state: present
+  tags: [packages]
+
+# Include languages tasks first so Node.js is installed before checking
+- name: Include languages tasks
+  ansible.builtin.include_tasks: languages.yml
+  tags: [languages]
+
+- name: Check if Node.js is installed
+  ansible.builtin.command: node --version
+  register: node_version
+  ignore_errors: true
+  changed_when: false
+  tags: [languages, node]
+
+- name: Install Claude-Code
+  ansible.builtin.command:
+    cmd: npm install -g @anthropic-ai/claude-code
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_home }}/.nvm/versions/node/v*/bin"
+  register: claude_install
+  when: node_version is defined and node_version.rc == 0
+  become: false
+  tags: [languages]
+
+# Include repositories tasks
+- name: Include repositories tasks
+  ansible.builtin.include_tasks: repositories.yml
+  tags: [repositories]
+
+# Include build tasks
+- name: Include build tasks
+  ansible.builtin.include_tasks: build.yml
+  tags: [build]
+
+
+# Include GitHub configuration tasks
+- name: Include GitHub configuration tasks
+  ansible.builtin.include_tasks: github.yml
+  tags: [github, development]

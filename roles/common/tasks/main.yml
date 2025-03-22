@@ -1,0 +1,107 @@
+---
+# Common tasks across all distributions
+
+# Include SSH setup tasks
+- name: Include SSH setup
+  ansible.builtin.include_tasks: ssh.yml
+  tags: [ssh, security]
+
+- name: Check if Tailscale is installed
+  ansible.builtin.command: tailscale version
+  register: tailscale_version
+  ignore_errors: true
+  changed_when: false
+  tags: [system]
+
+- name: Install Tailscale
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://tailscale.com/install.sh | sh
+  when: tailscale_version.rc != 0
+  tags: [system]
+
+- name: Create directory for apt keyrings
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  tags: [repositories]
+
+- name: Download 1Password GPG key
+  ansible.builtin.get_url:
+    url: https://downloads.1password.com/linux/keys/1password.asc
+    dest: /tmp/1password.asc
+    mode: '0644'
+  tags: [repositories]
+
+- name: Convert GPG key to binary format for APT keyring
+  ansible.builtin.command:
+    cmd: gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg /tmp/1password.asc
+  become: yes
+  args:
+    creates: /usr/share/keyrings/1password-archive-keyring.gpg
+  tags: [repositories]
+
+- name: Add 1Password APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main"
+    filename: 1password
+    state: present
+  become: yes
+  tags: [repositories]
+
+- name: Ensure debsig policies directory exists
+  ansible.builtin.file:
+    path: /etc/debsig/policies/AC2D62742012EA22
+    state: directory
+    mode: '0755'
+  become: yes
+  tags: [repositories]
+
+- name: Download 1Password debsig policy
+  ansible.builtin.get_url:
+    url: https://downloads.1password.com/linux/debian/debsig/1password.pol
+    dest: /etc/debsig/policies/AC2D62742012EA22/1password.pol
+    mode: '0644'
+  become: yes
+  tags: [repositories]
+
+- name: Ensure debsig keyrings directory exists
+  ansible.builtin.file:
+    path: /usr/share/debsig/keyrings/AC2D62742012EA22
+    state: directory
+    mode: '0755'
+  become: yes
+  tags: [repositories]
+
+- name: Convert GPG key to binary format for debsig
+  ansible.builtin.command:
+    cmd: gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg /tmp/1password.asc
+  become: yes
+  args:
+    creates: /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+  tags: [repositories]
+
+- name: Update APT cache
+  ansible.builtin.apt:
+    update_cache: yes
+  become: yes
+  register: apt_update_result
+  retries: 5
+  delay: 10
+  until: apt_update_result is success
+  tags: [repositories]
+
+- name: Install 1Password CLI
+  ansible.builtin.apt:
+    name: 1password-cli
+    state: present
+  become: yes
+  tags: [packages]
+
+- name: Configure sudoers with template
+  ansible.builtin.template:
+    src: sudoers_ansible.j2
+    dest: /etc/sudoers.d/ansible
+    mode: '0440'
+    validate: 'visudo -cf %s'
+  tags: [security]

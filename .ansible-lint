@@ -1,0 +1,35 @@
+---
+# Configuration for ansible-lint
+
+# Path to Python packages that comprise ansible
+ansible_installation_error_code: 0
+
+# List of ruleset files to check against
+rulesdir:
+  - ~/.ansible/ansible-lint-rules/
+
+# List of rules to skip (deprecations, experimental, etc.)
+skip_list:
+  - 'yaml'  # Ignore YAML formatting
+  - 'role-name'  # Ignore role name requirements
+  - 'command-instead-of-shell'  # Allow shell when needed
+  - 'no-changed-when'  # We'll handle changed_when case by case
+  - 'unnamed-task'  # Sometimes not all tasks need names
+
+# For future enhancements
+warn_list:
+  - 'experimental'  # Report rules that are in experimental state
+  - 'yaml[truthy]'  # Booleans should be true/false not yes/no
+
+# File and directory exclusions
+exclude_paths:
+  - .git/
+  - .github/
+  - .vscode/
+  - vault/
+  - molecule/
+  - .cache/
+  - .ansible/
+
+# Usage - run from playbook directory:
+# ansible-lint local.ansible.yml

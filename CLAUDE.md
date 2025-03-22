@@ -1,24 +1,25 @@
-# Ansible Configuration Guidelines
+# ANSIBLE AUTOMATION GUIDELINES
 
-## Commands
+## COMMANDS
 - Run playbook: `ansible-playbook local.ansible.yml`
-- Run specific tasks: `ansible-playbook local.ansible.yml --tags "go,rust,node"`
-- Check mode (dry run): `ansible-playbook local.ansible.yml --check`
-- Syntax check: `ansible-playbook --syntax-check local.ansible.yml`
-- Lint: `ansible-lint local.ansible.yml`
+- Run specific role: `ansible-playbook local.ansible.yml --tags "common"`
+- Skip tasks: `ansible-playbook local.ansible.yml --skip-tags "packages"`
+- Lint code: `ansible-lint local.ansible.yml`
+- Run molecule tests: `cd roles/ROLE && molecule test`
+- Test single role: `cd roles/ROLE && molecule converge -- --tags=ssh`
 
-## Style Guidelines
-- **Task naming**: Use clear, descriptive names starting with a verb
-- **Indentation**: Two spaces for all YAML files
-- **Variables**: Use snake_case for variable names
-- **Path handling**: Use `{{ lookup('env', 'HOME') }}` for home directory
-- **Tags**: Add tags to tasks for selective execution
-- **Comments**: Document non-obvious tasks or conditional logic
-- **Task files**: Organize by function (core, apps, languages)
-- **Distribution-specific**: Use separate directories for different OS distributions
-- **Error handling**: Use `ignore_errors` sparingly, prefer `failed_when`
+## STYLE GUIDELINES
+- **YAML**: 2-space indentation, always use `---` at file start
+- **Task naming**: Use descriptive task names, start with verb (Install, Configure, etc.)
+- **Modules**: Use fully qualified module names (ansible.builtin.*)
+- **Variables**: Use snake_case for variables, all lowercase
+- **Tags**: Apply tags to all tasks for selective execution
+- **Error handling**: Use ignore_errors, failed_when, and changed_when appropriately
+- **Role organization**: Follow standard role structure (tasks/, vars/, meta/)
+- **Conditionals**: Prefer when: over separate tasks with conditionals when possible
+- **Comments**: Add comments for complex logic or unusual code
 
-## Repository Organization
-- System-specific configurations in system/ directory
-- Group tasks by function rather than distribution
-- Use fully qualified module names (ansible.builtin.*)
+## BEST PRACTICES
+- Check tasks with `--check` and `--diff` before applying to system
+- Use molecule for role testing
+- Use ansible-lint to enforce code quality

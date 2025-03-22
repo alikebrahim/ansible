@@ -1,0 +1,50 @@
+---
+# SSH setup and configuration
+
+- name: Ensure .ssh directory exists with correct ownership
+  ansible.builtin.file:
+    path: "{{ ansible_user_home }}/.ssh"
+    state: directory
+    mode: '0700'
+    owner: "{{ ansible_user_real }}"
+    group: "{{ ansible_user_real }}"
+  become: true
+  tags: [ssh, security]
+
+- name: Install SSH private key
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/.ssh/id_ed25519"
+    dest: "{{ ansible_user_home }}/.ssh/id_ed25519"
+    mode: '0600'
+    owner: "{{ ansible_user_real }}"
+    group: "{{ ansible_user_real }}"
+  become: false
+  tags: [ssh, security]
+
+- name: Install SSH public key
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/.ssh/id_ed25519.pub"
+    dest: "{{ ansible_user_home }}/.ssh/id_ed25519.pub"
+    mode: '0644'
+    owner: "{{ ansible_user_real }}"
+    group: "{{ ansible_user_real }}"
+  become: false
+  tags: [ssh, security]
+
+- name: Add GitHub to known_hosts file
+  ansible.builtin.known_hosts:
+    name: github.com
+    key: "{{ lookup('pipe', 'ssh-keyscan -H github.com') }}"
+    path: "{{ ansible_user_home }}/.ssh/known_hosts"
+    state: present
+  become: false
+  tags: [ssh, security]
+
+- name: Start ssh-agent and add SSH key
+  shell: |
+    eval "$(ssh-agent -s)"
+    ssh-add {{ ansible_user_home }}/.ssh/id_ed25519
+  args:
+    executable: /bin/bash
+  become: false
+  tags: [ssh, security]

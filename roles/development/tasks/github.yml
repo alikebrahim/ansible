@@ -1,0 +1,50 @@
+---
+# GitHub configuration tasks
+
+- name: Check if GitHub CLI is installed
+  ansible.builtin.command: gh --version
+  register: gh_version
+  ignore_errors: true
+  changed_when: false
+  tags: [github, development]
+
+- name: Configure GitHub CLI with token from vault
+  ansible.builtin.shell:
+    cmd: echo "{{ vault_github_token }}" | gh auth login --with-token
+  register: gh_login
+  changed_when: "'Logged in as' in gh_login.stdout"
+  when: 
+    - gh_version.rc == 0
+    - vault_github_token is defined
+  tags: [github, development]
+  environment:
+    GH_CONFIG_DIR: "{{ ansible_user_home }}/.config/gh"
+
+- name: Configure git user name
+  ansible.builtin.git_config:
+    name: user.name
+    scope: global
+    value: "{{ git_user_name | default(ansible_user_id) }}"
+  tags: [github, development]
+
+- name: Configure git user email
+  ansible.builtin.git_config:
+    name: user.email
+    scope: global
+    value: "{{ git_user_email | default(vault_git_email) }}"
+  when: git_user_email is defined or vault_git_email is defined
+  tags: [github, development]
+
+- name: Configure git editor
+  ansible.builtin.git_config:
+    name: core.editor
+    scope: global
+    value: "{{ git_editor | default('nvim') }}"
+  tags: [github, development]
+
+- name: Configure git pull behavior
+  ansible.builtin.git_config:
+    name: pull.rebase
+    scope: global
+    value: "false"
+  tags: [github, development]

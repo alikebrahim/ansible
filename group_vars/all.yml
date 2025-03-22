@@ -1,0 +1,29 @@
+---
+# Common variables across all distributions
+# Use lookup to get the home directory of the real user, even when running as root
+ansible_user_home: "{{ lookup('env', 'HOME') }}"
+ansible_user_real: alikebrahim
+fonts_dir: "{{ ansible_user_home }}/.local/share/fonts"
+apps_dir: "{{ ansible_user_home }}/Apps"
+dotfiles_path: "{{ ansible_user_home }}/.dotfiles"
+dotfiles_repo: "https://github.com/alikebrahim/dotfiles.git"
+
+# Common package lists
+cargo_packages:
+  - ripgrep
+  - fd-find
+  - eza
+  - zoxide
+  - tokei
+  - bat
+  - git-delta
+
+# Dotfiles configuration
+dotfiles_packages:
+  - zsh
+  - nvim
+  - fzf
+  - tmux
+  - wezterm
+  - obsidian
+  - atuin

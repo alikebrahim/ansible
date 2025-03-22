@@ -1,0 +1,64 @@
+---
+# AppImages and binary apps
+
+- name: Create Apps directory
+  ansible.builtin.file:
+    path: "{{ apps_dir }}"
+    state: directory
+    mode: '0755'
+  tags: [apps]
+
+# Include binary installation tasks
+- name: Include binary installation tasks
+  ansible.builtin.include_tasks: binaries.yml
+  tags: [apps, binaries]
+
+# Obsidian
+- name: Download Obsidian AppImage
+  ansible.builtin.get_url:
+    url: https://github.com/obsidianmd/obsidian-releases/releases/download/v1.8.9/Obsidian-1.8.9.AppImage
+    dest: "{{ apps_dir }}/obsidian"
+    mode: '0755'
+  register: obsidian_download
+  tags: [ui]
+
+# Logseq
+- name: Download Logseq AppImage
+  ansible.builtin.get_url:
+    url: https://github.com/logseq/logseq/releases/download/0.10.9/Logseq-linux-x64-0.10.9.AppImage
+    dest: "{{ apps_dir }}/logseq"
+    mode: '0755'
+  register: logseq_download
+  tags: [ui]
+
+# Wezterm
+- name: Download Wezterm AppImage
+  ansible.builtin.get_url:
+    url: https://github.com/wez/wezterm/releases/download/20240326-113614-bbcac864/wezterm-20240326-113614-bbcac864-Ubuntu22.04.AppImage
+    dest: "{{ apps_dir }}/wezterm"
+    mode: '0755'
+  register: wezterm_download
+  tags: [ui, terminal]
+
+# Helix
+# - name: Download Helix AppImage
+#   ansible.builtin.get_url:
+#     url: https://github.com/helix-editor/helix/releases/download/24.02/helix-24.02-x86_64.AppImage
+#     dest: "{{ apps_dir }}/helix"
+#     mode: '0755'
+#   register: helix_download
+#   tags: [ui, editor]
+
+# 1Password desktop
+- name: Download 1Password Desktop package
+  ansible.builtin.get_url:
+    url: https://downloads.1password.com/linux/debian/amd64/stable/1password-latest.deb
+    dest: /tmp/1password-latest.deb
+  register: onepassword_download
+  tags: [packages]
+
+- name: Install 1Password Desktop
+  ansible.builtin.apt:
+    deb: /tmp/1password-latest.deb
+  when: onepassword_download.changed
+  tags: [packages]

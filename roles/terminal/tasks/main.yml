@@ -1,9 +1,29 @@
 ---
 # Terminal configuration tasks - common across all distributions
 
+- name: Check if wezterm is installed
+  ansible.builtin.stat:
+    path: /usr/bin/open-wezterm-here
+  register: wezterm_check
+  tags: [terminal, ui]
+
+- name: Display wezterm installation status
+  ansible.builtin.debug:
+    msg: "Wezterm availability: {{ 'installed' if wezterm_check.stat.exists else 'not found' }}"
+  tags: [terminal, ui]
+
 - name: Set wezterm as default terminal
   ansible.builtin.command:
     cmd: update-alternatives --set x-terminal-emulator /usr/bin/open-wezterm-here
   become: true
   become_method: sudo
+  register: wezterm_default_result
+  when: wezterm_check.stat.exists
+  failed_when: false
+  changed_when: wezterm_default_result.rc == 0
+  tags: [terminal, ui]
+
+- name: Display terminal configuration status
+  ansible.builtin.debug:
+    msg: "{{ 'Wezterm set as default terminal' if wezterm_check.stat.exists and wezterm_default_result.rc == 0 else 'Failed to set wezterm as default: not installed or error occurred' }}"
   tags: [terminal, ui]

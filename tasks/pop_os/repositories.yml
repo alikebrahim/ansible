@@ -1,0 +1,32 @@
+---
+# Pop!_OS-specific repositories
+
+- name: Add Docker repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu jammy stable"
+    filename: docker
+    state: present
+    update_cache: yes
+  become: yes
+  tags: [repositories]
+
+- name: Download and add Wezterm GPG key
+  ansible.builtin.get_url:
+    url: https://apt.fury.io/wez/gpg.key
+    dest: /tmp/wezterm-gpg.key
+  tags: [repositories]
+
+- name: Add Wezterm GPG key
+  ansible.builtin.shell:
+    cmd: cat /tmp/wezterm-gpg.key | gpg --dearmor > /usr/share/keyrings/wezterm-fury.gpg
+    creates: /usr/share/keyrings/wezterm-fury.gpg
+  tags: [repositories]
+
+- name: Add Wezterm repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *"
+    filename: wezterm
+    state: present
+    update_cache: yes
+  become: yes
+  tags: [repositories]

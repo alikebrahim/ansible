@@ -1,7 +1,24 @@
 ---
-# Stow configuration for dotfiles - uses variables for distro-specific settings
+# Dotfiles management with stow
 
-- name: Config Stow
+- name: Ensure stow is installed
+  ansible.builtin.package:
+    name: stow
+    state: present
+  tags: [packages, dotfiles]
+
+- name: Clone dotfiles repository
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_path }}"
+    update: yes
+  tags: [dotfiles]
+
+- name: Apply dotfiles with stow
   ansible.builtin.command:
-    cmd: stow -t ~ -d '{{ dotfiles_path }}' {{ dotfiles_packages | join(' ') }}
-  tags: [dotfiles, config]
+    cmd: stow -v {{ item }}
+    chdir: "{{ dotfiles_path }}"
+  loop: "{{ dotfiles_packages }}"
+  register: stow_result
+  changed_when: stow_result.rc == 0
+  tags: [dotfiles]

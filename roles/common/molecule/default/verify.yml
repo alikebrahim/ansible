@@ -1,0 +1,36 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check if apt keyrings directory exists
+      ansible.builtin.stat:
+        path: /etc/apt/keyrings
+      register: keyrings_dir
+      
+    - name: Verify apt keyrings directory
+      ansible.builtin.assert:
+        that:
+          - keyrings_dir.stat.exists
+          - keyrings_dir.stat.isdir
+        
+    - name: Check 1Password repository configuration
+      ansible.builtin.stat:
+        path: /etc/apt/sources.list.d/1password.list
+      register: onepassword_repo
+      
+    - name: Verify 1Password repository
+      ansible.builtin.assert:
+        that:
+          - onepassword_repo.stat.exists
+        
+    - name: Check if SSH directory exists
+      ansible.builtin.stat:
+        path: "{{ ansible_user_home }}/.ssh"
+      register: ssh_dir
+      
+    - name: Verify SSH directory
+      ansible.builtin.assert:
+        that:
+          - ssh_dir.stat.exists
+          - ssh_dir.stat.isdir

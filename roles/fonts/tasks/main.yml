@@ -3,30 +3,65 @@
 
 - name: Create JuliaMono font directory
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.local/share/fonts/JuliaMono"
+    path: "{{ ansible_user_home }}/.local/share/fonts/JuliaMono"
     state: directory
     mode: '0755'
+  register: julia_dir_result
+  tags: [fonts, ui]
+
+- name: Display JuliaMono directory status
+  ansible.builtin.debug:
+    msg: "JuliaMono directory: {{ 'created' if julia_dir_result.changed else 'already exists' }}"
+  tags: [fonts, ui]
 
 - name: Create JetBrains font directory
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.local/share/fonts/JetBrains"
+    path: "{{ ansible_user_home }}/.local/share/fonts/JetBrains"
     state: directory
     mode: '0755'
+  register: jetbrains_dir_result
+  tags: [fonts, ui]
+
+- name: Display JetBrains directory status
+  ansible.builtin.debug:
+    msg: "JetBrains directory: {{ 'created' if jetbrains_dir_result.changed else 'already exists' }}"
+  tags: [fonts, ui]
 
 - name: Install JuliaMono
   ansible.builtin.unarchive:
     src: 'https://github.com/cormullion/juliamono/releases/download/v0.056/JuliaMono-ttf.tar.gz'
-    dest: "{{ lookup('env', 'HOME') }}/.local/share/fonts/JuliaMono"
+    dest: "{{ ansible_user_home }}/.local/share/fonts/JuliaMono"
     remote_src: true
+  register: julia_install_result
+  tags: [fonts, ui]
+
+- name: Display JuliaMono installation status
+  ansible.builtin.debug:
+    msg: "JuliaMono font: {{ 'installed' if julia_install_result.changed else 'already installed' }}"
+  tags: [fonts, ui]
 
 - name: Install JetBrains
   ansible.builtin.unarchive:
     src: 'https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip'
-    dest: "{{ lookup('env', 'HOME') }}/.local/share/fonts/JetBrains"
+    dest: "{{ ansible_user_home }}/.local/share/fonts/JetBrains"
     remote_src: true
+  register: jetbrains_install_result
+  tags: [fonts, ui]
+
+- name: Display JetBrains installation status
+  ansible.builtin.debug:
+    msg: "JetBrains font: {{ 'installed' if jetbrains_install_result.changed else 'already installed' }}"
+  tags: [fonts, ui]
 
 - name: Update font cache
   ansible.builtin.command:
     cmd: fc-cache -r
   become_user: "{{ ansible_user_id }}"
+  register: fontcache_result
+  changed_when: true
+  tags: [fonts, ui]
+
+- name: Display font cache update status
+  ansible.builtin.debug:
+    msg: "Font cache updated"
   tags: [fonts, ui]

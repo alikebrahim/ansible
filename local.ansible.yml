@@ -1,99 +1,55 @@
-- name: System Up
+---
+- name: Configure Personal Workstation
   hosts: localhost
-  vars:
-      source_key: "./.ssh/id_ed25519"
-      dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
+  connection: local
   become: true
+  vars_files:
+    - group_vars/all.yml
+    - "group_vars/{{ ansible_distribution | lower | replace('!', '') }}.yml"
+    - vault/secrets.yml
   pre_tasks:
-    - name: Set OS-specific variables
-      ansible.builtin.include_vars: "{{ item }}"
-      with_first_found:
-        - "vars/{{ ansible_distribution | lower }}.yml"
-        - "vars/popos.yml"  # Default to PopOS if no specific match
+    - name: Stop PackageKit service
+      ansible.builtin.service:
+        name: packagekitd
+        state: stopped
+      become: true
+      ignore_errors: true
       tags: [always]
       
+    - name: Install required Ansible collections
+      ansible.builtin.command: ansible-galaxy collection install community.general
+      register: collection_install
+      changed_when: "'Installing' in collection_install.stdout"
+      failed_when: collection_install.rc != 0
+      tags: [always]
+  
+  roles:
+    - common
+    - development
+    - dotfiles
+    - apps
+    - shell
+    - terminal
+    - fonts
+  
   tasks:
-#     - name: Configure Ansible User
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/user.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#
-#     - name: Configure ssh keys
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/ssh.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#
-#     - name: "APT: Core Packages"
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-core.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [packages, core]
-#
-#     - name: "APT: Repositories"
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-repositories.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [packages, repositories]
-#
-#     - name: "APT: Build System Packages"
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-buildSys.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [packages, build]
-#
-#     - name: "APT: Application Packages"
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/apt-apps.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [packages, apps]
-#
-#     - name: Install Binaries and AppImages
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/binaries.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [binaries]
-#
-#     - name: Install Programming Languages
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/languages.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [languages, go, rust, node, nvim]
-#
-#     - name: Install Cargo Packages
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/cargo.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [packages, cargo, rust]
-#
-#     - name: Install Go Packages
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/go.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [packages, go]
-#
-#     - name: Clone Repositories
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/repositories.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [repositories]
-#
-#     - name: Build Applications
-#       ansible.builtin.include_tasks: system/{{ ansible_distribution }}/build.ansible.yml
-#       when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-#       tags: [build]
-#
-      # Role-based common configuration
-      - name: Install and configure fonts
-        ansible.builtin.include_role:
-          name: fonts
-        tags: [fonts, ui]
-
-      - name: Configure shell
-        ansible.builtin.include_role:
-          name: shell
-        tags: [shell]
-
-      - name: Configure terminal
-        ansible.builtin.include_role:
-          name: terminal
-        tags: [terminal, ui]
-
-      - name: Configure dotfiles
-        ansible.builtin.include_role:
-          name: dotfiles
-        tags: [dotfiles, config]
-
-      # Distribution-specific configuration
-      - name: System Configuration
-        ansible.builtin.include_tasks: system/{{ ansible_distribution }}/configuration.ansible.yml
-        when: ansible_facts['distribution'] == "Pop!_OS" or ansible_facts['distribution'] == "Debian"
-        tags: [config]
+    - name: Include distro-specific package management
+      ansible.builtin.include_tasks: "tasks/{{ ansible_distribution | lower | replace('!', '') }}/apt.yml"
+      when: ansible_os_family == "Debian"
+      tags: [packages]
+    
+    - name: Include distro-specific repositories
+      ansible.builtin.include_tasks: "tasks/{{ ansible_distribution | lower | replace('!', '') }}/repositories.yml"
+      when: ansible_os_family == "Debian"
+      tags: [repositories]
+    
+    # All language, repository, and build tasks are now handled in the development role
+  
+  post_tasks:
+    - name: Start PackageKit service
+      ansible.builtin.service:
+        name: packagekitd
+        state: started
+      become: true
+      ignore_errors: true
+      tags: [always]

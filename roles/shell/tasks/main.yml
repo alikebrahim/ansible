@@ -1,14 +1,62 @@
 ---
 # Shell configuration tasks - common across all distributions
 
-- name: Set zsh as default shell
-  ansible.builtin.shell:
-    cmd: chsh -s $(which zsh) {{ ansible_user_id }}
+- name: Set zsh as default shell for user {{ ansible_user_id }}
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: "/bin/zsh"
   become: true
+  register: set_zsh_result
   tags: [shell, zsh]
+  
+- name: Display shell change status
+  ansible.builtin.debug:
+    msg: "Shell for {{ ansible_user_id }} changed to /bin/zsh: {{ set_zsh_result.changed }}"
+  tags: [shell, zsh]
+
+- name: Ensure tldr is installed
+  ansible.builtin.apt:
+    name: tldr
+    state: present
+  register: tldr_install_result
+  tags: [shell, documentation]
+  
+- name: Display tldr installation status
+  ansible.builtin.debug:
+    msg: "tldr package installation status: {{ 'installed' if tldr_install_result.changed else 'already installed' }}"
+  tags: [shell, documentation]
 
 - name: Update tldr database
   ansible.builtin.command:
     cmd: tldr -u
   become_user: "{{ ansible_user_id }}"
+  register: tldr_update_result
+  failed_when: false
+  changed_when: tldr_update_result.rc == 0
   tags: [shell, documentation]
+  
+- name: Display tldr update status
+  ansible.builtin.debug:
+    msg: "tldr database update: {{ 'success' if tldr_update_result.rc == 0 else 'failed (return code ' + tldr_update_result.rc|string + ')' }}"
+    verbosity: 0
+  tags: [shell, documentation]
+
+- name: Check if atuin is installed
+  ansible.builtin.command: atuin --version
+  register: atuin_version
+  ignore_errors: true
+  changed_when: false
+  tags: [shell]
+
+- name: Install atuin
+  ansible.builtin.shell:
+    cmd: curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+  when: atuin_version.rc != 0
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_home }}/.local/bin"
+  tags: [shell]
+  
+- name: Display atuin installation status
+  ansible.builtin.debug:
+    msg: "atuin {{ 'installed successfully' if atuin_version.rc != 0 else 'already present' }}"
+  tags: [shell]
