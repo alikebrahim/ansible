@@ -22,51 +22,17 @@
     dest: "/home/alikebrahim/.local/share/fonts/JetBrains"
     remote_src: true
 
-# - name: Config Stow
-#   ansible.builtin.command:
-#     cmd: stow -t ~ -d '/home/alikebrahim/.dotfiles/' zsh nvim fzf tmux wezterm obsidian atuin
-#     # chdir: "/home/alikebrahim/.dotfiles"
-
 - name: Set zsh shell
   ansible.builtin.shell:
     cmd: chsh -s $(which zsh) alikebrahim
   become: true
 
-# - name: Checking if oh-my-zsh exists
-#   stat:
-#     path: "/home/alikebrahim/.oh-my-zsh"
-#   register: oh_my_stats
-
-# - name: Oh-My-Zsh
-#   ansible.builtin.shell:
-#     cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
-#   when: oh_my_stats.stat.exists == False
-#   become_user: alikebrahim
-
-# - name: Install zsh-syntax-highlightinh
-#   ansible.builtin.git:
-#     repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
-#     dest: "/home/alikebrahim/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-#     clone: true
-#     update: true
-#     force: true
-#   become_user: alikebrahim
-
-# - name: Install zsh-autosuggestions
-#   ansible.builtin.git:
-#     repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
-#     dest: "/home/alikebrahim/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-#     clone: true
-#     update: true
-#     force: true
-#   become_user: alikebrahim
 
 - name: Set wezterm as default terminal
   ansible.builtin.command:
     cmd: update-alternatives --set x-terminal-emulator /usr/bin/open-wezterm-here
   become: true
   become_method: sudo
-  # become_user: alikebrahim
 
 - name: Update tldr database
   ansible.builtin.command:

@@ -44,6 +44,13 @@
     force: true
   become_user: alikebrahim
 
+- name: Configure dotfiles with stow
+  ansible.builtin.command:
+    cmd: stow nvim wezterm zsh fzf
+    chdir: /home/alikebrahim/.dotfiles
+  become_user: alikebrahim
+  tags: [dotfiles, config]
+
 - name: Clone Obsidian Repository
   ansible.builtin.git:
     repo: git@github.com:alikebrahim/obsidian-silo.git
