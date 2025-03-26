@@ -39,6 +39,10 @@
     filename: 1password
     state: present
     update_cache: yes
+  register: apt_repo_result
+  retries: 5
+  delay: 10
+  until: apt_repo_result is success
   tags: [repositories]
 
 - name: Install 1Password CLI

@@ -8,6 +8,14 @@
     - "group_vars/{{ ansible_distribution | lower | replace('!', '') }}.yml"
     - vault/secrets.yml
   pre_tasks:
+    - name: Wait for APT lock to be released
+      ansible.builtin.wait_for:
+        path: /var/lib/apt/lists/lock
+        state: absent
+        timeout: 300
+      become: true
+      tags: [always]
+
     - name: Install required Ansible collections
       ansible.builtin.command: ansible-galaxy collection install community.general
       register: collection_install

@@ -35,7 +35,8 @@
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_home }}/.nvm/versions/node/v*/bin"
   register: claude_install
-  when: node_version.rc == 0
+  when: node_version is defined and node_version.rc == 0
+  become: false
   tags: [languages]
 
 # Include repositories tasks
