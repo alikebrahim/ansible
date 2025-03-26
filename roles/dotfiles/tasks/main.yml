@@ -1,44 +1,24 @@
 ---
-# Basic stow availability check - only for ensuring stow is present
+# Dotfiles management with stow
 
-- name: Check if stow is installed
-  ansible.builtin.command:
-    cmd: which stow
-  register: stow_check
-  changed_when: false
-  failed_when: false
-  tags: [dotfiles, config]
-
-- name: Install stow if missing
-  ansible.builtin.apt:
+- name: Ensure stow is installed
+  ansible.builtin.package:
     name: stow
     state: present
-  when: stow_check.rc != 0
-  tags: [dotfiles, config]
-  
-- name: Check if dotfiles repository exists
-  ansible.builtin.stat:
-    path: /home/{{ ansible_user_id }}/.dotfiles
-  register: dotfiles_dir
-  tags: [dotfiles, config]
+  tags: [packages, dotfiles]
 
-- name: Clone Dotfiles Repository if missing
+- name: Clone dotfiles repository
   ansible.builtin.git:
-    repo: git@github.com:{{ ansible_user_id }}/dotfiles.git
-    dest: /home/{{ ansible_user_id }}/.dotfiles
-    clone: true
-    update: true
-    force: true
-  become_user: "{{ ansible_user_id }}"
-  when: not dotfiles_dir.stat.exists
-  tags: [dotfiles, config]
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_path }}"
+    update: yes
+  tags: [dotfiles]
 
-- name: Configure dotfiles with stow
+- name: Apply dotfiles with stow
   ansible.builtin.command:
-    cmd: stow nvim wezterm zsh fzf
-    chdir: /home/{{ ansible_user_id }}/.dotfiles
-  become_user: "{{ ansible_user_id }}"
+    cmd: stow -v {{ item }}
+    chdir: "{{ dotfiles_path }}"
+  loop: "{{ dotfiles_packages }}"
   register: stow_result
   changed_when: stow_result.rc == 0
-  failed_when: stow_result.rc != 0 and "can't create link" not in stow_result.stderr
-  tags: [dotfiles, config]
+  tags: [dotfiles]

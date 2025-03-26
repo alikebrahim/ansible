@@ -1,0 +1,56 @@
+---
+# Common tasks across all distributions
+
+# Include SSH setup tasks
+- name: Include SSH setup
+  ansible.builtin.include_tasks: ssh.yml
+  tags: [ssh, security]
+
+- name: Check if Tailscale is installed
+  ansible.builtin.command: tailscale version
+  register: tailscale_version
+  ignore_errors: true
+  changed_when: false
+  tags: [system]
+
+- name: Install Tailscale
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://tailscale.com/install.sh | sh
+  when: tailscale_version.rc != 0
+  tags: [system]
+
+- name: Create directory for apt keyrings
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  tags: [repositories]
+
+- name: Add 1Password GPG key
+  ansible.builtin.get_url:
+    url: https://downloads.1password.com/linux/keys/1password.asc
+    dest: /usr/share/keyrings/1password-archive-keyring.gpg
+    mode: '0644'
+  tags: [repositories]
+
+- name: Add 1Password repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ ansible_architecture }} signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/{{ ansible_architecture }} stable main"
+    filename: 1password
+    state: present
+    update_cache: yes
+  tags: [repositories]
+
+- name: Install 1Password CLI
+  ansible.builtin.apt:
+    name: 1password-cli
+    state: present
+  tags: [packages]
+
+- name: Configure sudoers with template
+  ansible.builtin.template:
+    src: sudoers_ansible.j2
+    dest: /etc/sudoers.d/ansible
+    mode: '0440'
+    validate: 'visudo -cf %s'
+  tags: [security]

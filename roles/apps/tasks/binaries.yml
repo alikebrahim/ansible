@@ -1,0 +1,14 @@
+---
+# Binary application installations
+
+- name: Ensure binary directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_home }}/.local/bin"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  tags: [apps, binaries]
+
+# This file is for non-AppImage binaries that should be downloaded
+# AppImages should be placed in the apps_dir and handled in main.yml

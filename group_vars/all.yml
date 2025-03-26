@@ -1,0 +1,27 @@
+---
+# Common variables across all distributions
+ansible_user_home: "{{ ansible_env.HOME }}"
+fonts_dir: "{{ ansible_user_home }}/.local/share/fonts"
+apps_dir: "{{ ansible_user_home }}/.local/bin"
+dotfiles_path: "{{ ansible_user_home }}/.dotfiles"
+dotfiles_repo: "https://github.com/alikebrahim/dotfiles.git"
+
+# Common package lists
+cargo_packages:
+  - ripgrep
+  - fd-find
+  - eza
+  - zoxide
+  - tokei
+  - bat
+  - git-delta
+
+# Dotfiles configuration
+dotfiles_packages:
+  - zsh
+  - nvim
+  - fzf
+  - tmux
+  - wezterm
+  - obsidian
+  - atuin

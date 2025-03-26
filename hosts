@@ -1,0 +1,11 @@
+[local]
+localhost ansible_connection=local
+
+[debian]
+# Add Debian hosts here if needed
+
+[popos]
+# Add Pop!_OS hosts here if needed
+
+[archlinux]
+# Add Arch Linux hosts here if needed

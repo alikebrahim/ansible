@@ -1,25 +1,11 @@
 - name: Installing cargo packages
   community.general.cargo:
-    executable: /home/alikebrahim/.cargo/bin/cargo
-    # path: /home/alikebrahim/.cargo
+    executable: "{{ ansible_user_home }}/.cargo/bin/cargo"
     name: "{{ item }}"
-  loop:
-  - git-delta
-  - ripgrep
-  - fd-find
-  - eza
-  - zoxide
-  - tokei
-  - atuin
-  become_user: alikebrahim
-
-- name: Installing bat
-  community.general.cargo:
-    executable: /home/alikebrahim/.cargo/bin/cargo
-    # path: /home/alikebrahim/.cargo
-    name: bat
-    locked: true
-  become_user: alikebrahim
+    state: present
+  loop: "{{ cargo_packages }}"
+  become_user: "{{ ansible_user_id }}"
+  tags: [packages, cargo, rust]
 
 # - name: Installing ripgrep
 #   community.general.cargo:

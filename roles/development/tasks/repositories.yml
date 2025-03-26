@@ -1,0 +1,43 @@
+---
+# Development repositories tasks
+
+- name: Ensure project directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  with_items:
+    - "{{ ansible_user_home }}/.local/src"
+    - "{{ ansible_user_home }}/Documents"
+  tags: [repositories]
+
+- name: Clone development tool repositories
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+    clone: true
+    update: true
+    force: true
+    depth: "{{ item.depth | default(omit) }}"
+  become: false
+  with_items:
+    - { repo: "https://github.com/neovim/neovim", dest: "{{ ansible_user_home }}/.local/src/neovim" }
+    - { repo: "https://github.com/tmux/tmux.git", dest: "{{ ansible_user_home }}/.local/src/tmux" }
+    - { repo: "https://github.com/aristocratos/btop.git", dest: "{{ ansible_user_home }}/.local/src/btop" }
+    - { repo: "https://github.com/junegunn/fzf.git", dest: "{{ ansible_user_home }}/.local/src/fzf", depth: 1 }
+  tags: [repositories, devtools]
+
+- name: Clone personal repositories
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest }}"
+    clone: true
+    update: true
+    force: true
+  become: false
+  with_items:
+    - { repo: "git@github.com:alikebrahim/obsidian-silo.git", dest: "{{ ansible_user_home }}/Documents/obsidian" }
+    - { repo: "git@github.com:alikebrahim/books.git", dest: "{{ ansible_user_home }}/Documents/books" }
+  tags: [repositories, personal]

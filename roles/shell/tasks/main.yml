@@ -40,3 +40,23 @@
     msg: "tldr database update: {{ 'success' if tldr_update_result.rc == 0 else 'failed (return code ' + tldr_update_result.rc|string + ')' }}"
     verbosity: 0
   tags: [shell, documentation]
+
+- name: Check if atuin is installed
+  ansible.builtin.command: atuin --version
+  register: atuin_version
+  ignore_errors: true
+  changed_when: false
+  tags: [shell]
+
+- name: Install atuin
+  ansible.builtin.shell:
+    cmd: curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+  when: atuin_version.rc != 0
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_home }}/.local/bin"
+  tags: [shell]
+  
+- name: Display atuin installation status
+  ansible.builtin.debug:
+    msg: "atuin {{ 'installed successfully' if atuin_version.rc != 0 else 'already present' }}"
+  tags: [shell]
