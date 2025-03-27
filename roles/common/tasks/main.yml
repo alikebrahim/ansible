@@ -33,7 +33,7 @@
     mode: '0644'
   tags: [repositories]
 
-- name: Convert GPG key to binary format for APT
+- name: Convert GPG key to binary format for APT keyring
   ansible.builtin.command:
     cmd: gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg /tmp/1password.asc
   become: yes
@@ -41,17 +41,54 @@
     creates: /usr/share/keyrings/1password-archive-keyring.gpg
   tags: [repositories]
 
-- name: Add 1Password APT repository and update cache
+- name: Add 1Password APT repository
   ansible.builtin.apt_repository:
     repo: "deb [arch={{ ansible_architecture }} signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/{{ ansible_architecture }} stable main"
     filename: 1password
     state: present
+  become: yes
+  tags: [repositories]
+
+- name: Ensure debsig policies directory exists
+  ansible.builtin.file:
+    path: /etc/debsig/policies/AC2D62742012EA22
+    state: directory
+    mode: '0755'
+  become: yes
+  tags: [repositories]
+
+- name: Download 1Password debsig policy
+  ansible.builtin.get_url:
+    url: https://downloads.1password.com/linux/debian/debsig/1password.pol
+    dest: /etc/debsig/policies/AC2D62742012EA22/1password.pol
+    mode: '0644'
+  become: yes
+  tags: [repositories]
+
+- name: Ensure debsig keyrings directory exists
+  ansible.builtin.file:
+    path: /usr/share/debsig/keyrings/AC2D62742012EA22
+    state: directory
+    mode: '0755'
+  become: yes
+  tags: [repositories]
+
+- name: Convert GPG key to binary format for debsig
+  ansible.builtin.command:
+    cmd: gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg /tmp/1password.asc
+  become: yes
+  args:
+    creates: /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+  tags: [repositories]
+
+- name: Update APT cache
+  ansible.builtin.apt:
     update_cache: yes
   become: yes
-  register: apt_repo_result
+  register: apt_update_result
   retries: 5
   delay: 10
-  until: apt_repo_result is success
+  until: apt_update_result is success
   tags: [repositories]
 
 - name: Install 1Password CLI
