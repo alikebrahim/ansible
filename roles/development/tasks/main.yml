@@ -23,6 +23,11 @@
     state: present
   tags: [packages]
 
+# Include languages tasks first so Node.js is installed before checking
+- name: Include languages tasks
+  ansible.builtin.include_tasks: languages.yml
+  tags: [languages]
+
 - name: Check if Node.js is installed
   ansible.builtin.command: node --version
   register: node_version
@@ -50,10 +55,6 @@
   ansible.builtin.include_tasks: build.yml
   tags: [build]
 
-# Include languages tasks
-- name: Include languages tasks
-  ansible.builtin.include_tasks: languages.yml
-  tags: [languages]
 
 # Include GitHub configuration tasks
 - name: Include GitHub configuration tasks
