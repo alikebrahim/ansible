@@ -1,8 +1,9 @@
 ---
 # Common variables across all distributions
-ansible_user_home: "{{ ansible_env.HOME }}"
+# Use lookup to get the home directory of the real user, even when running as root
+ansible_user_home: "{{ lookup('env', 'HOME') }}"
 fonts_dir: "{{ ansible_user_home }}/.local/share/fonts"
-apps_dir: "{{ ansible_user_home }}/.local/bin"
+apps_dir: "{{ ansible_user_home }}/Apps"
 dotfiles_path: "{{ ansible_user_home }}/.dotfiles"
 dotfiles_repo: "https://github.com/alikebrahim/dotfiles.git"
 

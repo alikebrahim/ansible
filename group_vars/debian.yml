@@ -34,4 +34,4 @@ debian_dev_packages:
 debian_tools_packages:
   - tldr
   - neofetch
-  - fzf
+  - tree

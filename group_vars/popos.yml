@@ -34,4 +34,4 @@ popos_dev_packages:
 popos_tools_packages:
   - tldr
   - neofetch
-  - fzf
+  - tree
