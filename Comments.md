@@ -70,21 +70,22 @@
 - Fixed on: 2025-03-27
 
 **Issue 2: SSH Key Configuration**
-**Failed Task**: `development : Clone personal repositories`
+**Failed Task**: `common : Add SSH key to agent`
 
-**Error**: Failed to connect to private repositories via SSH
+**Error**: "/root/.ssh/id_ed25519: Permission denied"
 
 **Cause**:
-- SSH key setup tasks in common/tasks/ssh.yml had complex conditional logic
-- Tasks were skipped due to missing variable definitions
+- The playbook runs with `become: true` by default, causing SSH tasks to run as root
+- SSH operations should run as the regular user, not root
+- SSH keys were being copied to the root's .ssh directory instead of the user's
 
 **Solution**:
-- Simplified SSH key handling to directly copy keys from `./.ssh` directory
-- Removed conditional checks and unused variable tasks
-- Maintained proper key permissions and SSH agent setup
+- Added `become: false` to all tasks in the SSH configuration file
+- This ensures all SSH operations run as the non-root user
+- Modified the SSH agent task to use the correct home directory
 
 **Implementation**:
-- Updated `/home/alikebrahim/ansible/roles/common/tasks/ssh.yml` with streamlined tasks
+- Updated `/home/alikebrahim/ansible/roles/common/tasks/ssh.yml` to add `become: false` to all tasks
 - Fixed on: 2025-03-27
 
 **Issue 3: Variable Inconsistency**

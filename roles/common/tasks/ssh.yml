@@ -8,6 +8,7 @@
     state: directory
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
+  become: false
   tags: [ssh, security]
 
 - name: Copy SSH private key to user directory
@@ -17,6 +18,7 @@
     mode: '0600'
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
+  become: false
   tags: [ssh, security]
 
 - name: Copy SSH public key to user directory
@@ -26,6 +28,7 @@
     mode: '0644'
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
+  become: false
   tags: [ssh, security]
 
 - name: Add GitHub to known_hosts file
@@ -34,11 +37,15 @@
     key: "{{ lookup('pipe', 'ssh-keyscan -H github.com') }}"
     path: "{{ ansible_user_home }}/.ssh/known_hosts"
     state: present
+  become: false
   tags: [ssh, security]
 
 - name: Add SSH key to agent
   ansible.builtin.shell:
-    cmd: eval "$(ssh-agent -s)" && ssh-add {{ ansible_user_home }}/.ssh/id_ed25519
+    cmd: |
+      # Get the current user's home directory
+      USER_HOME=$(echo $HOME)
+      eval "$(ssh-agent -s)" && ssh-add ${USER_HOME}/.ssh/id_ed25519
   become: false
   tags: [ssh, security]
   register: ssh_agent
