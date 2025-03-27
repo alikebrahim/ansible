@@ -39,6 +39,7 @@
     filename: 1password
     state: present
     update_cache: yes
+  become: yes
   register: apt_repo_result
   retries: 5
   delay: 10

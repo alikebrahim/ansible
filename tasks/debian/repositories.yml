@@ -7,4 +7,5 @@
     filename: docker
     state: present
     update_cache: yes
+  become: yes
   tags: [repositories]

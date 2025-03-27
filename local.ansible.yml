@@ -8,19 +8,14 @@
     - "group_vars/{{ ansible_distribution | lower | replace('!', '') }}.yml"
     - vault/secrets.yml
   pre_tasks:
-    - name: Wait for APT locks to be released
-      ansible.builtin.wait_for:
-        path: "{{ item }}"
-        state: absent
-        timeout: 60
-      loop:
-        - /var/lib/apt/lists/lock
-        - /var/lib/dpkg/lock
-        - /var/lib/dpkg/lock-frontend
-        - /var/cache/apt/archives/lock
+    - name: Stop PackageKit service
+      ansible.builtin.service:
+        name: packagekitd
+        state: stopped
       become: true
+      ignore_errors: true
       tags: [always]
-
+      
     - name: Install required Ansible collections
       ansible.builtin.command: ansible-galaxy collection install community.general
       register: collection_install
@@ -49,3 +44,12 @@
       tags: [repositories]
     
     # All language, repository, and build tasks are now handled in the development role
+  
+  post_tasks:
+    - name: Start PackageKit service
+      ansible.builtin.service:
+        name: packagekitd
+        state: started
+      become: true
+      ignore_errors: true
+      tags: [always]
