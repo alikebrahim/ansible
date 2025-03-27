@@ -345,3 +345,33 @@ Permission Issues: Fixed by aligning paths with the invoking user’s home direc
 
 Task Dependency Breaks: Resolved by restoring necessary checks and improving conditional logic.
 
+Run 5:
+Fails at [common: Install 1Password CLI]
+suggested solution (ensure dearmor and other considerations)
+
+- name: Download 1Password GPG key
+  ansible.builtin.get_url:
+    url: https://downloads.1password.com/linux/keys/1password.asc
+    dest: /tmp/1password.asc
+    mode: '0644'
+
+- name: Convert GPG key to binary format for APT
+  ansible.builtin.command:
+    cmd: gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg /tmp/1password.asc
+  become: yes
+  args:
+    creates: /usr/share/keyrings/1password-archive-keyring.gpg
+
+- name: Add 1Password APT repository and update cache
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ ansible_architecture }} signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/{{ ansible_architecture }} stable main"
+    filename: 1password
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Install 1Password CLI
+  ansible.builtin.apt:
+    name: 1password-cli
+    state: present
+  become: yes

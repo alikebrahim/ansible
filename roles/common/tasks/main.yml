@@ -26,14 +26,22 @@
     mode: '0755'
   tags: [repositories]
 
-- name: Add 1Password GPG key
+- name: Download 1Password GPG key
   ansible.builtin.get_url:
     url: https://downloads.1password.com/linux/keys/1password.asc
-    dest: /usr/share/keyrings/1password-archive-keyring.gpg
+    dest: /tmp/1password.asc
     mode: '0644'
   tags: [repositories]
 
-- name: Add 1Password repository
+- name: Convert GPG key to binary format for APT
+  ansible.builtin.command:
+    cmd: gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg /tmp/1password.asc
+  become: yes
+  args:
+    creates: /usr/share/keyrings/1password-archive-keyring.gpg
+  tags: [repositories]
+
+- name: Add 1Password APT repository and update cache
   ansible.builtin.apt_repository:
     repo: "deb [arch={{ ansible_architecture }} signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/{{ ansible_architecture }} stable main"
     filename: 1password
@@ -50,6 +58,7 @@
   ansible.builtin.apt:
     name: 1password-cli
     state: present
+  become: yes
   tags: [packages]
 
 - name: Configure sudoers with template
