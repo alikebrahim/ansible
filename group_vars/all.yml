@@ -1,5 +1,5 @@
 ---
-# Common variables across all distributions
+# Common variables for Pop!_OS configuration
 # Use lookup to get the home directory of the real user, even when running as root
 ansible_user_home: "{{ lookup('env', 'HOME') }}"
 ansible_user_real: alikebrahim
@@ -27,3 +27,40 @@ dotfiles_packages:
   - wezterm
   - obsidian
   - atuin
+
+# Pop!_OS specific packages
+popos_core_packages:
+  - curl
+  - git
+  - stow
+  - jq
+  - unzip
+  - wget
+  - zsh
+  - htop
+  - build-essential
+  - ninja-build
+  - gettext
+  - libtool
+  - libtool-bin
+  - autoconf
+  - automake
+  - cmake
+  - g++
+  - pkg-config
+
+popos_dev_packages:
+  - libevent-dev
+  - ncurses-dev
+  - bison
+  - python3-dev
+  - python3-pip
+  - gcc
+  - make
+  - libfuse2
+  - libssl-dev
+
+popos_tools_packages:
+  - tldr
+  - neofetch
+  - tree

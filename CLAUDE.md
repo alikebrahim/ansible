@@ -1,4 +1,6 @@
-# ANSIBLE AUTOMATION GUIDELINES
+# POP!_OS ANSIBLE AUTOMATION GUIDELINES
+
+This Ansible playbook is specifically designed for Pop!_OS systems.
 
 ## COMMANDS
 - Run playbook: `ansible-playbook local.ansible.yml`

@@ -1,11 +1,6 @@
 [local]
-localhost ansible_connection=local
-
-[debian]
-# Add Debian hosts here if needed
+localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
 
 [popos]
-# Add Pop!_OS hosts here if needed
-
-[archlinux]
-# Add Arch Linux hosts here if needed
+# Add remote Pop!_OS hosts here if needed
+# mypopos-remote ansible_host=192.168.1.X ansible_user=alikebrahim
