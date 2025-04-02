@@ -9,7 +9,7 @@
   pre_tasks:
     - name: Stop PackageKit service
       ansible.builtin.service:
-        name: packagekitd
+        name: packagekit.service
         state: stopped
       become: true
       ignore_errors: true
@@ -45,7 +45,7 @@
   post_tasks:
     - name: Start PackageKit service
       ansible.builtin.service:
-        name: packagekitd
+        name: packagekit.service
         state: started
       become: true
       ignore_errors: true
