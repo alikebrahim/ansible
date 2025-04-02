@@ -6,8 +6,8 @@
     path: "{{ item }}"
     state: directory
     mode: '0755'
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
+    owner: "{{ ansible_user_real }}"
+    group: "{{ ansible_user_real }}"
   with_items:
     - "{{ ansible_user_home }}/.local/src"
     - "{{ ansible_user_home }}/Documents"
