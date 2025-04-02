@@ -6,17 +6,17 @@
   ansible.builtin.include_tasks: ssh.yml
   tags: [ssh, security]
 
-- name: Check if Tailscale is installed
-  ansible.builtin.command: tailscale version
-  register: tailscale_version
-  ignore_errors: true
-  changed_when: false
+# Moved Tailscale check to use a file existence check instead of the binary
+- name: Check if Tailscale is installed 
+  ansible.builtin.stat:
+    path: /usr/bin/tailscale
+  register: tailscale_binary
   tags: [system]
 
 - name: Install Tailscale
   ansible.builtin.shell:
     cmd: curl -fsSL https://tailscale.com/install.sh | sh
-  when: tailscale_version.rc != 0
+  when: not tailscale_binary.stat.exists
   tags: [system]
 
 - name: Create directory for apt keyrings

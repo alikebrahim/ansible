@@ -29,17 +29,22 @@
   tags: [languages]
 
 - name: Check if Node.js is installed
-  ansible.builtin.command: node --version
+  ansible.builtin.shell: |
+    source {{ ansible_user_home }}/.nvm/nvm.sh
+    node --version
+  args:
+    executable: /bin/bash
   register: node_version
   ignore_errors: true
   changed_when: false
   tags: [languages, node]
 
 - name: Install Claude-Code
-  ansible.builtin.command:
-    cmd: npm install -g @anthropic-ai/claude-code
-  environment:
-    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_home }}/.nvm/versions/node/v*/bin"
+  ansible.builtin.shell: |
+    source {{ ansible_user_home }}/.nvm/nvm.sh
+    npm install -g @anthropic-ai/claude-code
+  args:
+    executable: /bin/bash
   register: claude_install
   when: node_version is defined and node_version.rc == 0
   become: false
