@@ -21,6 +21,10 @@
       changed_when: "'Installing' in collection_install.stdout"
       failed_when: collection_install.rc != 0
       tags: [always]
+    
+    - name: Include Pop!_OS package management
+      ansible.builtin.include_tasks: "tasks/pop_os/apt.yml"
+      tags: [packages]
   
   roles:
     - common
@@ -32,9 +36,6 @@
     - fonts
   
   tasks:
-    - name: Include Pop!_OS package management
-      ansible.builtin.include_tasks: "tasks/pop_os/apt.yml"
-      tags: [packages]
     
     - name: Include Pop!_OS repositories
       ansible.builtin.include_tasks: "tasks/pop_os/repositories.yml"
