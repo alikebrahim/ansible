@@ -22,8 +22,8 @@
   ansible.builtin.file:
     path: "{{ ansible_user_home }}/go/{{ item }}"
     state: directory
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
+    owner: "{{ ansible_user_real }}"
+    group: "{{ ansible_user_real }}"
     mode: '0755'
   loop:
     - src
