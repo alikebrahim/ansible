@@ -37,17 +37,6 @@ popos_core_packages:
   - unzip
   - wget
   - zsh
-  - htop
-  - build-essential
-  - ninja-build
-  - gettext
-  - libtool
-  - libtool-bin
-  - autoconf
-  - automake
-  - cmake
-  - g++
-  - pkg-config
 
 popos_dev_packages:
   - libevent-dev
@@ -59,6 +48,16 @@ popos_dev_packages:
   - make
   - libfuse2
   - libssl-dev
+  - build-essential
+  - ninja-build
+  - gettext
+  - libtool
+  - libtool-bin
+  - autoconf
+  - automake
+  - cmake
+  - g++
+  - pkg-config
 
 popos_tools_packages:
   - tldr
