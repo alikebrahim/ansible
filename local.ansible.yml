@@ -23,15 +23,9 @@
       failed_when: collection_install.rc != 0
       tags: [always]
     
-    - name: Include Pop!_OS APT repositories
-      ansible.builtin.include_tasks: "tasks/pop_os/apt_repositories.yml"
-      tags: [apt_repositories]
-    
-    - name: Include Pop!_OS package management
-      ansible.builtin.include_tasks: "tasks/pop_os/apt.yml"
-      tags: [packages]
   
   roles:
+    - pop_os
     - common
     - development
     - dotfiles

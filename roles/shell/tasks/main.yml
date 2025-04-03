@@ -39,21 +39,22 @@
   tags: [shell, documentation]
 
 - name: Check if atuin is installed
-  ansible.builtin.command: atuin --version
-  register: atuin_version
-  ignore_errors: true
-  changed_when: false
+  ansible.builtin.stat:
+    path: "{{ ansible_user_home }}/.local/bin/atuin"
+  register: atuin_binary
   tags: [shell]
 
 - name: Install atuin
   ansible.builtin.shell:
     cmd: curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
-  when: atuin_version.rc != 0
+  when: not atuin_binary.stat.exists
   environment:
     PATH: "{{ ansible_env.PATH }}:{{ ansible_user_home }}/.local/bin"
+  register: atuin_install
+  changed_when: atuin_install.rc == 0 and not atuin_binary.stat.exists
   tags: [shell]
   
 - name: Display atuin installation status
   ansible.builtin.debug:
-    msg: "atuin {{ 'installed successfully' if atuin_version.rc != 0 else 'already present' }}"
+    msg: "atuin {{ 'installed successfully' if not atuin_binary.stat.exists and atuin_install is defined and atuin_install.rc == 0 else 'already present' }}"
   tags: [shell]

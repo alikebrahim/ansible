@@ -80,14 +80,21 @@
   tags: [rust, cargo, languages]
 
 # NVM & Node
+- name: Check if NVM is installed
+  ansible.builtin.stat:
+    path: "{{ ansible_user_home }}/.nvm/nvm.sh"
+  register: nvm_script
+  tags: [nvm, node, languages]
+
 - name: Install Node Version Manager (NVM)
   ansible.builtin.shell:
     cmd: bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash'
-  args:
-    creates: "{{ ansible_user_home }}/.nvm/nvm.sh"
   environment:
     PROFILE: "/dev/null"
   become: false
+  when: not nvm_script.stat.exists
+  register: nvm_install
+  changed_when: nvm_install.rc == 0 and not nvm_script.stat.exists
   tags: [nvm, node, languages]
 
 - name: Source NVM and Install Node
@@ -105,19 +112,33 @@
   changed_when: "'is now installed' in node_install.stdout"
 
 # Python
+- name: Check if pyenv is installed
+  ansible.builtin.stat:
+    path: "{{ ansible_user_home }}/.pyenv/bin/pyenv"
+  register: pyenv_binary
+  tags: [pyenv, languages]
+
 - name: Install pyenv
   ansible.builtin.shell:
     cmd: curl https://pyenv.run | bash
-  args:
-    creates: "{{ ansible_user_home }}/.pyenv"
   environment:
     PROFILE: /dev/null
   become: false
+  when: not pyenv_binary.stat.exists
+  register: pyenv_install
+  changed_when: pyenv_install.rc == 0 and not pyenv_binary.stat.exists
   tags: [pyenv, languages]
+
+- name: Check if uv Python Manager is installed
+  ansible.builtin.stat:
+    path: "{{ ansible_user_home }}/.cargo/bin/uv"
+  register: uv_binary
+  tags: [languages, python]
 
 - name: Install uv Python Manager
   ansible.builtin.shell: curl -LsSf https://astral.sh/uv/install.sh | sh
-  args:
-    creates: "{{ ansible_user_home }}/.cargo/bin/uv"
   become: true
+  when: not uv_binary.stat.exists
+  register: uv_install
+  changed_when: uv_install.rc == 0 and not uv_binary.stat.exists
   tags: [languages, python]

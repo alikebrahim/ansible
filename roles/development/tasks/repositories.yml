@@ -11,7 +11,7 @@
   with_items:
     - "{{ ansible_user_home }}/.local/src"
     - "{{ ansible_user_home }}/Documents"
-  tags: [repositories]
+  tags: [git_repositories, repositories]
 
 - name: Clone development tool repositories
   ansible.builtin.git:
@@ -27,7 +27,7 @@
     - { repo: "https://github.com/tmux/tmux.git", dest: "{{ ansible_user_home }}/.local/src/tmux" }
     - { repo: "https://github.com/aristocratos/btop.git", dest: "{{ ansible_user_home }}/.local/src/btop" }
     - { repo: "https://github.com/junegunn/fzf.git", dest: "{{ ansible_user_home }}/.local/src/fzf", depth: 1 }
-  tags: [repositories, devtools]
+  tags: [git_repositories, repositories, devtools]
 
 - name: Clone personal repositories
   ansible.builtin.git:
@@ -40,4 +40,4 @@
   with_items:
     - { repo: "git@github.com:alikebrahim/obsidian-silo.git", dest: "{{ ansible_user_home }}/Documents/obsidian" }
     - { repo: "git@github.com:alikebrahim/books.git", dest: "{{ ansible_user_home }}/Documents/books" }
-  tags: [repositories, personal]
+  tags: [git_repositories, repositories, personal]

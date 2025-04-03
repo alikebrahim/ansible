@@ -31,7 +31,7 @@
 # Include repositories tasks
 - name: Include repositories tasks
   ansible.builtin.include_tasks: repositories.yml
-  tags: [repositories]
+  tags: [repositories, git_repositories]
 
 # Include build tasks
 - name: Include build tasks

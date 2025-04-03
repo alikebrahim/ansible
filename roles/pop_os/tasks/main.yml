@@ -1,0 +1,10 @@
+---
+# Pop!_OS role main tasks
+
+- name: Include repository configuration
+  ansible.builtin.include_tasks: repositories.yml
+  tags: [repositories, apt_repositories]
+
+- name: Include package installation
+  ansible.builtin.include_tasks: packages.yml
+  tags: [packages]
