@@ -69,6 +69,16 @@
   tags: [rust, languages]
   changed_when: false
 
+- name: Install Cargo packages
+  community.general.cargo:
+    name: "{{ item }}"
+    state: present
+  environment:
+    PATH: "{{ ansible_user_home }}/.cargo/bin:{{ ansible_env.PATH }}"
+  become: false
+  loop: "{{ cargo_packages }}"
+  tags: [rust, cargo, languages]
+
 # NVM & Node
 - name: Install Node Version Manager (NVM)
   ansible.builtin.shell:
