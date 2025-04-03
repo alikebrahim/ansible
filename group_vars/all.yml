@@ -62,7 +62,7 @@ popos_dev_packages:
   - gh
 
 popos_tools_packages:
-  - wezterm
+  - wezterm-nightly
   - neofetch
   - tree
   - 1password-cli

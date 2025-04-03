@@ -6,6 +6,7 @@
     path: "{{ apps_dir }}"
     state: directory
     mode: '0755'
+    become_user: true
   tags: [apps]
 
 # Include binary installation tasks
