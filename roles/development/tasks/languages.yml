@@ -109,5 +109,5 @@
   ansible.builtin.shell: curl -LsSf https://astral.sh/uv/install.sh | sh
   args:
     creates: "{{ ansible_user_home }}/.cargo/bin/uv"
-  become: false
+  become: true
   tags: [languages, python]

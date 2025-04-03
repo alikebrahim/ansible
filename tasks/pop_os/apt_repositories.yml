@@ -1,6 +1,7 @@
 ---
 # Pop!_OS-specific apt repositories configuration
 
+# Ensure common directory structure exists
 - name: Create apt keyrings directory
   ansible.builtin.file:
     path: /etc/apt/keyrings
@@ -9,6 +10,7 @@
   become: yes
   tags: [apt_repositories]
 
+# Docker repository setup
 - name: Add Docker GPG key
   ansible.builtin.shell:
     cmd: curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
@@ -30,12 +32,7 @@
   become: yes
   tags: [apt_repositories]
 
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: yes
-  become: yes
-  tags: [apt_repositories]
-
+# WezTerm repository setup
 - name: Add Wezterm GPG key
   ansible.builtin.shell:
     cmd: curl -fsSL https://apt.fury.io/wez/gpg.key | gpg --yes --dearmor -o /etc/apt/keyrings/wezterm-fury.gpg
@@ -48,6 +45,83 @@
     repo: "deb [signed-by=/etc/apt/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *"
     filename: wezterm
     state: present
+  become: yes
+  tags: [apt_repositories]
+
+# GitHub CLI repository setup
+- name: Download GitHub CLI GPG key
+  ansible.builtin.get_url:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    dest: /etc/apt/keyrings/githubcli-archive-keyring.gpg
+    mode: '0644'
+  become: yes
+  tags: [apt_repositories]
+
+- name: Add GitHub CLI repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+    filename: github-cli
+    state: present
+  become: yes
+  tags: [apt_repositories]
+
+# 1Password repository and GPG key setup
+- name: Download 1Password GPG key
+  ansible.builtin.get_url:
+    url: https://downloads.1password.com/linux/keys/1password.asc
+    dest: /tmp/1password.asc
+    mode: '0644'
+  tags: [apt_repositories]
+
+- name: Convert GPG key to binary format for APT keyring
+  ansible.builtin.shell:
+    cmd: cat /tmp/1password.asc | gpg --dearmor -o /etc/apt/keyrings/1password.gpg
+    creates: /etc/apt/keyrings/1password.gpg
+  become: yes
+  tags: [apt_repositories]
+
+- name: Add 1Password APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/1password.gpg] https://downloads.1password.com/linux/debian/amd64 stable main"
+    filename: 1password
+    state: present
+  become: yes
+  tags: [apt_repositories]
+
+- name: Ensure debsig policies directory exists
+  ansible.builtin.file:
+    path: /etc/debsig/policies/AC2D62742012EA22
+    state: directory
+    mode: '0755'
+  become: yes
+  tags: [apt_repositories]
+
+- name: Download 1Password debsig policy
+  ansible.builtin.get_url:
+    url: https://downloads.1password.com/linux/debian/debsig/1password.pol
+    dest: /etc/debsig/policies/AC2D62742012EA22/1password.pol
+    mode: '0644'
+  become: yes
+  tags: [apt_repositories]
+
+- name: Ensure debsig keyrings directory exists
+  ansible.builtin.file:
+    path: /usr/share/debsig/keyrings/AC2D62742012EA22
+    state: directory
+    mode: '0755'
+  become: yes
+  tags: [apt_repositories]
+
+- name: Convert GPG key to binary format for debsig
+  ansible.builtin.shell:
+    cmd: cat /tmp/1password.asc | gpg --dearmor -o /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+    creates: /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+  become: yes
+  tags: [apt_repositories]
+
+# Final update cache after all repositories are added
+- name: Update apt cache
+  ansible.builtin.apt:
     update_cache: yes
   become: yes
   tags: [apt_repositories]
