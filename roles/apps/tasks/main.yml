@@ -13,6 +13,11 @@
   ansible.builtin.include_tasks: binaries.yml
   tags: [apps, binaries]
 
+# Include browser installation tasks
+- name: Include browser installation tasks
+  ansible.builtin.include_tasks: browsers.yml
+  tags: [apps, browsers]
+
 # Obsidian
 - name: Download Obsidian AppImage
   ansible.builtin.get_url:
