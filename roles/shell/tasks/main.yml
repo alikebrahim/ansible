@@ -14,16 +14,11 @@
     msg: "Shell for {{ ansible_user_id }} changed to /bin/zsh: {{ set_zsh_result.changed }}"
   tags: [shell, zsh]
 
-- name: Ensure tldr is installed
-  ansible.builtin.apt:
-    name: tldr
-    state: present
-  register: tldr_install_result
-  tags: [shell, documentation]
-  
-- name: Display tldr installation status
-  ansible.builtin.debug:
-    msg: "tldr package installation status: {{ 'installed' if tldr_install_result.changed else 'already installed' }}"
+- name: Check if tldr is installed
+  ansible.builtin.command: which tldr
+  register: tldr_check
+  ignore_errors: true
+  changed_when: false
   tags: [shell, documentation]
 
 - name: Update tldr database
@@ -33,12 +28,14 @@
   register: tldr_update_result
   failed_when: false
   changed_when: tldr_update_result.rc == 0
+  when: tldr_check.rc == 0
   tags: [shell, documentation]
   
 - name: Display tldr update status
   ansible.builtin.debug:
-    msg: "tldr database update: {{ 'success' if tldr_update_result.rc == 0 else 'failed (return code ' + tldr_update_result.rc|string + ')' }}"
+    msg: "tldr database update: {{ 'success' if tldr_update_result.rc is defined and tldr_update_result.rc == 0 else 'failed or not installed' }}"
     verbosity: 0
+  when: tldr_check.rc == 0
   tags: [shell, documentation]
 
 - name: Check if atuin is installed

@@ -37,6 +37,7 @@ popos_core_packages:
   - unzip
   - wget
   - zsh
+  - tldr
 
 popos_dev_packages:
   - libevent-dev
@@ -58,9 +59,11 @@ popos_dev_packages:
   - cmake
   - g++
   - pkg-config
+  - gh
 
 popos_tools_packages:
   - wezterm
-  - tldr
   - neofetch
   - tree
+  - 1password-cli
+  - 1password

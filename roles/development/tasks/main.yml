@@ -1,12 +1,6 @@
 ---
 # Development tools setup
 
-- name: Install GitHub CLI
-  ansible.builtin.apt:
-    name: gh
-    state: present
-  tags: [packages]
-
 # Include languages tasks first so Node.js is installed before checking
 - name: Include languages tasks
   ansible.builtin.include_tasks: languages.yml

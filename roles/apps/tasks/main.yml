@@ -49,16 +49,3 @@
 #   register: helix_download
 #   tags: [ui, editor]
 
-# 1Password desktop
-- name: Download 1Password Desktop package
-  ansible.builtin.get_url:
-    url: https://downloads.1password.com/linux/debian/amd64/stable/1password-latest.deb
-    dest: /tmp/1password-latest.deb
-  register: onepassword_download
-  tags: [packages]
-
-- name: Install 1Password Desktop
-  ansible.builtin.apt:
-    deb: /tmp/1password-latest.deb
-  when: onepassword_download.changed
-  tags: [packages]

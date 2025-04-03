@@ -1,21 +1,28 @@
 ---
 # Pop!_OS-specific package management
 
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+  tags: [packages]
+
 - name: Install core packages
   ansible.builtin.apt:
-    name: "{{ popos_core_packages }}"
+    name: "{{ item }}"
     state: present
-    update_cache: yes
+  loop: "{{ popos_core_packages }}"
   tags: [packages, core]
 
 - name: Install development packages
   ansible.builtin.apt:
-    name: "{{ popos_dev_packages }}"
+    name: "{{ item }}"
     state: present
+  loop: "{{ popos_dev_packages }}"
   tags: [packages, development]
 
 - name: Install tool packages
   ansible.builtin.apt:
-    name: "{{ popos_tools_packages }}"
+    name: "{{ item }}"
     state: present
+  loop: "{{ popos_tools_packages }}"
   tags: [packages, tools]

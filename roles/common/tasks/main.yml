@@ -20,12 +20,6 @@
   tags: [system]
 
 
-- name: Install 1Password CLI
-  ansible.builtin.apt:
-    name: 1password-cli
-    state: present
-  become: yes
-  tags: [packages]
 
 - name: Configure sudoers with template
   ansible.builtin.template:
