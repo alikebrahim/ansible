@@ -60,6 +60,7 @@ popos_dev_packages:
   - pkg-config
 
 popos_tools_packages:
+  - wezterm
   - tldr
   - neofetch
   - tree

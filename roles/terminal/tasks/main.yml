@@ -2,14 +2,16 @@
 # Terminal configuration tasks - common across all distributions
 
 - name: Check if wezterm is installed
-  ansible.builtin.stat:
-    path: /usr/bin/open-wezterm-here
+  ansible.builtin.command:
+    cmd: dpkg-query -W -f='${Status}' wezterm
   register: wezterm_check
+  changed_when: false
+  failed_when: false
   tags: [terminal, ui]
 
 - name: Display wezterm installation status
   ansible.builtin.debug:
-    msg: "Wezterm availability: {{ 'installed' if wezterm_check.stat.exists else 'not found' }}"
+    msg: "Wezterm availability: {{ 'installed' if wezterm_check.rc == 0 and 'install ok installed' in wezterm_check.stdout else 'not found' }}"
   tags: [terminal, ui]
 
 - name: Set wezterm as default terminal
@@ -18,12 +20,12 @@
   become: true
   become_method: sudo
   register: wezterm_default_result
-  when: wezterm_check.stat.exists
+  when: wezterm_check.rc == 0 and 'install ok installed' in wezterm_check.stdout
   failed_when: false
   changed_when: wezterm_default_result.rc == 0
   tags: [terminal, ui]
 
 - name: Display terminal configuration status
   ansible.builtin.debug:
-    msg: "{{ 'Wezterm set as default terminal' if wezterm_check.stat.exists and wezterm_default_result.rc == 0 else 'Failed to set wezterm as default: not installed or error occurred' }}"
+    msg: "{{ 'Wezterm set as default terminal' if wezterm_check.rc == 0 and 'install ok installed' in wezterm_check.stdout and wezterm_default_result.rc == 0 else 'Failed to set wezterm as default: not installed or error occurred' }}"
   tags: [terminal, ui]

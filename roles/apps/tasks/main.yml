@@ -32,13 +32,13 @@
   tags: [ui]
 
 # Wezterm
-- name: Download Wezterm AppImage
-  ansible.builtin.get_url:
-    url: https://github.com/wez/wezterm/releases/download/20240326-113614-bbcac864/wezterm-20240326-113614-bbcac864-Ubuntu22.04.AppImage
-    dest: "{{ apps_dir }}/wezterm"
-    mode: '0755'
-  register: wezterm_download
-  tags: [ui, terminal]
+# - name: Download Wezterm AppImage
+#   ansible.builtin.get_url:
+#     url: https://github.com/wez/wezterm/releases/download/20240326-113614-bbcac864/wezterm-20240326-113614-bbcac864-Ubuntu22.04.AppImage
+#     dest: "{{ apps_dir }}/wezterm"
+#     mode: '0755'
+#   register: wezterm_download
+#   tags: [ui, terminal]
 
 # Helix
 # - name: Download Helix AppImage
