@@ -27,6 +27,7 @@ dotfiles_packages:
   - wezterm
   - obsidian
   - atuin
+  - git
 
 # Pop!_OS specific packages
 popos_core_packages:
@@ -37,6 +38,7 @@ popos_core_packages:
   - unzip
   - wget
   - zsh
+  - xclip
   - tldr
 
 popos_dev_packages:
