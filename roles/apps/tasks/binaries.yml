@@ -12,3 +12,30 @@
 
 # This file is for non-AppImage binaries that should be downloaded
 # AppImages should be placed in the apps_dir and handled in main.yml
+
+# Ollama - Local AI model runner
+- name: Check if Ollama is installed
+  ansible.builtin.stat:
+    path: "/usr/local/bin/ollama"
+  register: ollama_binary
+  tags: [apps, binaries, ai]
+
+- name: Install Ollama
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://ollama.com/install.sh | sh
+  become: true
+  when: not ollama_binary.stat.exists
+  register: ollama_install
+  changed_when: ollama_install.rc == 0 and not ollama_binary.stat.exists
+  tags: [apps, binaries, ai]
+
+- name: Ensure correct ownership for Ollama data directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_home }}/.ollama"
+    state: directory
+    mode: '0755'
+    recurse: true
+    owner: "{{ ansible_user_real }}"
+    group: "{{ ansible_user_real }}"
+  when: ollama_install.changed | default(false)
+  tags: [apps, binaries, ai]

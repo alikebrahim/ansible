@@ -6,7 +6,8 @@
     path: "{{ apps_dir }}"
     state: directory
     mode: '0755'
-    owner: "{{ ansible_user_home }}"
+    owner: "{{ ansible_user_real }}"
+    group: "{{ ansible_user_real }}"
   tags: [apps]
 
 # Include binary installation tasks
