@@ -5,7 +5,7 @@
   become: true
   vars_files:
     - group_vars/all.yml
-    - vault/secrets.yml
+    # - vault/secrets.yml
   pre_tasks:
     - name: Stop PackageKit service
       ansible.builtin.systemd_service:
