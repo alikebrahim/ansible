@@ -2,9 +2,9 @@
 # Common tasks across all distributions
 
 # Include SSH setup tasks
-- name: Include SSH setup
-  ansible.builtin.include_tasks: ssh.yml
-  tags: [ssh, security]
+# - name: Include SSH setup
+#   ansible.builtin.include_tasks: ssh.yml
+#   tags: [ssh, security]
 
 # Tailscale installation
 - name: Check if Tailscale is installed 
