@@ -14,7 +14,7 @@
 - name: Install SSH private key
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/files/ssh/id_ed25519"
-    dest: "{{ ansible_user_home }}/.ssh/id_ed25519"
+    dest: "{{ ansible_user_home }}/.sh/id_ed25519"
     mode: '0600'
     owner: "{{ ansible_user_real }}"
     group: "{{ ansible_user_real }}"

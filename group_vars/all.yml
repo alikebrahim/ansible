@@ -22,7 +22,6 @@ cargo_packages:
 dotfiles_packages:
   - zsh
   - nvim
-  - fzf
   - tmux
   - wezterm
   - obsidian
