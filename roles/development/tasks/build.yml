@@ -55,7 +55,7 @@
 # fzf
 - name: Install fzf
   ansible.builtin.shell:
-    cmd: "{{ ansible_user_home }}/.local/src/fzf/install --bin"
+    cmd: "{{ ansible_user_home }}/.local/src/fzf/install --no-bash --no-fish --completion --key-binding --no-update-rc"
   become: false
   tags: [build, fzf]
   register: fzf_install
