@@ -1,0 +1,6 @@
+-Add ffmpeg - https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz
+    - download
+    - move bin/* to ~/.local/bin
+    - move man/man1/* to ~/.local/share/man/man1
+- add yt-dlp
+    - python3 -m pip install -U "yt-dlp[default]"

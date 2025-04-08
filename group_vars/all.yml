@@ -41,26 +41,30 @@ popos_core_packages:
   - tldr
 
 popos_dev_packages:
+  - make
+  - automake
+  - cmake
+  - g++
+  - gcc
+  - build-essential
+  - python3-dev
+  - python3-pip
   - libevent-dev
   - ncurses-dev
   - bison
-  - python3-dev
-  - python3-pip
-  - gcc
-  - make
   - libfuse2
   - libssl-dev
-  - build-essential
   - ninja-build
   - gettext
   - libtool
   - libtool-bin
   - autoconf
-  - automake
-  - cmake
-  - g++
   - pkg-config
-  - gh
+  - yasm
+  - nasm
+  - meson
+  - texinfo
+  - git-core
 
 popos_tools_packages:
   - wezterm-nightly
@@ -68,3 +72,4 @@ popos_tools_packages:
   - tree
   - 1password-cli
   - 1password
+  - gh
