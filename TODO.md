@@ -5,3 +5,5 @@
 - add yt-dlp
     - python3 -m pip install -U "yt-dlp[default]"
 - add transmission
+- fix tldr -u. 
+- add nvme-cli
