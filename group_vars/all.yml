@@ -73,3 +73,5 @@ popos_tools_packages:
   - 1password-cli
   - 1password
   - gh
+  - transmission
+  - nvme-cli

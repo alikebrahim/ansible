@@ -8,3 +8,7 @@
 - name: Include package installation
   ansible.builtin.include_tasks: packages.yml
   tags: [packages]
+
+- name: Include utility fixes
+  ansible.builtin.include_tasks: utilities.yml
+  tags: [utilities]

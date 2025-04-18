@@ -1,0 +1,20 @@
+---
+# Utility-specific fixes and configurations
+
+# Fix tldr update command
+- name: Fix tldr update permissions
+  ansible.builtin.file:
+    path: "/usr/local/share/tldr"
+    state: directory
+    mode: "0755"
+    owner: "{{ ansible_user_real }}" 
+    group: "{{ ansible_user_real }}"
+    recurse: yes
+  become: true
+  tags: [utilities, tldr]
+
+- name: Run tldr update
+  ansible.builtin.command:
+    cmd: tldr -u
+  changed_when: false
+  tags: [utilities, tldr]
