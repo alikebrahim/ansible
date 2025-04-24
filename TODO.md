@@ -18,3 +18,7 @@ The following tasks have been implemented:
 
 - nvme-cli - Added to popos_tools_packages in group_vars/all.yml
   - Installed via apt
+
+
+# TODO:
+- fix /home/alikebrahim/.local/bin perms. Currently it's being with owner root
