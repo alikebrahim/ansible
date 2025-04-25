@@ -1,45 +1,14 @@
 ---
 # Development tools setup
 
-# Include languages tasks first so Node.js is installed before checking
-- name: Include languages tasks
-  ansible.builtin.include_tasks: languages.yml
-  tags: [languages]
+# Include system-level tasks when in system play (with become: true)
+- name: Include system-level tasks
+  ansible.builtin.include_tasks: system/main.yml
+  when: ansible_connection == 'local' and ansible_play_hosts_all[0] == inventory_hostname and ansible_play_name == 'Configure System Environment'
+  tags: [system, development]
 
-- name: Check if Node.js is installed
-  ansible.builtin.shell: |
-    source {{ ansible_user_home }}/.nvm/nvm.sh
-    node --version
-  args:
-    executable: /bin/bash
-  register: node_version
-  ignore_errors: true
-  changed_when: false
-  tags: [languages, node]
-
-- name: Install Claude-Code
-  ansible.builtin.shell: |
-    source {{ ansible_user_home }}/.nvm/nvm.sh
-    npm install -g @anthropic-ai/claude-code
-  args:
-    executable: /bin/bash
-  register: claude_install
-  when: node_version is defined and node_version.rc == 0
-  become: false
-  tags: [languages]
-
-# Include repositories tasks
-- name: Include repositories tasks
-  ansible.builtin.include_tasks: repositories.yml
-  tags: [repositories, git_repositories]
-
-# Include build tasks
-- name: Include build tasks
-  ansible.builtin.include_tasks: build.yml
-  tags: [build]
-
-
-# Include GitHub configuration tasks
-- name: Include GitHub configuration tasks
-  ansible.builtin.include_tasks: github.yml
-  tags: [github, development]
+# Include user-level tasks when in user play (with become: false)
+- name: Include user-level tasks
+  ansible.builtin.include_tasks: user/main.yml
+  when: ansible_connection == 'local' and ansible_play_hosts_all[0] == inventory_hostname and ansible_play_name == 'Configure User Environment'
+  tags: [user, development]

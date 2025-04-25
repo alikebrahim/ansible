@@ -5,26 +5,30 @@
   ansible.builtin.package:
     name: stow
     state: present
-  tags: [packages, dotfiles]
+  # Note: This task will be skipped in user play since become is false
+  # It's kept here for completeness, but packages should be installed in system play
+  tags: [packages, dotfiles, user]
 
 - name: Clone dotfiles repository
   ansible.builtin.git:
     repo: "{{ dotfiles_repo }}"
     dest: "{{ dotfiles_path }}"
     update: yes
-  tags: [dotfiles]
+  become: false
+  tags: [dotfiles, user]
 
-- name: Fix permissions for dotfiles repositorie
+- name: Fix permissions for dotfiles repository
   ansible.builtin.file:
     path: "{{ item.dest }}"
     state: directory
     mode: '0755'
     recurse: true
-    owner: "{{ ansible_user_real }}"
-    group: "{{ ansible_user_real }}"
+    owner: "{{ real_user }}"
+    group: "{{ real_user }}"
   with_items:
-    - { dest: "{{ ansible_user_home }}/.dotfiles" }
-  tags: [git_repositories, repositories, devtools]
+    - { dest: "{{ real_user_home }}/.dotfiles" }
+  become: false
+  tags: [dotfiles, user]
 
 - name: Apply dotfiles with stow
   ansible.builtin.command:
@@ -33,4 +37,7 @@
   loop: "{{ dotfiles_packages }}"
   register: stow_result
   changed_when: stow_result.rc == 0
-  tags: [dotfiles]
+  become: false
+  environment:
+    HOME: "{{ real_user_home }}"
+  tags: [dotfiles, user]

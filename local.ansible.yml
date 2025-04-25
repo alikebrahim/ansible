@@ -1,5 +1,5 @@
 ---
-- name: Configure Personal Workstation
+- name: Configure System Environment
   hosts: localhost
   connection: local
   become: true
@@ -13,28 +13,19 @@
         state: stopped
       become: true
       ignore_errors: true
-      tags: [always]
+      tags: [always, system]
       
     - name: Install required Ansible collections
       ansible.builtin.command: ansible-galaxy collection install community.general
       register: collection_install
       changed_when: "'Installing' in collection_install.stdout"
       failed_when: collection_install.rc != 0
-      tags: [always]
-    
+      tags: [always, system]
   
   roles:
     - pop_os
     - common
-    - development
-    - dotfiles
-    - apps
-    - shell
-    - terminal
-    - fonts
-  
-  tasks:
-    # All language, repository, and build tasks are now handled in the development role
+    - { role: development, tags: ['system', 'development'] }
   
   post_tasks:
     - name: Start PackageKit service
@@ -44,4 +35,19 @@
         state: started
       become: true
       ignore_errors: true
-      tags: [always]
+      tags: [always, system]
+
+- name: Configure User Environment
+  hosts: localhost
+  connection: local
+  become: false
+  vars_files:
+    - group_vars/all.yml
+  
+  roles:
+    - { role: development, tags: ['user', 'development'] }
+    - dotfiles
+    - apps
+    - shell
+    - terminal
+    - fonts

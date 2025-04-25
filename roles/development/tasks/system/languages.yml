@@ -1,0 +1,19 @@
+---
+# System-level programming languages installation and setup
+
+# Go
+- name: Get Go latest version
+  ansible.builtin.shell:
+    cmd: curl -Ls "https://golang.org/dl/?mode=json" | jq -r '.[0].version'
+  register: go_version
+  tags: [go, languages, system]
+  changed_when: false
+
+- name: Install Go
+  ansible.builtin.unarchive:
+    src: https://go.dev/dl/{{ go_version.stdout }}.linux-amd64.tar.gz
+    dest: "/usr/local"
+    creates: "/usr/local/go/"
+    remote_src: true
+  become: true
+  tags: [go, languages, system]

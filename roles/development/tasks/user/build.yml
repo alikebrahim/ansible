@@ -1,0 +1,13 @@
+---
+# User-level development tools build tasks
+
+# fzf
+- name: Install fzf
+  ansible.builtin.shell:
+    cmd: "{{ real_user_home }}/.local/src/fzf/install --no-bash --no-fish --completion --key-bindings --no-update-rc"
+  become: false
+  environment:
+    HOME: "{{ real_user_home }}"
+  tags: [build, fzf, user]
+  register: fzf_install
+  changed_when: "'Installed' in fzf_install.stdout"

@@ -1,31 +1,33 @@
 ---
 # Terminal configuration tasks - common across all distributions
 
+# User-level tasks
 - name: Check if wezterm is installed
   ansible.builtin.command:
     cmd: dpkg-query -W -f='${Status}' wezterm
   register: wezterm_check
   changed_when: false
   failed_when: false
-  tags: [terminal, ui]
+  become: false
+  tags: [terminal, ui, user]
 
 - name: Display wezterm installation status
   ansible.builtin.debug:
     msg: "Wezterm availability: {{ 'installed' if wezterm_check.rc == 0 and 'install ok installed' in wezterm_check.stdout else 'not found' }}"
-  tags: [terminal, ui]
+  tags: [terminal, ui, user]
 
+# System-level tasks
 - name: Set wezterm as default terminal
   ansible.builtin.command:
     cmd: update-alternatives --set x-terminal-emulator /usr/bin/open-wezterm-here
   become: true
-  become_method: sudo
   register: wezterm_default_result
   when: wezterm_check.rc == 0 and 'install ok installed' in wezterm_check.stdout
   failed_when: false
   changed_when: wezterm_default_result.rc == 0
-  tags: [terminal, ui]
+  tags: [terminal, ui, system]
 
 - name: Display terminal configuration status
   ansible.builtin.debug:
-    msg: "{{ 'Wezterm set as default terminal' if wezterm_check.rc == 0 and 'install ok installed' in wezterm_check.stdout and wezterm_default_result.rc == 0 else 'Failed to set wezterm as default: not installed or error occurred' }}"
+    msg: "{{ 'Wezterm set as default terminal' if wezterm_check.rc == 0 and 'install ok installed' in wezterm_check.stdout and wezterm_default_result is defined and wezterm_default_result.rc == 0 else 'Failed to set wezterm as default: not installed or error occurred' }}"
   tags: [terminal, ui]

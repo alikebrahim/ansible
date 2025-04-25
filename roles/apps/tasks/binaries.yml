@@ -1,33 +1,37 @@
 ---
 # Binary application installations
 
+# User-level tasks
 - name: Ensure binary directory exists
   ansible.builtin.file:
-    path: "{{ ansible_user_home }}/.local/bin"
+    path: "{{ real_user_home }}/.local/bin"
     state: directory
     mode: '0755'
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
-  tags: [apps, binaries]
+    owner: "{{ real_user }}"
+    group: "{{ real_user }}"
+  become: false
+  tags: [apps, binaries, user]
 
 - name: Ensure man directory exists
   ansible.builtin.file:
-    path: "{{ ansible_user_home }}/.local/share/man/man1"
+    path: "{{ real_user_home }}/.local/share/man/man1"
     state: directory
     mode: '0755'
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
-  tags: [apps, binaries]
+    owner: "{{ real_user }}"
+    group: "{{ real_user }}"
+  become: false
+  tags: [apps, binaries, user]
 
 # This file is for non-AppImage binaries that should be downloaded
 # AppImages should be placed in the apps_dir and handled in main.yml
 
-# FFmpeg - Media processing tool
+# FFmpeg - Media processing tool (User-level)
 - name: Check if FFmpeg is installed
   ansible.builtin.stat:
-    path: "{{ ansible_user_home }}/.local/bin/ffmpeg"
+    path: "{{ real_user_home }}/.local/bin/ffmpeg"
   register: ffmpeg_binary
-  tags: [apps, binaries, media]
+  become: false
+  tags: [apps, binaries, media, user]
 
 - name: Create temporary directory for FFmpeg
   ansible.builtin.file:
@@ -35,14 +39,16 @@
     state: directory
     mode: '0755'
   when: not ffmpeg_binary.stat.exists
-  tags: [apps, binaries, media]
+  become: false
+  tags: [apps, binaries, media, user]
 
 - name: Download FFmpeg
   ansible.builtin.get_url:
     url: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz
     dest: "/tmp/ffmpeg_install/ffmpeg.tar.xz"
   when: not ffmpeg_binary.stat.exists
-  tags: [apps, binaries, media]
+  become: false
+  tags: [apps, binaries, media, user]
 
 - name: Extract FFmpeg
   ansible.builtin.unarchive:
@@ -50,7 +56,8 @@
     dest: "/tmp/ffmpeg_install"
     remote_src: yes
   when: not ffmpeg_binary.stat.exists
-  tags: [apps, binaries, media]
+  become: false
+  tags: [apps, binaries, media, user]
 
 - name: Copy FFmpeg binaries to ~/.local/bin
   ansible.builtin.copy:
@@ -58,43 +65,54 @@
     dest: "{{ item.dest }}"
     mode: '0755'
     remote_src: yes
+    owner: "{{ real_user }}"
+    group: "{{ real_user }}"
   loop:
-    - { src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg", dest: "{{ ansible_user_home }}/.local/bin/ffmpeg" }
-    - { src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/bin/ffplay", dest: "{{ ansible_user_home }}/.local/bin/ffplay" }
-    - { src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/bin/ffprobe", dest: "{{ ansible_user_home }}/.local/bin/ffprobe" }
+    - { src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg", dest: "{{ real_user_home }}/.local/bin/ffmpeg" }
+    - { src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/bin/ffplay", dest: "{{ real_user_home }}/.local/bin/ffplay" }
+    - { src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/bin/ffprobe", dest: "{{ real_user_home }}/.local/bin/ffprobe" }
   when: not ffmpeg_binary.stat.exists
-  tags: [apps, binaries, media]
+  become: false
+  tags: [apps, binaries, media, user]
 
 - name: Copy FFmpeg man pages to ~/.local/share/man/man1
   ansible.builtin.copy:
     src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/man/man1/"
-    dest: "{{ ansible_user_home }}/.local/share/man/man1/"
+    dest: "{{ real_user_home }}/.local/share/man/man1/"
     mode: '0644'
     remote_src: yes
+    owner: "{{ real_user }}"
+    group: "{{ real_user }}"
   when: not ffmpeg_binary.stat.exists
-  tags: [apps, binaries, media]
+  become: false
+  tags: [apps, binaries, media, user]
 
 - name: Clean up FFmpeg temporary directory
   ansible.builtin.file:
     path: "/tmp/ffmpeg_install"
     state: absent
   when: not ffmpeg_binary.stat.exists
-  tags: [apps, binaries, media]
+  become: false
+  tags: [apps, binaries, media, user]
 
-# yt-dlp - YouTube downloader
+# yt-dlp - YouTube downloader (User-level)
 - name: Install yt-dlp with pip
   ansible.builtin.pip:
     name: "yt-dlp[default]"
     state: latest
     extra_args: --user
-  tags: [apps, binaries, media]
+  become: false
+  environment:
+    HOME: "{{ real_user_home }}"
+  tags: [apps, binaries, media, user]
 
-# Ollama - Local AI model runner
+# System-level tasks
+# Ollama - Local AI model runner (System-level)
 - name: Check if Ollama is installed
   ansible.builtin.stat:
     path: "/usr/local/bin/ollama"
   register: ollama_binary
-  tags: [apps, binaries, ai]
+  tags: [apps, binaries, ai, system]
 
 - name: Install Ollama
   ansible.builtin.shell:
@@ -103,15 +121,16 @@
   when: not ollama_binary.stat.exists
   register: ollama_install
   changed_when: ollama_install.rc == 0 and not ollama_binary.stat.exists
-  tags: [apps, binaries, ai]
+  tags: [apps, binaries, ai, system]
 
 - name: Ensure correct ownership for Ollama data directory
   ansible.builtin.file:
-    path: "{{ ansible_user_home }}/.ollama"
+    path: "{{ real_user_home }}/.ollama"
     state: directory
     mode: '0755'
     recurse: true
-    owner: "{{ ansible_user_real }}"
-    group: "{{ ansible_user_real }}"
+    owner: "{{ real_user }}"
+    group: "{{ real_user }}"
   when: ollama_install.changed | default(false)
-  tags: [apps, binaries, ai]
+  become: true
+  tags: [apps, binaries, ai, system]

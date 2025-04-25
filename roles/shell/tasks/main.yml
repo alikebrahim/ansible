@@ -1,60 +1,69 @@
 ---
 # Shell configuration tasks - common across all distributions
 
-- name: Set zsh as default shell for user {{ ansible_user_id }}
+# This task needs to run in the system play with become: true
+- name: Set zsh as default shell for user
   ansible.builtin.user:
-    name: "{{ ansible_user_real }}"
+    name: "{{ real_user }}"
     shell: "/bin/zsh"
   become: true
   register: set_zsh_result
-  tags: [shell, zsh]
+  # This task will be skipped in user play due to become: true requirement
+  tags: [shell, zsh, system]
   
 - name: Display shell change status
   ansible.builtin.debug:
-    msg: "Shell for {{ ansible_user_id }} changed to /bin/zsh: {{ set_zsh_result.changed }}"
+    msg: "Shell for {{ real_user }} changed to /bin/zsh: {{ set_zsh_result.changed | default('unknown') }}"
   tags: [shell, zsh]
 
+# User-level tasks
 - name: Check if tldr is installed
   ansible.builtin.command: which tldr
   register: tldr_check
   ignore_errors: true
   changed_when: false
-  tags: [shell, documentation]
+  become: false
+  tags: [shell, documentation, user]
 
 - name: Update tldr database
   ansible.builtin.command:
     cmd: tldr -u
-  become_user: "{{ ansible_user_id }}"
+  become: false
+  environment:
+    HOME: "{{ real_user_home }}"
   register: tldr_update_result
   failed_when: false
   changed_when: tldr_update_result.rc == 0
   when: tldr_check.rc == 0
-  tags: [shell, documentation]
+  tags: [shell, documentation, user]
   
 - name: Display tldr update status
   ansible.builtin.debug:
     msg: "tldr database update: {{ 'success' if tldr_update_result.rc is defined and tldr_update_result.rc == 0 else 'failed or not installed' }}"
     verbosity: 0
   when: tldr_check.rc == 0
-  tags: [shell, documentation]
+  tags: [shell, documentation, user]
 
 - name: Check if atuin is installed
   ansible.builtin.stat:
-    path: "{{ ansible_user_home }}/.local/bin/atuin"
+    path: "{{ real_user_home }}/.local/bin/atuin"
   register: atuin_binary
-  tags: [shell]
+  become: false
+  tags: [shell, user]
 
 - name: Install atuin
   ansible.builtin.shell:
     cmd: curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
   when: not atuin_binary.stat.exists
   environment:
-    PATH: "{{ ansible_env.PATH }}:{{ ansible_user_home }}/.local/bin"
+    PATH: "{{ ansible_env.PATH }}:{{ real_user_home }}/.local/bin"
+    HOME: "{{ real_user_home }}"
+  become: false
   register: atuin_install
   changed_when: atuin_install.rc == 0 and not atuin_binary.stat.exists
-  tags: [shell]
+  tags: [shell, user]
   
 - name: Display atuin installation status
   ansible.builtin.debug:
     msg: "atuin {{ 'installed successfully' if not atuin_binary.stat.exists and atuin_install is defined and atuin_install.rc == 0 else 'already present' }}"
-  tags: [shell]
+  tags: [shell, user]

@@ -1,0 +1,22 @@
+---
+# User-level development tasks
+
+# Include user-level language installation tasks
+- name: Include user-level language tasks
+  ansible.builtin.include_tasks: user/languages.yml
+  tags: [languages, user]
+
+# Include user-level repository tasks
+- name: Include user-level repository tasks
+  ansible.builtin.include_tasks: user/repositories.yml
+  tags: [repositories, git_repositories, user]
+
+# Include user-level build tasks
+- name: Include user-level build tasks
+  ansible.builtin.include_tasks: user/build.yml
+  tags: [build, user]
+
+# Include GitHub configuration tasks
+- name: Include GitHub configuration tasks
+  ansible.builtin.include_tasks: user/github.yml
+  tags: [github, development, user]
