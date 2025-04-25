@@ -1,15 +1,19 @@
 ---
 # Common variables for Pop!_OS configuration
-# Define real user and home variables for consistent user identification
+# User identification variables
 real_user: alikebrahim
 real_user_home: "/home/alikebrahim"
-# Legacy variables - to be replaced during refactoring
-ansible_user_home: "{{ lookup('env', 'HOME') }}"
-ansible_user_real: alikebrahim
+
+# Application and configuration directories
 fonts_dir: "{{ real_user_home }}/.local/share/fonts"
 apps_dir: "{{ real_user_home }}/Apps"
 dotfiles_path: "{{ real_user_home }}/.dotfiles"
 dotfiles_repo: "https://github.com/alikebrahim/dotfiles.git"
+
+# Legacy variables mapping - for backward compatibility
+# These will be fully removed in a future update
+ansible_user_home: "{{ real_user_home }}"
+ansible_user_real: "{{ real_user }}"
 
 # Common package lists
 cargo_packages:

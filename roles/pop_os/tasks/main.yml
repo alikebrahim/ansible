@@ -1,14 +1,21 @@
 ---
 # Pop!_OS role main tasks
 
+# Only run these tasks in system play as they all require root privileges
+- name: Verify this is the system play
+  ansible.builtin.debug:
+    msg: "Running pop_os role in system context"
+  when: ansible_connection == 'local' and ansible_play_hosts_all[0] == inventory_hostname and ansible_play_name == 'Configure System Environment'
+  tags: [always, pop_os, system]
+
 - name: Include repository configuration
   ansible.builtin.include_tasks: repositories.yml
-  tags: [repositories, apt_repositories]
+  tags: [repositories, apt_repositories, system, pop_os]
 
 - name: Include package installation
   ansible.builtin.include_tasks: packages.yml
-  tags: [packages]
+  tags: [packages, system, pop_os]
 
 - name: Include utility fixes
   ansible.builtin.include_tasks: utilities.yml
-  tags: [utilities]
+  tags: [utilities, system, pop_os]

@@ -32,15 +32,15 @@ This document outlines the step-by-step implementation plan for refactoring the 
 
 ### System-Level Roles
 
-- [ ] **pop_os role**
-  - [ ] Audit tasks for proper privilege escalation
-  - [ ] Ensure all system-wide operations use `become: true`
-  - [ ] Add appropriate tags for system-level operations
+- [x] **pop_os role**
+  - [x] Audit tasks for proper privilege escalation
+  - [x] Ensure all system-wide operations use `become: true`
+  - [x] Add appropriate tags for system-level operations
 
-- [ ] **common role**
-  - [ ] Refactor `ssh.yml` to remove unnecessary SSH key tasks
-  - [ ] Review all tasks for proper privilege handling
-  - [ ] Test with `--tags common --check --diff`
+- [x] **common role**
+  - [x] Refactor `ssh.yml` to remove unnecessary SSH key tasks
+  - [x] Review all tasks for proper privilege handling
+  - [x] Test with `--tags common --check --diff`
 
 ### User-Level Roles
 
@@ -79,9 +79,10 @@ This document outlines the step-by-step implementation plan for refactoring the 
 
 ## Phase 4: Variable and Path Correction
 
-- [ ] **Variable Usage Audit**
-  - [ ] Replace all `ansible_user_id` with `real_user`
-  - [ ] Replace all `ansible_user_home` with `real_user_home`
+- [x] **Variable Usage Audit**
+  - [x] Replace all `ansible_user_id` with `real_user`
+  - [x] Update `group_vars/all.yml` to map legacy variables to new ones
+  - [ ] Replace all direct `ansible_user_home` with `real_user_home`
   - [ ] Fix all instances of `lookup('env', 'HOME')`
 
 - [ ] **File Ownership & Permissions**

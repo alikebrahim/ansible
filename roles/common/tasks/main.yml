@@ -1,17 +1,20 @@
 ---
 # Common tasks across all distributions
 
-# Include SSH setup tasks
-# - name: Include SSH setup
-#   ansible.builtin.include_tasks: ssh.yml
-#   tags: [ssh, security]
+# Only run these tasks in system play as they all require root privileges
+- name: Verify this is the system play
+  ansible.builtin.debug:
+    msg: "Running common role in system context"
+  when: ansible_connection == 'local' and ansible_play_hosts_all[0] == inventory_hostname and ansible_play_name == 'Configure System Environment'
+  tags: [always, common, system]
 
 # Tailscale installation
 - name: Check if Tailscale is installed 
   ansible.builtin.stat:
     path: /usr/bin/tailscale
   register: tailscale_binary
-  tags: [system]
+  become: true
+  tags: [system, common, security]
 
 - name: Install Tailscale
   ansible.builtin.shell:
@@ -19,9 +22,8 @@
   when: not tailscale_binary.stat.exists
   register: tailscale_install
   changed_when: tailscale_install.rc == 0 and not tailscale_binary.stat.exists
-  tags: [system]
-
-
+  become: true
+  tags: [system, common, security]
 
 - name: Configure sudoers with template
   ansible.builtin.template:
@@ -29,4 +31,5 @@
     dest: /etc/sudoers.d/ansible
     mode: '0440'
     validate: 'visudo -cf %s'
-  tags: [security]
+  become: true
+  tags: [system, common, security]
