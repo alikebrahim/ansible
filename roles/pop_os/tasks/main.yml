@@ -5,7 +5,7 @@
 - name: Verify this is the system play
   ansible.builtin.debug:
     msg: "Running pop_os role in system context"
-  when: ansible_connection == 'local' and ansible_play_hosts_all[0] == inventory_hostname and ansible_play_name == 'Configure System Environment'
+  when: ansible_play_name == 'Configure System Environment'
   tags: [always, pop_os, system]
 
 - name: Include repository configuration

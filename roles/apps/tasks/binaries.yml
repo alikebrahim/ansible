@@ -54,7 +54,7 @@
   ansible.builtin.unarchive:
     src: "/tmp/ffmpeg_install/ffmpeg.tar.xz"
     dest: "/tmp/ffmpeg_install"
-    remote_src: yes
+    remote_src: true
   when: not ffmpeg_binary.stat.exists
   become: false
   tags: [apps, binaries, media, user]
@@ -64,7 +64,7 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: '0755'
-    remote_src: yes
+    remote_src: true
     owner: "{{ real_user }}"
     group: "{{ real_user }}"
   loop:
@@ -80,7 +80,7 @@
     src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/man/man1/"
     dest: "{{ real_user_home }}/.local/share/man/man1/"
     mode: '0644'
-    remote_src: yes
+    remote_src: true
     owner: "{{ real_user }}"
     group: "{{ real_user }}"
   when: not ffmpeg_binary.stat.exists

@@ -13,7 +13,7 @@
   ansible.builtin.git:
     repo: "{{ dotfiles_repo }}"
     dest: "{{ dotfiles_path }}"
-    update: yes
+    update: true
   become: false
   tags: [dotfiles, user]
 

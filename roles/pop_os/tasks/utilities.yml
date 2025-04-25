@@ -9,7 +9,7 @@
     mode: "0755"
     owner: "{{ real_user }}" 
     group: "{{ real_user }}"
-    recurse: yes
+    recurse: true
   become: true
   tags: [utilities, tldr]
 

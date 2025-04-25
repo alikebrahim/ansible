@@ -5,7 +5,7 @@
 - name: Verify this is the system play
   ansible.builtin.debug:
     msg: "Running common role in system context"
-  when: ansible_connection == 'local' and ansible_play_hosts_all[0] == inventory_hostname and ansible_play_name == 'Configure System Environment'
+  when: ansible_play_name == 'Configure System Environment'
   tags: [always, common, system]
 
 # Tailscale installation
