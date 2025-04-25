@@ -18,6 +18,17 @@
   register: neovim_build
   changed_when: "'[100%]' in neovim_build.stdout"
 
+- name: Fix Neovim source directory permissions
+  ansible.builtin.file:
+    path: "{{ real_user_home }}/.local/src/neovim"
+    state: directory
+    recurse: true
+    owner: "{{ real_user }}"
+    group: "{{ real_user }}"
+  become: true
+  when: neovim_src_dir.stat.exists and neovim_build.changed
+  tags: [build, neovim, system]
+
 # Tmux
 - name: Check if Tmux source directory exists
   ansible.builtin.stat:
@@ -35,6 +46,17 @@
   register: tmux_build
   changed_when: "'installing' in tmux_build.stdout"
 
+- name: Fix Tmux source directory permissions
+  ansible.builtin.file:
+    path: "{{ real_user_home }}/.local/src/tmux"
+    state: directory
+    recurse: true
+    owner: "{{ real_user }}"
+    group: "{{ real_user }}"
+  become: true
+  when: tmux_src_dir.stat.exists and tmux_build.changed
+  tags: [build, tmux, system]
+
 # Btop
 - name: Check if Btop source directory exists
   ansible.builtin.stat:
@@ -51,3 +73,14 @@
   tags: [build, btop, system]
   register: btop_build
   changed_when: "'installing' in btop_build.stdout"
+
+- name: Fix Btop source directory permissions
+  ansible.builtin.file:
+    path: "{{ real_user_home }}/.local/src/btop"
+    state: directory
+    recurse: true
+    owner: "{{ real_user }}"
+    group: "{{ real_user }}"
+  become: true
+  when: btop_src_dir.stat.exists and btop_build.changed
+  tags: [build, btop, system]

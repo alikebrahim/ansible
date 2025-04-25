@@ -7,8 +7,8 @@
     path: "/usr/local/share/tldr"
     state: directory
     mode: "0755"
-    owner: "{{ ansible_user_real }}" 
-    group: "{{ ansible_user_real }}"
+    owner: "{{ real_user }}" 
+    group: "{{ real_user }}"
     recurse: yes
   become: true
   tags: [utilities, tldr]

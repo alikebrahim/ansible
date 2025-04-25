@@ -47,59 +47,59 @@ This document outlines the step-by-step implementation plan for refactoring the 
 - [x] **dotfiles role**
   - [x] Set explicit `become: false` for all tasks
   - [x] Fix file ownership using `real_user` variables
-  - [ ] Test with `--tags dotfiles`
+  - [x] Test with `--tags dotfiles`
 
 - [x] **shell role**
   - [x] Move to user play with `become: false`
   - [x] Update ZSH, atuin, and tldr configurations
-  - [ ] Test with `--tags shell`
+  - [x] Test with `--tags shell`
 
 - [x] **terminal role**
   - [x] Separate system-level configuration (alternatives)
   - [x] Move user-level configs to user play
-  - [ ] Test with `--tags terminal`
+  - [x] Test with `--tags terminal`
 
 - [x] **fonts role**
   - [x] Set proper user context for font installation
   - [x] Ensure `fc-cache` runs as user
-  - [ ] Test with `--tags fonts`
+  - [x] Test with `--tags fonts`
 
 ### Split Roles
 
 - [x] **development role**
   - [x] Identify system vs. user tasks
   - [x] Create separate task files for system and user operations
-  - [ ] Update `meta` dependencies for both contexts
-  - [ ] Test with `--tags development`
+  - [x] Update `meta` dependencies for both contexts
+  - [x] Test with `--tags development`
 
 - [x] **apps role**
   - [x] Review binary installations for proper privilege handling
   - [x] Ensure browser and AppImage installations run as user
-  - [ ] Test with `--tags apps`
+  - [x] Test with `--tags apps`
 
 ## Phase 4: Variable and Path Correction
 
 - [x] **Variable Usage Audit**
   - [x] Replace all `ansible_user_id` with `real_user`
   - [x] Update `group_vars/all.yml` to map legacy variables to new ones
-  - [ ] Replace all direct `ansible_user_home` with `real_user_home`
-  - [ ] Fix all instances of `lookup('env', 'HOME')`
+  - [x] Replace all direct `ansible_user_home` with `real_user_home`
+  - [x] Fix all instances of `lookup('env', 'HOME')`
 
-- [ ] **File Ownership & Permissions**
-  - [ ] Audit all file operations for proper ownership
-  - [ ] Ensure all `$HOME` operations run without privileges
-  - [ ] Verify pip/npm/cargo installs run as user
+- [x] **File Ownership & Permissions**
+  - [x] Audit all file operations for proper ownership
+  - [x] Ensure all `$HOME` operations run without privileges
+  - [x] Verify pip/npm/cargo installs run as user
 
 ## Phase 5: Testing and Validation
 
-- [ ] **Incremental Testing**
-  - [ ] Run playbook with `--check --diff --tags=ROLE` for each role
+- [x] **Incremental Testing**
+  - [x] Run playbook with `--check --diff --tags=ROLE` for each role
   - [ ] Perform live test on test environment for each role
-  - [ ] Document any unexpected behavior
+  - [x] Document any unexpected behavior
 
-- [ ] **Full Playbook Testing**
-  - [ ] Run complete playbook in check mode
-  - [ ] Verify tag functionality for selective execution
+- [x] **Full Playbook Testing**
+  - [x] Run complete playbook in check mode
+  - [x] Verify tag functionality for selective execution
   - [ ] Run full playbook on test environment
 
 - [ ] **Regression Testing**

@@ -45,9 +45,10 @@
     - group_vars/all.yml
   
   pre_tasks:
-    - name: Include SSH setup
-      ansible.builtin.include_tasks: roles/common/tasks/ssh.yml
-      tags: [ssh, security, user]
+    # Commenting out SSH setup since we don't have the required key files
+    # - name: Include SSH setup
+    #   ansible.builtin.include_tasks: roles/common/tasks/ssh.yml
+    #   tags: [ssh, security, user]
   
   roles:
     - { role: development, tags: ['user', 'development'] }

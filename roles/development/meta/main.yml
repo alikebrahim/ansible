@@ -1,4 +1,28 @@
 ---
 galaxy_info:
   description: "Development tools configuration"
-dependencies: []
+  author: "alikebrahim"
+  license: "MIT"
+  min_ansible_version: "2.10"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Pop!_OS
+      versions:
+        - all
+  
+  galaxy_tags:
+    - development
+    - tools
+    - languages
+    - programming
+
+dependencies:
+  # System dependencies when run in system play
+  - role: pop_os
+    when: ansible_play_name == 'Configure System Environment'
+  
+  # User dependencies when run in user play
+  - role: dotfiles
+    when: ansible_play_name == 'Configure User Environment'
