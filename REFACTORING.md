@@ -113,10 +113,10 @@ This document outlines the step-by-step implementation plan for refactoring the 
   - [ ] Remove molecule test references
   - [ ] Clean up any temporary or backup files
 
-- [ ] **Documentation**
-  - [ ] Update README.md with new playbook structure
-  - [ ] Document new tagging scheme
-  - [ ] Update any variable documentation
+- [x] **Documentation**
+  - [x] Update README.md with new playbook structure
+  - [x] Document new tagging scheme
+  - [x] Update role context map
 
 - [ ] **Final Commit**
   - [ ] Squash interim commits if necessary
