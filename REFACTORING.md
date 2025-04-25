@@ -22,7 +22,7 @@ This document outlines the step-by-step implementation plan for refactoring the 
 - [x] **Create Two-Play Structure**
   - [x] Refactor `local.ansible.yml` into two distinct plays as outlined
   - [x] Run basic syntax validation: `ansible-playbook local.ansible.yml --syntax-check`
-  - [ ] Test with `--check --diff` to validate no unintended changes
+  - [x] Test with `--check --diff` to validate no unintended changes
 
 - [ ] **Validate Base Structure**
   - [ ] Run playbook in check mode with basic tasks only
