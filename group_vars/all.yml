@@ -82,3 +82,6 @@ popos_tools_packages:
   - gh
   - transmission
   - nvme-cli
+  - qemu-system
+  - qemu-kvm
+  - virt-manager
