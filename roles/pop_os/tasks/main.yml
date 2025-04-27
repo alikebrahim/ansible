@@ -15,7 +15,3 @@
 - name: Include package installation
   ansible.builtin.include_tasks: packages.yml
   tags: [packages, system, pop_os]
-
-- name: Include utility fixes
-  ansible.builtin.include_tasks: utilities.yml
-  tags: [utilities, system, pop_os]
