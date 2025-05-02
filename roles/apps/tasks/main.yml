@@ -5,7 +5,6 @@
   ansible.builtin.file:
     path: "{{ apps_dir }}"
     state: directory
-    mode: '0755'
     owner: "{{ real_user }}"
     group: "{{ real_user }}"
   become: false
@@ -27,7 +26,6 @@
   ansible.builtin.get_url:
     url: https://github.com/obsidianmd/obsidian-releases/releases/download/v1.8.9/Obsidian-1.8.9.AppImage
     dest: "{{ apps_dir }}/obsidian"
-    mode: '0755'
     owner: "{{ real_user }}"
     group: "{{ real_user }}"
   register: obsidian_download
@@ -39,7 +37,6 @@
   ansible.builtin.get_url:
     url: https://github.com/logseq/logseq/releases/download/0.10.9/Logseq-linux-x64-0.10.9.AppImage
     dest: "{{ apps_dir }}/logseq"
-    mode: '0755'
     owner: "{{ real_user }}"
     group: "{{ real_user }}"
   register: logseq_download

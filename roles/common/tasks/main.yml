@@ -1,11 +1,10 @@
 ---
 # Common tasks across all distributions
 
-# Only run these tasks in system play as they all require root privileges
-- name: Verify this is the system play
+# Common tasks across all distributions
+- name: Running common role
   ansible.builtin.debug:
-    msg: "Running common role in system context"
-  when: ansible_play_name == 'Configure System Environment'
+    msg: "Running common role"
   tags: [always, common, system]
 
 # Tailscale installation

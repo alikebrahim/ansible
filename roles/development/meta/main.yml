@@ -16,10 +16,5 @@ galaxy_info:
     - programming
 
 dependencies:
-  # System dependencies when run in system play
+  # System dependencies
   - role: system_packages
-    when: ansible_play_name == 'Configure System Environment'
-  
-  # User dependencies when run in user play
-  - role: dotfiles
-    when: ansible_play_name == 'Configure User Environment'

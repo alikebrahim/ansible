@@ -1,14 +1,12 @@
 ---
 # Development tools setup
 
-# Include system-level tasks when in system play (with become: true)
+# Include system-level tasks
 - name: Include system-level tasks
   ansible.builtin.include_tasks: system/main.yml
-  when: ansible_play_name == 'Configure System Environment'
   tags: [system, development]
 
-# Include user-level tasks when in user play (with become: false)
+# Include user-level tasks
 - name: Include user-level tasks
   ansible.builtin.include_tasks: user/main.yml
-  when: ansible_play_name == 'Configure User Environment'
   tags: [user, development]

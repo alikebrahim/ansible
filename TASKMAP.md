@@ -9,7 +9,7 @@ local.ansible.yml
 ├── COMMON SETUP
 │   └── PackageKit Service Management [always]
 │
-├── ROLE: pop_os
+├── ROLE: system_packages
 │   ├── repositories.yml [apt_repositories, repositories]
 │   │   ├── Create apt keyrings directory
 │   │   ├── Add apt repository keys
@@ -80,8 +80,8 @@ local.ansible.yml
 The playbook follows this general execution flow:
 
 1. Initial setup (PackageKit service stop)
-2. System repositories (pop_os role)
-3. System packages (pop_os role)
+2. System repositories (system_packages role)
+3. System packages (system_packages role)
 4. System configuration (common role)
 5. Development environment (development role)
 6. Application installation (apps role)

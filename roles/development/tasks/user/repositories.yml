@@ -5,7 +5,6 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: '0755'
     owner: "{{ real_user }}"
     group: "{{ real_user }}"
   with_items:
@@ -29,46 +28,17 @@
     - { repo: "https://github.com/aristocratos/btop.git", dest: "{{ real_user_home }}/.local/src/btop" }
     - { repo: "https://github.com/junegunn/fzf.git", dest: "{{ real_user_home }}/.local/src/fzf", depth: 1 }
   tags: [git_repositories, repositories, devtools, user]
-  
-- name: Fix permissions for development repositories
-  ansible.builtin.file:
-    path: "{{ item.dest }}"
-    state: directory
-    mode: '0755'
-    recurse: true
-    owner: "{{ real_user }}"
-    group: "{{ real_user }}"
-  with_items:
-    - { dest: "{{ real_user_home }}/.local/src/neovim" }
-    - { dest: "{{ real_user_home }}/.local/src/tmux" }
-    - { dest: "{{ real_user_home }}/.local/src/btop" }
-    - { dest: "{{ real_user_home }}/.local/src/fzf" }
-  become: false
-  tags: [git_repositories, repositories, devtools, user]
 
-- name: Clone personal repositories
-  ansible.builtin.git:
-    repo: "{{ item.repo }}"
-    dest: "{{ item.dest }}"
-    clone: true
-    update: true
-    force: true
-  become: false
-  with_items:
-    - { repo: "git@github.com:alikebrahim/obsidian-silo.git", dest: "{{ real_user_home }}/Documents/obsidian" }
-    - { repo: "git@github.com:alikebrahim/books.git", dest: "{{ real_user_home }}/Documents/books" }
-  tags: [git_repositories, repositories, personal, user]
-  
-- name: Fix permissions for personal repositories
-  ansible.builtin.file:
-    path: "{{ item.dest }}"
-    state: directory
-    mode: '0755'
-    recurse: true
-    owner: "{{ real_user }}"
-    group: "{{ real_user }}"
-  with_items:
-    - { dest: "{{ real_user_home }}/Documents/obsidian" }
-    - { dest: "{{ real_user_home }}/Documents/books" }
-  become: false
-  tags: [git_repositories, repositories, personal, user]
+# Commented out personal repositories cloning per request
+# - name: Clone personal repositories
+#   ansible.builtin.git:
+#     repo: "{{ item.repo }}"
+#     dest: "{{ item.dest }}"
+#     clone: true
+#     update: true
+#     force: true
+#   become: false
+#   with_items:
+#     - { repo: "git@github.com:alikebrahim/obsidian-silo.git", dest: "{{ real_user_home }}/Documents/obsidian" }
+#     - { repo: "git@github.com:alikebrahim/books.git", dest: "{{ real_user_home }}/Documents/books" }
+#   tags: [git_repositories, repositories, personal, user]

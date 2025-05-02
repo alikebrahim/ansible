@@ -8,7 +8,6 @@
     state: directory
     owner: "{{ real_user }}"
     group: "{{ real_user }}"
-    mode: '0755'
   loop:
     - src
     - pkg
@@ -35,7 +34,6 @@
   ansible.builtin.get_url:
     url: "https://sh.rustup.rs"
     dest: "/tmp/rustup.sh"
-    mode: '0755'
   become: false
   tags: [rust, languages, user]
 

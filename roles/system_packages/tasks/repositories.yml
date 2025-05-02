@@ -6,7 +6,6 @@
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
-    mode: '0755'
   become: true
   tags: [apt_repositories, repositories]
 
@@ -18,12 +17,6 @@
   become: true
   tags: [apt_repositories, repositories]
 
-- name: Set permissions for Docker GPG key
-  ansible.builtin.file:
-    path: /etc/apt/keyrings/docker.asc
-    mode: 'a+r'
-  become: true
-  tags: [apt_repositories, repositories]
 
 - name: Add Docker repository
   ansible.builtin.shell:
@@ -53,7 +46,6 @@
   ansible.builtin.get_url:
     url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
     dest: /etc/apt/keyrings/githubcli-archive-keyring.gpg
-    mode: '0644'
   become: true
   tags: [apt_repositories, repositories]
 
@@ -84,7 +76,6 @@
   ansible.builtin.file:
     path: /etc/debsig/policies/AC2D62742012EA22
     state: directory
-    mode: '0755'
   become: true
   tags: [apt_repositories, repositories]
 
@@ -99,7 +90,6 @@
   ansible.builtin.file:
     path: /usr/share/debsig/keyrings/AC2D62742012EA22
     state: directory
-    mode: '0755'
   become: true
   tags: [apt_repositories, repositories]
 

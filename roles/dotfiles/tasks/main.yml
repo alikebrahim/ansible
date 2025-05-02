@@ -17,19 +17,6 @@
   become: false
   tags: [dotfiles, user]
 
-- name: Fix permissions for dotfiles repository
-  ansible.builtin.file:
-    path: "{{ item.dest }}"
-    state: directory
-    mode: '0755'
-    recurse: true
-    owner: "{{ real_user }}"
-    group: "{{ real_user }}"
-  with_items:
-    - { dest: "{{ real_user_home }}/.dotfiles" }
-  become: false
-  tags: [dotfiles, user]
-
 - name: Apply dotfiles with stow
   ansible.builtin.command:
     cmd: stow -v {{ item }}

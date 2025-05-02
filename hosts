@@ -1,6 +1,2 @@
 [local]
 localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
-
-[popos]
-# Add remote Pop!_OS hosts here if needed
-# mypopos-remote ansible_host=192.168.1.X ansible_user=alikebrahim

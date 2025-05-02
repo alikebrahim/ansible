@@ -14,11 +14,11 @@ The playbook uses a hierarchical tagging system where:
 
 ### System Configuration
 - **`packages`**: System package installation tasks
-  - Used in: `pop_os/tasks/packages.yml`
+  - Used in: `system_packages/tasks/packages.yml`
   - Example: `ansible-playbook local.ansible.yml --tags "packages"`
 
 - **`apt_repositories`**: System package repository configuration
-  - Used in: `pop_os/tasks/repositories.yml`
+  - Used in: `system_packages/tasks/repositories.yml`
   - Example: `ansible-playbook local.ansible.yml --tags "apt_repositories"`
 
 - **`repositories`**: Parent tag for all repository-related tasks

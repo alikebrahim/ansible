@@ -1,11 +1,10 @@
 ---
 # System packages role main tasks
 
-# Only run these tasks in system play as they all require root privileges
-- name: Verify this is the system play
+# System packages role tasks
+- name: Running system packages role
   ansible.builtin.debug:
-    msg: "Running system packages role in system context"
-  when: ansible_play_name == 'Configure System Environment'
+    msg: "Running system packages role"
   tags: [always, system]
 
 - name: Include repository configuration
