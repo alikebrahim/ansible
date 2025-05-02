@@ -23,7 +23,7 @@
       tags: [always, system]
   
   roles:
-    - pop_os
+    - system_packages
     - common
     - { role: development, tags: ['system', 'development'] }
   

@@ -8,9 +8,6 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - all
-    - name: Pop!_OS
-      versions:
-        - all
   
   galaxy_tags:
     - development
@@ -20,7 +17,7 @@ galaxy_info:
 
 dependencies:
   # System dependencies when run in system play
-  - role: pop_os
+  - role: system_packages
     when: ansible_play_name == 'Configure System Environment'
   
   # User dependencies when run in user play

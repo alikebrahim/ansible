@@ -1,5 +1,5 @@
 ---
-# Common variables for Pop!_OS configuration
+# Common variables for system configuration
 # User identification variables
 real_user: alikebrahim
 real_user_home: "/home/alikebrahim"
@@ -35,8 +35,8 @@ dotfiles_packages:
   - atuin
   - git
 
-# Pop!_OS specific packages
-popos_core_packages:
+# System packages
+core_packages:
   - curl
   - git
   - stow
@@ -47,7 +47,7 @@ popos_core_packages:
   - xclip
   - tldr
 
-popos_dev_packages:
+dev_packages:
   - make
   - automake
   - cmake
@@ -73,7 +73,7 @@ popos_dev_packages:
   - texinfo
   - git-core
 
-popos_tools_packages:
+tools_packages:
   - wezterm-nightly
   - neofetch
   - tree

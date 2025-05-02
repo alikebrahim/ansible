@@ -1,6 +1,6 @@
-# Pop!_OS Ansible Automation
+# Ubuntu/Pop!_OS Ansible Automation
 
-This repository contains Ansible playbooks and roles for automating the setup and configuration of a Pop!_OS development workstation. It follows standard Ansible practices and includes a comprehensive set of roles for different aspects of system configuration.
+This repository contains Ansible playbooks and roles for automating the setup and configuration of an Ubuntu or Pop!_OS development workstation. It follows standard Ansible practices and includes a comprehensive set of roles for different aspects of system configuration.
 
 ## Overview
 
@@ -55,7 +55,7 @@ ansible/
 │   ├── development/          # Development tools and languages
 │   ├── dotfiles/             # Dotfiles management
 │   ├── fonts/                # Font installation
-│   ├── pop_os/               # Pop!_OS specific configuration
+│   ├── system_packages/      # System packages and repositories configuration
 │   ├── shell/                # Shell configuration
 │   └── terminal/             # Terminal configuration
 └── templates/                # Jinja2 templates
@@ -145,23 +145,22 @@ These tags determine which play/context the task runs in:
 ### Special Tags
 - `repositories`: All repository tasks (includes both `apt_repositories` and `git_repositories`)
 - `always`: Tasks that always run
-- `pop_os`: Pop!_OS specific tasks
 - `common`: Common system configuration tasks
 
 ## Role Context Map
 
 Below is a breakdown of which roles operate in which context:
 
-| Role          | System Context                                  | User Context                                  |
-|---------------|------------------------------------------------|----------------------------------------------|
-| `pop_os`      | Repository setup, package installation          | N/A (system-only role)                        |
-| `common`      | Sudoers config, Tailscale installation         | SSH configuration                            |
-| `development` | Go system installation, build tool installation | Language user setup, repositories, Go packages |
-| `dotfiles`    | N/A (user-only role)                           | Dotfiles management with stow                 |
-| `apps`        | N/A (user-only role)                           | User binary and application installation      |
-| `shell`       | N/A (user-only role)                           | ZSH configuration, shell utilities            |
-| `terminal`    | N/A (user-only role)                           | Terminal emulator configuration               |
-| `fonts`       | N/A (user-only role)                           | Font installation in user directory           |
+| Role              | System Context                                  | User Context                                  |
+|-------------------|------------------------------------------------|----------------------------------------------|
+| `system_packages` | Repository setup, package installation          | N/A (system-only role)                        |
+| `common`          | Sudoers config, Tailscale installation         | SSH configuration                            |
+| `development`     | Go system installation, build tool installation | Language user setup, repositories, Go packages |
+| `dotfiles`        | N/A (user-only role)                           | Dotfiles management with stow                 |
+| `apps`            | N/A (user-only role)                           | User binary and application installation      |
+| `shell`           | N/A (user-only role)                           | ZSH configuration, shell utilities            |
+| `terminal`        | N/A (user-only role)                           | Terminal emulator configuration               |
+| `fonts`           | N/A (user-only role)                           | Font installation in user directory           |
 
 ## Development and Testing
 

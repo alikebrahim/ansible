@@ -1,0 +1,32 @@
+---
+# System package management
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+  tags: [packages, system]
+
+- name: Install core packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ core_packages }}"
+  become: true
+  tags: [packages, core, system]
+
+- name: Install development packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ dev_packages }}"
+  become: true
+  tags: [packages, development, system]
+
+- name: Install tool packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ tools_packages }}"
+  become: true
+  tags: [packages, tools, system]

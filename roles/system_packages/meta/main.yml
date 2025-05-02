@@ -1,0 +1,17 @@
+---
+# meta file for system_packages role
+galaxy_info:
+  author: alikebrahim
+  description: Role for system package management and repositories
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - system
+    - packages
+    - repositories
+
+dependencies: []
