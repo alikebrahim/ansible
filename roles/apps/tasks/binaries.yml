@@ -117,15 +117,3 @@
   register: ollama_install
   changed_when: ollama_install.rc == 0 and not ollama_binary.stat.exists
   tags: [apps, binaries, ai, system]
-
-- name: Ensure correct ownership for Ollama data directory
-  ansible.builtin.file:
-    path: "{{ real_user_home }}/.ollama"
-    state: directory
-    mode: '0755'
-    recurse: true
-    owner: "{{ real_user }}"
-    group: "{{ real_user }}"
-  when: ollama_install.changed | default(false) and false  # Disabled as no longer necessary
-  become: true
-  tags: [apps, binaries, ai, system]

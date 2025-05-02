@@ -8,17 +8,3 @@
   changed_when: false
   become: false
   tags: [github, development, user]
-
-- name: Configure GitHub CLI with token from vault
-  ansible.builtin.shell:
-    cmd: echo "{{ vault_github_token }}" | gh auth login --with-token
-  register: gh_login
-  changed_when: "'Logged in as' in gh_login.stdout"
-  when: 
-    - gh_version.rc == 0
-    - vault_github_token is defined
-  tags: [github, development, user]
-  environment:
-    GH_CONFIG_DIR: "{{ real_user_home }}/.config/gh"
-    HOME: "{{ real_user_home }}"
-  become: false
