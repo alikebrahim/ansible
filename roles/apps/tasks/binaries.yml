@@ -63,6 +63,7 @@
     remote_src: true
     owner: "{{ real_user }}"
     group: "{{ real_user }}"
+    mode: 0775
   loop:
     - { src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg", dest: "{{ real_user_home }}/.local/bin/ffmpeg" }
     - { src: "/tmp/ffmpeg_install/ffmpeg-master-latest-linux64-gpl/bin/ffplay", dest: "{{ real_user_home }}/.local/bin/ffplay" }

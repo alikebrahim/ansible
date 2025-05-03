@@ -78,6 +78,14 @@
       become: true
       ignore_errors: true
       tags: [always, system]
+      
+    - name: Add real user to Docker group
+      ansible.builtin.user:
+        name: "{{ real_user }}"
+        groups: docker
+        append: true
+      become: true
+      tags: [docker, system]
 
 - name: Configure User Environment
   hosts: localhost

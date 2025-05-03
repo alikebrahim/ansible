@@ -6,7 +6,3 @@
 #   ansible.builtin.include_tasks: system/languages.yml
 #   tags: [languages, system]
 
-# Include system-level build tasks
-- name: Include system-level build tasks
-  ansible.builtin.include_tasks: system/build.yml
-  tags: [build, system]

@@ -85,3 +85,8 @@ tools_packages:
   - qemu-system
   - qemu-kvm
   - virt-manager
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin
